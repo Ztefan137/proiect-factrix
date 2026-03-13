@@ -60,7 +60,13 @@ endif()
 add_executable(${MAIN_EXECUTABLE_NAME}
     main.cpp
         src/ui.cpp
-        src/ui.h
+        include/ui.h
+        src/graphic_functions.cpp
+        include/graphic_functions.h
+        src/world_generator.cpp
+        src/world_generator.h
+        src/chunk.cpp
+        src/chunk.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE
