@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.26)
+  cmake_minimum_required(VERSION 3.26)
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing executable name in this file
 # for now, the project name is used as the executable name
@@ -64,9 +64,9 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         src/graphic_functions.cpp
         include/graphic_functions.h
         src/world_generator.cpp
-        src/world_generator.h
+        include/world_generator.h
         src/chunk.cpp
-        src/chunk.h
+        include/chunk.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

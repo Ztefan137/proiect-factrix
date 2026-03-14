@@ -2,7 +2,7 @@
 // Created by stefa on 3/13/2026.
 //
 
-#include "world_generator.h"
+#include "../include/world_generator.h"
 
 void world_generator::set_seed(int seed) {
     this->seed = seed;

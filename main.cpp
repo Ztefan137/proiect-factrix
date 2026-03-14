@@ -6,7 +6,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "include/graphic_functions.h"
-#include "src/world_generator.h"
+#include "include/world_generator.h"
+#include "include/chunk.h"
 //////////////////////////////////////////////////////////////////////
 void render_logic(sf::RenderWindow& window_obj){
         rect(window_obj,0,0,10000,10000,sf::Color::White);
@@ -19,8 +20,8 @@ void render_logic(sf::RenderWindow& window_obj){
 int main() {
 
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-    unsigned int screenWidth = desktop.size.x;
-    unsigned int screenHeight = desktop.size.y;
+    const unsigned int screenWidth = desktop.size.x;
+    const unsigned int screenHeight = desktop.size.y;
 
     /*color_scheme default_scheme=color_scheme();
     default_scheme.window_dark_margin=sf::Color(0x0a,0x0a,0x0a,0xff);
@@ -48,9 +49,9 @@ int main() {
 
     sprite.setScale({scaleX, scaleY});
 
-    std::vector<sf::sprite> sprites;
+    std::vector<sf::Sprite> sprites;
     sprites.push_back(sprite);
-    world_generator generator();
+    world_generator generator;
     chunk test(0,0,generator);
 
 
@@ -91,7 +92,7 @@ int main() {
 
         window.clear();
         render_logic(window);
-        test.render(window,0,0,30,)
+        test.render(window,100,100,30,sprites);
         //test_ui.render(window);
         window.display();
     }
