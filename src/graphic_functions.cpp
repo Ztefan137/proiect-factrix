@@ -2,7 +2,7 @@
 // Created by stefa on 3/13/2026.
 //
 
-#include  <graphic_functions.h>
+#include  <../include/graphic_functions.h>
 
 void rect(sf::RenderWindow& window_obj,float xi,float yi, float xf, float yf,sf::Color color) {
     sf::RectangleShape rect;
