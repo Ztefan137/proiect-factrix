@@ -9,10 +9,15 @@
 #include "include/graphic_functions.h"
 #include "include/world_generator.h"
 #include "include/chunk.h"
+#include "include/graphic_engine.h"
+#include "include/chunk_loader.h"
 //////////////////////////////////////////////////////////////////////
-void render_logic(sf::RenderWindow& window_obj,float x_camera,float y_camera,float scale_factor,world_generator& world_generator,std::vector<sf::Sprite>& sprites,std::map<std::string, chunk>& chunk_cache,sf::Texture& texture){
+/*void render_logic(sf::RenderWindow& window_obj,float x_camera,float y_camera,float scale_factor,world_generator& world_generator,std::vector<sf::Sprite>& sprites,std::map<std::string, chunk>& chunk_cache,sf::Texture& texture,float zoom_level){
         rect(window_obj,100,100,200,200,sf::Color::Red); //test
-        draw_chunks(window_obj,x_camera,y_camera,scale_factor,world_generator,texture,chunk_cache);
+        draw_chunks(window_obj,x_camera,y_camera,scale_factor,world_generator,texture,chunk_cache,zoom_level);
+}*/
+void render_logic(graphic_engine &engine) {
+    engine.draw_chunks();
 }
 void tick_logic() {
 
@@ -37,25 +42,56 @@ int main() {
     texture_atlas.loadFromFile("assets/tiles.png");
     texture_atlas.setSmooth(false);*/
 
-    sf::RenderTexture rt({64,32});
+    sf::RenderTexture rt({32*6,32});
     rt.clear(sf::Color::Transparent);
 
     sf::RectangleShape redRect({100.f, 100.f});
-    redRect.setFillColor(sf::Color::Red);
+    //redRect.setFillColor(sf::Color(0,150,0,255));
     redRect.setPosition({0.f, 0.f});
+    sf::Texture redRect_texture;
+    redRect_texture.loadFromFile("assets/water.jpg");
+    redRect.setTexture(&redRect_texture);
     redRect.setSize({32.f,32.f});
 
     sf::RectangleShape blueRect({100.f, 100.f});
-    blueRect.setFillColor(sf::Color::Blue);
     blueRect.setPosition({32.f, 0.f});
-    redRect.setSize({32.f,32.f});
+    sf::Texture blueRect_texture;
+    blueRect_texture.loadFromFile("assets/dirt2.png");
+    blueRect.setTexture(&blueRect_texture);
+    blueRect.setSize({32.f,32.f});
+
+    sf::RectangleShape Rect2({100.f, 100.f});
+    Rect2.setFillColor(sf::Color(255, 231, 163,255));
+    Rect2.setPosition({32.f*2, 0.f});
+    Rect2.setSize({32.f,32.f});
+
+    sf::RectangleShape Rect3({100.f, 100.f});
+    Rect3.setFillColor(sf::Color(207, 176, 89,255));
+    Rect3.setPosition({32.f*3, 0.f});
+    Rect3.setSize({32.f,32.f});
+
+    sf::RectangleShape Rect4({100.f, 100.f});
+    Rect4.setFillColor(sf::Color(87, 73, 35,255));
+    Rect4.setPosition({32.f*4, 0.f});
+    Rect4.setSize({32.f,32.f});
+
+    sf::RectangleShape Rect5({100.f, 100.f});
+    Rect5.setFillColor(sf::Color(115, 108, 91,255));
+    Rect5.setPosition({32.f*5, 0.f});
+    Rect5.setSize({32.f,32.f});
 
     rt.draw(redRect);
     rt.draw(blueRect);
+    rt.draw(Rect2);
+    rt.draw(Rect3);
+    rt.draw(Rect4);
+    rt.draw(Rect5);
 
     sf::Texture texture_atlas = rt.getTexture();
 
     world_generator generator;
+    generator.set_seed(321);
+    chunk_loader default_loader(generator);
 
     std::map<std::string, chunk> chunk_cache;
 
@@ -66,15 +102,26 @@ int main() {
 
 
     sf::RenderWindow window;
-    //window.create(sf::VideoMode({screenWidth, screenHeight}), "My Window", sf::State::Fullscreen);
-    window.create(sf::VideoMode({screenWidth, screenHeight}), "My Window", sf::Style::Default);
+    window.create(sf::VideoMode({screenWidth, screenHeight}), "My Window", sf::State::Fullscreen);
+    //window.create(sf::VideoMode({screenWidth, screenHeight}), "My Window", sf::Style::Default);
 
-    std::cout << "Fereastra a fost creată\n";
+    graphic_engine engine(default_loader,texture_atlas,window);
+
+    sf::Vector2u windowSize = window.getSize();
+    float aspectRatio = static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y);
+    float worldHeight = 1000.f;
+    float worldWidth  = worldHeight * aspectRatio;
+
+    sf::View camera(sf::FloatRect({0, 0}, {worldWidth, worldHeight}));
+    float zoomLevel=1.f;
+    //std::cout << "Fereastra a fost creată\n";
     window.setVerticalSyncEnabled(true);
     //window.setFramerateLimit(60);
+    window.setView(camera);
+    engine.set_camera(x_camera,y_camera);
+    engine.set_zoom(zoomLevel);
     sf::Clock clock;
     float fps = 0.f;
-
 
     while(window.isOpen()) {
         float dt = clock.restart().asSeconds();   // time since last frame
@@ -99,22 +146,34 @@ int main() {
                     shouldExit = true;
                 }else if (keyPressed->scancode == sf::Keyboard::Scancode::W) {
                     y_camera -= 1.0f;
+                    engine.set_camera(x_camera,y_camera);
                 }else if (keyPressed->scancode == sf::Keyboard::Scancode::S) {
                     y_camera += 1.0f;
+                    engine.set_camera(x_camera,y_camera);
                 }else if (keyPressed->scancode == sf::Keyboard::Scancode::A) {
                     x_camera -= 1.0f;
+                    engine.set_camera(x_camera,y_camera);
                 }else if (keyPressed->scancode == sf::Keyboard::Scancode::D) {
                     x_camera += 1.0f;
+                    engine.set_camera(x_camera,y_camera);
                 }
             }else if (event->is<sf::Event::MouseWheelScrolled>()) {
                 const auto* scroll = event->getIf<sf::Event::MouseWheelScrolled>();
                 float delta = scroll->delta;
+                float zoomFactor=delta>0?0.9:1.1;
                 if (delta>0) {
-                    tile_scale+=20;
-                    set_scale(textures,sprites,tile_scale);
+                    zoomLevel *= zoomFactor;
+                    camera.zoom(zoomFactor);
+
+                    window.setView(camera);
+                    engine.set_zoom(zoomLevel);
+
                 } else {
-                    tile_scale-=20;
-                    set_scale(textures,sprites,tile_scale);
+                    zoomLevel *= zoomFactor;
+                    camera.zoom(zoomFactor);
+
+                    window.setView(camera);
+                    engine.set_zoom(zoomLevel);
                 }
             }
         }
@@ -124,8 +183,14 @@ int main() {
             break;
         }
 
+        sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+        int tileX = static_cast<int>(worldPos.x) / 32;
+        int tileY = static_cast<int>(worldPos.y) / 32;
+
         window.clear(sf::Color::White);
-        render_logic(window,x_camera,y_camera,100,generator,sprites,chunk_cache,texture_atlas);
+        //render_logic(window,x_camera,y_camera,100,generator,sprites,chunk_cache,texture_atlas,zoomLevel);
+        render_logic(engine);
+        rect(window,tileX*32,tileY*32,(tileX+1)*32,(tileY+1)*32,sf::Color::White);
         //test_ui.render(window);
         window.display();
     }

@@ -58,14 +58,6 @@ void chunk::compute_va() {
 }
 
 void chunk::render(sf::RenderWindow& window_obj,float x,float y,int tile_size,sf::Texture& texture) {
-    /*for(int i=0;i<32;i++){
-        for(int j=0;j<32;j++){
-            int tileID = ground[i * 32 + j];
-            sprites[tileID].setPosition({j*100, i*100});
-            window_obj.draw(sprites[tileID]);
-        }
-    }*/
-
     sf::RenderStates states;
     states.texture = &texture;
     states.transform.translate({x, y});

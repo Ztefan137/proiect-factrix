@@ -11,7 +11,6 @@ class world_generator {
 public:
     void set_seed(int seed);
     void generate_chunk(int i,int j,int ground[],int decoratives[]);
-
 };
 
 

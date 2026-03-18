@@ -71,6 +71,11 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         src/graphic_engine_functions.cpp
         src/perlin_noise.cpp
         include/perlin_noise.h
+        src/graphic_engine.cpp
+        include/graphic_engine.h
+        src/chunk_loader.cpp
+        include/chunk_loader.h
+        include/structures.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE
