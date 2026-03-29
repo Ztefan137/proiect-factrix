@@ -10,6 +10,8 @@
 #include "SFML/Graphics.hpp"
 #include <vector>
 
+#include "ui_system.h"
+
 class graphic_engine {
     chunk_loader& loader;
     float x_camera;
@@ -17,6 +19,7 @@ class graphic_engine {
     float zoom_level;
     sf::RenderWindow& window;
     std::vector<sf::Texture> texture_maps;
+    ui_system ui_system;
 public:
     graphic_engine(chunk_loader &loader,sf::RenderWindow &window);
     void draw_chunks();
@@ -25,6 +28,7 @@ public:
     void get_visible_chunks(std::vector<chunk_position>& visible_chunks);
     void get_chunk_coords(int chunk_i,int chunk_j,float tile_size,int chunk_size,float &x,float &y);
     void load_texture(int index,std::string const &config_file);
+    void render_uis();
 };
 
 

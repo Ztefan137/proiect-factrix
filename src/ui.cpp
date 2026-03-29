@@ -3,6 +3,9 @@
 //
 
 #include "../include/ui.h"
+#include <cmath>
+#include "graphic_functions.h"
+#include <SFML/Graphics.hpp>
 
 ui::ui() {
     this->x=0;
@@ -22,4 +25,10 @@ ui::ui(float x, float y, float width, float height) {
 
 void ui::add_sub_ui(const ui& new_sub_ui) {
     this->sub_uis.push_back(new_sub_ui);
+}
+void ui::render(sf::RenderWindow &window) {
+    rect(window,this->x-floor(this->width/2),this->y-floor(this->height/2),this->x+floor(this->width/2),this->y+floor(this->height/2),sf::Color::Black);
+    for (auto &sub_ui : sub_uis) {
+        sub_ui.render(window);
+    }
 }

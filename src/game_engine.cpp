@@ -33,6 +33,7 @@ void game_engine::run() {
     float y_camera = 0.0f;
     sf::View camera(sf::FloatRect({0, 0}, {worldWidth, worldHeight}));
     float zoomLevel=1.f;
+    sf::View ui_camera(sf::FloatRect({0, 0}, {worldWidth, worldHeight}));
 
     window.setVerticalSyncEnabled(true);
 
@@ -94,8 +95,12 @@ void game_engine::run() {
 
         //this->l_handler.run();
         window.clear(sf::Color::White);
+        window.setView(camera);
         this->g_engine.draw_chunks();
         rect(window,tileX*32,tileY*32,(tileX+1)*32,(tileY+1)*32,sf::Color::White);
+        window.setView(ui_camera);
+        this->g_engine.render_uis();
+        window.setView(camera);
         window.display();
     }
 }

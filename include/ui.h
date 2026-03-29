@@ -5,15 +5,18 @@
 #ifndef OOP_UI_H
 #define OOP_UI_H
 #include <vector>
+#include <SFML/Graphics.hpp>
 
 class ui{
     float x,y;
     float width,height;
     float visibility;
     std::vector<ui> sub_uis;
+public:
     ui();
     ui(float x,float y,float width,float height);
     void add_sub_ui(const ui& new_sub_ui);
+    virtual void render(sf::RenderWindow &window);
 };
 
 

@@ -17,6 +17,7 @@ void graphic_engine::set_zoom(float new_zoom_level) {
 }
 
 graphic_engine::graphic_engine(chunk_loader &loader,sf::RenderWindow &window) : loader(loader), x_camera(0), y_camera(0), zoom_level(1.0f), window(window), texture_maps(1){
+    this->ui_system.configure_uis("default");
 }
 
 /*void graphic_engine::get_visible_chunks(std::vector<chunk_position>& visible_chunks) {
@@ -180,4 +181,8 @@ void graphic_engine::load_texture(int index,std::string const &config_file){
     }
     std::cout << "Vector size: " << this->texture_maps.size() << std::endl;
     std::cout<<"Textures ready\n";
+}
+
+void graphic_engine::render_uis() {
+    this->ui_system.render_uis(this->window);
 }
