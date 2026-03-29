@@ -1,7 +1,5 @@
 #include <iostream>
-#include <array>
 #include <chrono>
-#include <thread>
 
 #include <SFML/Graphics.hpp>
 
@@ -11,85 +9,33 @@
 #include "include/chunk.h"
 #include "include/graphic_engine.h"
 #include "include/chunk_loader.h"
-//////////////////////////////////////////////////////////////////////
-/*void render_logic(sf::RenderWindow& window_obj,float x_camera,float y_camera,float scale_factor,world_generator& world_generator,std::vector<sf::Sprite>& sprites,std::map<std::string, chunk>& chunk_cache,sf::Texture& texture,float zoom_level){
-        rect(window_obj,100,100,200,200,sf::Color::Red); //test
-        draw_chunks(window_obj,x_camera,y_camera,scale_factor,world_generator,texture,chunk_cache,zoom_level);
-}*/
-void render_logic(graphic_engine &engine) {
-    engine.draw_chunks();
-}
-void tick_logic() {
+#include "include/game_engine.h"
+/////////////////////////////////////////////////////////////////////////
 
-}
+/*
+int main(){
 
+    game_engine game_engine;
+    game_engine.load_texture(0,"default");
 
-int main() {
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
     const unsigned int screenWidth = desktop.size.x;
     const unsigned int screenHeight = desktop.size.y;
 
     /*color_scheme default_scheme=color_scheme();
     default_scheme.window_dark_margin=sf::Color(0x0a,0x0a,0x0a,0xff);
-    default_scheme.window_light_margin=sf::Color(0x3a,0x3a,0x3a,0xff);
+    default_scheme.window _light_margin=sf::Color(0x3a,0x3a,0x3a,0xff);
     default_scheme.window_color=sf::Color(0x2a,0x2a,0x2a,0xff);
     ui_window test_ui(screenWidth/2.f,screenHeight/2,700,450,default_scheme);*/
 
-    std::vector<sf::Sprite> sprites;
-    std::vector<sf::Texture> textures;
+    //std::vector<sf::Sprite> sprites;
+    //std::vector<sf::Texture> textures;
 
     /*sf::Texture texture_atlas;
     texture_atlas.loadFromFile("assets/tiles.png");
     texture_atlas.setSmooth(false);*/
 
-    sf::RenderTexture rt({32*6,32});
-    rt.clear(sf::Color::Transparent);
-
-    sf::RectangleShape redRect({100.f, 100.f});
-    //redRect.setFillColor(sf::Color(0,150,0,255));
-    redRect.setPosition({0.f, 0.f});
-    sf::Texture redRect_texture;
-    redRect_texture.loadFromFile("assets/water.jpg");
-    redRect.setTexture(&redRect_texture);
-    redRect.setSize({32.f,32.f});
-
-    sf::RectangleShape blueRect({100.f, 100.f});
-    blueRect.setPosition({32.f, 0.f});
-    sf::Texture blueRect_texture;
-    blueRect_texture.loadFromFile("assets/dirt2.png");
-    blueRect.setTexture(&blueRect_texture);
-    blueRect.setSize({32.f,32.f});
-
-    sf::RectangleShape Rect2({100.f, 100.f});
-    Rect2.setFillColor(sf::Color(255, 231, 163,255));
-    Rect2.setPosition({32.f*2, 0.f});
-    Rect2.setSize({32.f,32.f});
-
-    sf::RectangleShape Rect3({100.f, 100.f});
-    Rect3.setFillColor(sf::Color(207, 176, 89,255));
-    Rect3.setPosition({32.f*3, 0.f});
-    Rect3.setSize({32.f,32.f});
-
-    sf::RectangleShape Rect4({100.f, 100.f});
-    Rect4.setFillColor(sf::Color(87, 73, 35,255));
-    Rect4.setPosition({32.f*4, 0.f});
-    Rect4.setSize({32.f,32.f});
-
-    sf::RectangleShape Rect5({100.f, 100.f});
-    Rect5.setFillColor(sf::Color(115, 108, 91,255));
-    Rect5.setPosition({32.f*5, 0.f});
-    Rect5.setSize({32.f,32.f});
-
-    rt.draw(redRect);
-    rt.draw(blueRect);
-    rt.draw(Rect2);
-    rt.draw(Rect3);
-    rt.draw(Rect4);
-    rt.draw(Rect5);
-
-    sf::Texture texture_atlas = rt.getTexture();
-
-    world_generator generator;
+    /*world_generator generator;
     generator.set_seed(321);
     chunk_loader default_loader(generator);
 
@@ -145,8 +91,8 @@ int main() {
                 if(keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
                     shouldExit = true;
                 }else if (keyPressed->scancode == sf::Keyboard::Scancode::W) {
-                    y_camera -= 1.0f;
-                    engine.set_camera(x_camera,y_camera);
+                    //y_camera -= 1.0f;
+                    //wd.set_camera(x_camera,y_camera);
                 }else if (keyPressed->scancode == sf::Keyboard::Scancode::S) {
                     y_camera += 1.0f;
                     engine.set_camera(x_camera,y_camera);
@@ -176,6 +122,10 @@ int main() {
                     engine.set_zoom(zoomLevel);
                 }
             }
+            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
+                y_camera -= 1.0f;
+                engine.set_camera(x_camera, y_camera);
+            }
         }
         if(shouldExit) {
             window.close();
@@ -187,6 +137,8 @@ int main() {
         int tileX = static_cast<int>(worldPos.x) / 32;
         int tileY = static_cast<int>(worldPos.y) / 32;
 
+        engine.set_camera(x_camera, y_camera);
+
         window.clear(sf::Color::White);
         //render_logic(window,x_camera,y_camera,100,generator,sprites,chunk_cache,texture_atlas,zoomLevel);
         render_logic(engine);
@@ -197,4 +149,9 @@ int main() {
 
     std::cout << "Programul a terminat execuția\n";
     return 0;
+}*/
+int main() {
+    game_engine engine;
+    engine.init();
+    engine.run();
 }

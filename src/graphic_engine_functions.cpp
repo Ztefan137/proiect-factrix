@@ -115,15 +115,11 @@ void draw_chunks(sf::RenderWindow& window_obj,float x_camera,float y_camera,floa
             float chunk_x=0;
             float chunk_y=0;
             get_chunk_coords(window_obj,visible_chunks[i].i,visible_chunks[i].j,32,32,x_camera,y_camera,chunk_x,chunk_y);
-            rendered_chunk->render(window_obj,chunk_x,chunk_y,32,texture);
+            rendered_chunk->render(window_obj,chunk_x,chunk_y,texture);
         } else {
             chunk rendered_chunk(visible_chunks[i].i,visible_chunks[i].j,world_generator,true);
             rendered_chunk.compute_va();
             chunk_cache[cache_key]=rendered_chunk;
         }
     }
-}
-
-void draw_character(sf::RenderWindow &window_obj) {
-
 }

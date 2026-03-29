@@ -57,13 +57,11 @@ void chunk::compute_va() {
     }
 }
 
-void chunk::render(sf::RenderWindow& window_obj,float x,float y,int tile_size,sf::Texture& texture) {
+void chunk::render(sf::RenderWindow& window_obj,float x,float y,sf::Texture& texture) {
     sf::RenderStates states;
     states.texture = &texture;
     states.transform.translate({x, y});
-
     window_obj.draw(this->va,states);
-
 }
 bool chunk::is_visible(){
     return this->visible;

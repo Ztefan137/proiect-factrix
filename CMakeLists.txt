@@ -76,6 +76,10 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         src/chunk_loader.cpp
         include/chunk_loader.h
         include/structures.h
+        src/game_engine.cpp
+        include/game_engine.h
+        src/ui_system.cpp
+        include/ui_system.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

@@ -14,14 +14,18 @@ void world_generator::generate_chunk(int i_chunk, int j_chunk, int ground[], int
     perlin_noise elevation_noise(this->seed);
     perlin_noise temperature_noise(this->seed ^ 0xC1FE29D4);
     perlin_noise aridity_noise(this->seed ^ 0x9E3779B9);
-    perlin_noise warp_noise(this->seed ^ 0x9E3779B9);
+    perlin_noise warp_noise(this->seed ^ 0x5F3173E9);
     for (int i=0;i<32;i++) {
         for (int j=0;j<32;j++) {
-            float elevation=elevation_noise.value2(((float)(i_chunk*32+i))/100,((float)(j_chunk*32+j))/100,2,0.5,7,0.5,2);
-            float warp_x=warp_noise.value2(((float)(i_chunk*32+i))*0.05,((float)(j_chunk*32+j))*0.05,2,0.02,2,0.5,2);
-            float warp_y=warp_noise.value2(((float)(i_chunk*32+i))*0.05+1000,((float)(j_chunk*32+j))*0.05+1000,2,0.02,2,0.5,2);
-            float temperature=temperature_noise.value2(((float)(i_chunk*32+i))/1000+warp_x,((float)(j_chunk*32+j))/1000+warp_y,1,0.5,7,0.5,2);
-            float aridity=aridity_noise.value2(((float)(i_chunk*32+i))/1000-warp_x,((float)(j_chunk*32+j))/1000+warp_y,1,0.5,7,0.5,2);
+            float tile_x = static_cast<float>(i_chunk * 32 + i);
+            float tile_y = static_cast<float>(j_chunk * 32 + j);
+            float elevation=elevation_noise.value2(tile_x/100,tile_y/100,2,0.2,7,0.5,2);
+//            float warp_x=warp_noise.value2(tile_x*0.05,tile_y*0.05,2,0.02,2,0.5,2);
+//            float warp_y=warp_noise.value2(tile_x*0.05+1000,tile_y*0.05+1000,2,0.02,2,0.5,2);
+            float warp_x=0;
+            float warp_y=0;
+            float temperature=temperature_noise.value2(tile_x/1000+warp_x,tile_y/1000+warp_y,1,0.5,7,0.5,2);
+            float aridity=aridity_noise.value2(tile_x/1000-warp_x,tile_y/1000+warp_y,1,0.5,7,0.5,2);
             bool biome_1=temperature>0 && aridity<0;
             bool biome_2=temperature<0 && aridity<0;
             bool biome_3=(temperature>-1 && temperature<-0.3) && (aridity>0);
@@ -31,5 +35,4 @@ void world_generator::generate_chunk(int i_chunk, int j_chunk, int ground[], int
             decoratives[i*32+j]=0;
         }
     }
-
 }

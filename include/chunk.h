@@ -21,7 +21,7 @@ public:
     chunk()=default;
     chunk(int i,int j,world_generator generator,bool visibility);
     void compute_va();
-    void render(sf::RenderWindow& window_obj,float x,float y,int tile_size,sf::Texture& texture);
+    void render(sf::RenderWindow& window_obj,float x,float y,sf::Texture& texture);
     bool is_visible();
 };
 

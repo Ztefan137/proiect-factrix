@@ -6,18 +6,19 @@
 #define OOP_CHUNK_LOADER_H
 #include "world_generator.h"
 #include "chunk.h"
-#include <map>
+#include <unordered_map>
 #include <string>
-
+#include <future>
 
 class chunk_loader {
     world_generator generator;
-    std::map<std::string, chunk> chunk_cache;
+    std::unordered_map<std::string, chunk> chunk_cache;
+    std::unordered_map<std::string, std::future<chunk>> pending_chunks;
     public:
-        chunk_loader(world_generator &generator);
+        chunk_loader();
         chunk* get_chunk(int chunk_i,int chunk_j);
 };
 
 
-#endif //OOP_C HUNK_LOADER_H
+#endif //OOP_CHUNK_LOADER_H
 
