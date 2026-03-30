@@ -3,7 +3,6 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "include/graphic_engine_functions.h"
 #include "include/graphic_functions.h"
 #include "include/world_generator.h"
 #include "include/chunk.h"

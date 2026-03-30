@@ -18,11 +18,12 @@ void ui_system::render_uis(sf::RenderWindow& window) {
 
 void ui_system::configure_uis(std::string config_xml) {
     if (config_xml == "default") {
-        ui test_ui(300,300,50,50);
+
+        sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+        const auto screenWidth = static_cast<float>(desktop.size.x);
+        const auto screenHeight = static_cast<float>(desktop.size.y);
+
+        ui test_ui(screenWidth/2,screenHeight/2,50,50);
         this->add_ui(test_ui);
     }
-}
-
-configure_uis(std::string config_xml) {
-
 }

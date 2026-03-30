@@ -15,7 +15,6 @@ class chunk_loader {
     std::unordered_map<std::string, chunk> chunk_cache;
     std::unordered_map<std::string, std::future<chunk>> pending_chunks;
     public:
-        chunk_loader();
         chunk* get_chunk(int chunk_i,int chunk_j);
 };
 

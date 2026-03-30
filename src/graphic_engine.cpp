@@ -17,7 +17,7 @@ void graphic_engine::set_zoom(float new_zoom_level) {
 }
 
 graphic_engine::graphic_engine(chunk_loader &loader,sf::RenderWindow &window) : loader(loader), x_camera(0), y_camera(0), zoom_level(1.0f), window(window), texture_maps(1){
-    this->ui_system.configure_uis("default");
+    this->internal_ui_system.configure_uis("default");
 }
 
 /*void graphic_engine::get_visible_chunks(std::vector<chunk_position>& visible_chunks) {
@@ -49,9 +49,9 @@ graphic_engine::graphic_engine(chunk_loader &loader,sf::RenderWindow &window) : 
     }
 }*/
 
-void graphic_engine::get_visible_chunks(std::vector<chunk_position>& visible_chunks) {
-    const float scale_factor = 100.f;
-    const float CHUNK_SIZE   = 32.f;
+void graphic_engine::get_visible_chunks(std::vector<chunk_position>& visible_chunks) const{
+    constexpr float scale_factor = 100.f;
+    constexpr float CHUNK_SIZE   = 32.f;
 
     visible_chunks.clear();
 
@@ -83,7 +83,7 @@ void graphic_engine::get_visible_chunks(std::vector<chunk_position>& visible_chu
 }
 
 
-void graphic_engine::get_chunk_coords(int chunk_i,int chunk_j,float tile_size,int chunk_size,float &x,float &y){
+void graphic_engine::get_chunk_coords(int chunk_i,int chunk_j,float tile_size,int chunk_size,float &x,float &y) const{
 
     const int tile_col_count = static_cast<int>(window.getSize().x / tile_size);
     const int tile_row_count = static_cast<int>(window.getSize().y / tile_size);
@@ -111,7 +111,7 @@ void graphic_engine::get_chunk_coords(int chunk_i,int chunk_j,float tile_size,in
 void graphic_engine::draw_chunks() {
     std::vector<chunk_position> visible_chunks;
     this->get_visible_chunks(visible_chunks);
-    for (int i=0;i<(int)visible_chunks.size();i++){
+    for (unsigned int i=0;i<visible_chunks.size();i++){
         chunk *rendered_chunk=this->loader.get_chunk(visible_chunks[i].i,visible_chunks[i].j);
         if (!rendered_chunk) {
             continue;
@@ -184,5 +184,5 @@ void graphic_engine::load_texture(int index,std::string const &config_file){
 }
 
 void graphic_engine::render_uis() {
-    this->ui_system.render_uis(this->window);
+    this->internal_ui_system.render_uis(this->window);
 }

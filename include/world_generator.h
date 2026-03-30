@@ -7,10 +7,10 @@
 
 
 class world_generator {
-    int seed;
+    int seed=123;
 public:
     void set_seed(int seed);
-    void generate_chunk(int i,int j,int ground[],int decoratives[]);
+    void generate_chunk(int i,int j,int ground[],int decoratives[]) const;
 };
 
 

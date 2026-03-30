@@ -67,8 +67,6 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/world_generator.h
         src/chunk.cpp
         include/chunk.h
-        include/graphic_engine_functions.h
-        src/graphic_engine_functions.cpp
         src/perlin_noise.cpp
         include/perlin_noise.h
         src/graphic_engine.cpp

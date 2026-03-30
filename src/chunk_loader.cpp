@@ -3,15 +3,10 @@
 //
 
 #include "../include/chunk_loader.h"
-#include "world_generator.h"
 #include "chunk.h"
 #include <unordered_map>
 #include <string>
 #include <future>
-
-chunk_loader::chunk_loader() : generator(){
-}
-
 chunk* chunk_loader::get_chunk(int chunk_i, int chunk_j) {
     const std::string cache_key=std::to_string(chunk_i) + "," + std::to_string(chunk_j);
     auto cached_chunk = this->chunk_cache.find(cache_key);
