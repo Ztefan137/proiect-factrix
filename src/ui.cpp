@@ -1,11 +1,12 @@
 //
 // Created by stefa on 3/13/2026.
 //
+#pragma GCC diagnostic ignored "-Winfinite-recursion"
 
 #include "../include/ui.h"
-#include <cmath>
-#include "graphic_functions.h"
 #include <SFML/Graphics.hpp>
+#include "ui_style.h"
+#include <iostream>
 
 ui::ui() {
     this->x=0;
@@ -15,7 +16,7 @@ ui::ui() {
     this->visibility=false;
 }
 
-ui::ui(float x, float y, float width, float height) {
+ui::ui(float x, float y, float width, float height){
     this->x=x;
     this->y=y;
     this->width=width;
@@ -23,12 +24,41 @@ ui::ui(float x, float y, float width, float height) {
     this->visibility=false;
 }
 
-void ui::add_sub_ui(const ui& new_sub_ui) {
+void ui::set_type(std::string type) {
+    this->ui_type=type;
+}
+
+void ui::set_style(ui_style new_ui_style){
+    this->internal_ui_style=new_ui_style;
+}
+void ui::add_sub_ui(ui* new_sub_ui) {
     this->sub_uis.push_back(new_sub_ui);
 }
-void ui::render(sf::RenderWindow &window) {
-    rect(window,this->x-floor(this->width/2),this->y-floor(this->height/2),this->x+floor(this->width/2),this->y+floor(this->height/2),sf::Color::Black);
-    for (auto &sub_ui : sub_uis) {
-        sub_ui.render(window);
+void ui::render(sf::RenderWindow& window) const{
+    std::vector<const ui*> to_render;
+    to_render.push_back(this);
+    while (!to_render.empty()) {
+        const ui* current = to_render.back();
+        to_render.pop_back();
+        current->render_self(window);
+        for (const auto* sub_ui : current->sub_uis) {
+            to_render.push_back(sub_ui);
+        }
     }
 }
+void ui::render_self(sf::RenderWindow& window) const{
+    this->internal_ui_style.render(this->ui_type,window,this);
+}
+float ui::get_x() const {
+    return this->x;
+}
+float ui::get_y() const {
+    return this->y;
+}
+float ui::get_width() const {
+    return this->width;
+}
+float ui::get_height() const {
+    return this->height;
+}
+

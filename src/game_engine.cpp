@@ -33,7 +33,16 @@ void game_engine::run() {
     float y_camera = 0.0f;
     sf::View camera(sf::FloatRect({0, 0}, {worldWidth, worldHeight}));
     float zoomLevel=1.f;
-    sf::View ui_camera(sf::FloatRect({0, 0}, {worldWidth, worldHeight}));
+
+    const float ui_width  = 2880.f;
+    const float ui_height = 1800.f;
+
+    //const float ui_width  = 1920.f;
+    //const float ui_height = 1080.f;
+
+    sf::View ui_camera(sf::FloatRect({0, 0}, {ui_width, ui_height}));
+    ui_camera.setViewport(sf::FloatRect({0.f, 0.f}, {1.f, 1.f}));
+    ui_camera.setCenter({screenWidth / 2.f, screenHeight / 2.f});
 
     window.setVerticalSyncEnabled(true);
 
@@ -41,7 +50,16 @@ void game_engine::run() {
     g_engine.set_camera(x_camera,y_camera);
     g_engine.set_zoom(zoomLevel);
 
+    sf::Clock clock;
+    float fps = 0.f;
+
     while(this->window.isOpen()) {
+
+        float dt = clock.restart().asSeconds();   // time since last frame
+        fps = 1.f / dt;
+
+        std::cout << "FPS: " << fps << "\n";
+
         bool shouldExit = false;
         while(const std::optional event = window.pollEvent()) {
             if (event->is<sf::Event::Closed>()) {
@@ -85,6 +103,7 @@ void game_engine::run() {
         }
         if (shouldExit) {
             this->window.close();
+            break;
         }
 
         sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window));

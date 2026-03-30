@@ -78,6 +78,12 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/game_engine.h
         src/ui_system.cpp
         include/ui_system.h
+        src/ui_window.cpp
+        include/ui_window.h
+        include/ui_render_functions.h
+        src/ui_render_functions.cpp
+        src/ui_style.cpp
+        include/ui_style.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

@@ -11,9 +11,9 @@
 
 
 class ui_system {
-    std::vector<ui> ui_list;
+    std::vector<ui*> ui_list;
 public:
-    void add_ui(ui &ui);
+    void add_ui(ui* ui);
     void render_uis(sf::RenderWindow& window);
     void configure_uis(std::string config_xml);
 };

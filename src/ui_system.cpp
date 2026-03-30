@@ -6,13 +6,20 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
-void ui_system::add_ui(ui &ui) {
+#include "ui_render_functions.h"
+#include "ui_style.h"
+
+#include "ui_window.h"
+#include "ui.h"
+
+void ui_system::add_ui(ui* ui) {
     this->ui_list.push_back(ui);
 }
 
+
 void ui_system::render_uis(sf::RenderWindow& window) {
     for (auto &ui : this->ui_list) {
-        ui.render(window);
+        ui->render(window);
     }
 }
 
@@ -23,7 +30,12 @@ void ui_system::configure_uis(std::string config_xml) {
         const auto screenWidth = static_cast<float>(desktop.size.x);
         const auto screenHeight = static_cast<float>(desktop.size.y);
 
-        ui test_ui(screenWidth/2,screenHeight/2,50,50);
-        this->add_ui(test_ui);
+        ui_style default_style;
+        default_style.set_function("ui",ui_render_style_test1);
+        default_style.set_function("window",window_render_style_style1);
+        ui* test_window = new ui_window(screenWidth/2,screenHeight/2,1200,600,"Test window");
+        test_window->set_style(default_style);
+        test_window->set_type("window");
+        this->add_ui(test_window);
     }
 }
