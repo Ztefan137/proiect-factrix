@@ -11,10 +11,15 @@ void rect(sf::RenderWindow& window_obj,float xi,float yi, float xf, float yf,sf:
     rect.setFillColor(color);
     window_obj.draw(rect);
 }
-void text(sf::RenderWindow& window_obj,float x,float y,std::string text) {
-    sf::Font font;
-    if (!font.openFromFile("assets/fonts/TitilliumWeb-Regular.ttf")){}
-    sf::Text text_obj(font);
+void text(sf::RenderWindow& window_obj,float x,float y,std::string text,bool bold) {
+    static sf::Font normal_font;
+    static sf::Font bold_font;
+    if (!normal_font.openFromFile("assets/fonts/TitilliumWeb-Regular.ttf")){}
+    if (!bold_font.openFromFile("assets/fonts/TitilliumWeb-Bold.ttf")){}
+    sf::Text text_obj(normal_font);
+    if (bold) {
+        text_obj.setFont(bold_font);
+    }
     text_obj.setPosition({x,y});
     text_obj.setString(text);
     text_obj.setCharacterSize(34);

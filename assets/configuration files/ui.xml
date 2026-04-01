@@ -1,6 +1,7 @@
+<!-- wip -->
 <ui_list lenght="2">
-    <window visible_ribbon="true" name="Character" exit_button="true">
-        <section visible_ribbon="true" name="Inventory" >
+    <window visible_ribbon="true" name="Character" exit_button="true" display="flex" padding="16" flex-gap="16" flex-template="60-40">
+        <section visible_ribbon="true" name="Inventory">
             <item_grid col_count="7" row_count="7">
                 <action></action>
             </item_grid>
@@ -27,26 +28,6 @@
                 </button>
             </section>
             <section></section>
-        </section>
-    </window>
-
-    <window visible_ribbon="true" name="Locomotive" exit_button="true">
-        <section visible_ribbon="true">
-            <tab_selector>
-                <tab_section tab_id="1">
-                    <train_condition_ui>
-
-                    </train_condition_ui>
-                </tab_section>
-                <tab_section tab_id="2">
-                    <color_selector>
-
-                    </color_selector>
-                </tab_section>
-            </tab_selector>
-        </section>
-        <section visible_ribbon="true" name="Preview">
-            <map></map>
         </section>
     </window>
 </ui_list>

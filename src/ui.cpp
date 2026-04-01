@@ -24,6 +24,12 @@ ui::ui(float x, float y, float width, float height){
     this->visibility=false;
 }
 
+ui::~ui() {
+    for (const auto* sub_ui : this->sub_uis) {
+        delete sub_ui;
+    }
+}
+
 void ui::set_type(std::string type) {
     this->ui_type=type;
 }

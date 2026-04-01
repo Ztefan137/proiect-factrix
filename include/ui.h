@@ -20,7 +20,7 @@ protected:
 public:
     ui();
     ui(float x,float y,float width,float height);
-    virtual ~ui()=default;
+    virtual ~ui();
     void set_type(std::string type);
     void set_style(ui_style new_ui_style);
     void add_sub_ui(ui* new_sub_ui);

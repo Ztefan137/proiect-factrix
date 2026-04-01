@@ -84,6 +84,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         src/ui_render_functions.cpp
         src/ui_style.cpp
         include/ui_style.h
+        src/ui_section.cpp
+        include/ui_section.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE
