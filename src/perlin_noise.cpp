@@ -19,7 +19,7 @@ uint32_t hash2D(int x, int y, int seed=123) {
 }
 
 float hashToAngle(uint32_t h) {
-    return (h / float(0xFFFFFFFFu)) * 6.28318530718f;
+    return (h / static_cast<float>(0xFFFFFFFFu)) * 6.28318530718f;
 }
 
 vector hashDirection(int i, int j,int seed=123) {
@@ -41,8 +41,8 @@ perlin_noise::perlin_noise(int seed) {
     this->seed = seed;
 }
 
-void perlin_noise::set_seed(int seed) {
-    this->seed = seed;
+void perlin_noise::set_seed(int new_seed) {
+    this->seed = new_seed;
 }
 
 float perlin_noise::value(float x, float y) {

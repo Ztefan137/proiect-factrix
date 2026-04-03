@@ -29,8 +29,8 @@ void game_engine::run() {
     float worldHeight = 1000.f;
     float worldWidth  = worldHeight * aspectRatio;
 
-    float x_camera = 0.0f;
-    float y_camera = 0.0f;
+    float x_camera = 1000.0f;
+    float y_camera = 1000.0f;
     sf::View camera(sf::FloatRect({0, 0}, {worldWidth, worldHeight}));
     float zoomLevel=1.f;
 

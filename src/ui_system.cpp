@@ -52,10 +52,9 @@ void ui_system::configure_uis(std::string config_xml) {
         test_section->set_style(default_style);
         test_section->set_type("section");
         test_window->add_sub_ui(test_section);
-        this->add_ui(test_window);
+        //this->add_ui(test_window);
         //this->add_ui(test_section);
     }else {
         std::ifstream xml_file(config_xml);
-
     }
 }

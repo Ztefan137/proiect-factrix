@@ -9,6 +9,8 @@
 #include <vector>
 
 #include "world_generator.h"
+#include <unordered_map>
+#include <string>
 
 class chunk {
     int i;
@@ -17,6 +19,8 @@ class chunk {
     int decoratives[32*32];
     bool visible=false;
     sf::VertexArray va;
+    std::unordered_map<std::string,sf::VertexArray> textures;
+    std::vector<std::string> layers;
 public:
     chunk()=default;
     chunk(int i,int j,world_generator generator,bool visibility);

@@ -124,54 +124,103 @@ void graphic_engine::draw_chunks() {
 }
 void graphic_engine::load_texture(int index,std::string const &config_file){
     if (config_file == "default") {
-        sf::RenderTexture curr_texture({32*6,32});
+        sf::RenderTexture curr_texture({32*9,32});
         curr_texture.clear(sf::Color::Transparent);
 
         std::cout<<"Atlas made\n";
 
-        sf::RectangleShape redRect({100.f, 100.f});
+        sf::RectangleShape water({32.f, 32.f});
         //redRect.setFillColor(sf::Color(0,150,0,255));
-        redRect.setPosition({0.f, 0.f});
-        sf::Texture redRect_texture;
-        if (redRect_texture.loadFromFile("assets/water.jpg")){}
-        redRect.setTexture(&redRect_texture);
-        redRect.setSize({32.f,32.f});
+        water.setPosition({0.f, 0.f});
+        sf::Texture water_texture;
+        if (water_texture.loadFromFile("assets/water.jpg")){}
+        water_texture.setSmooth(false);
+        water.setTexture(&water_texture);
+        water.setSize({32.f,32.f});
 
-        sf::RectangleShape blueRect({100.f, 100.f});
+
+        sf::RectangleShape blueRect({32.f, 32.f});
         blueRect.setPosition({32.f, 0.f});
         sf::Texture blueRect_texture;
         if (blueRect_texture.loadFromFile("assets/dirt2.png")){}
+        blueRect_texture.setSmooth(false);
         blueRect.setTexture(&blueRect_texture);
         blueRect.setSize({32.f,32.f});
 
-        sf::RectangleShape Rect2({100.f, 100.f});
-        Rect2.setFillColor(sf::Color(255, 231, 163,255));
-        Rect2.setPosition({32.f*2, 0.f});
-        Rect2.setSize({32.f,32.f});
+        sf::RectangleShape sand({32.f, 32.f});
+        sand.setPosition({32.f*2, 0.f});
+        sf::Texture sand_texture;
+        if (sand_texture.loadFromFile("assets/sand.png")){}
+        sand.setTexture(&sand_texture);
 
-        sf::RectangleShape Rect3({100.f, 100.f});
-        Rect3.setFillColor(sf::Color(207, 176, 89,255));
-        Rect3.setPosition({32.f*3, 0.f});
-        Rect3.setSize({32.f,32.f});
+        sf::RectangleShape cracked_dirt({32.f, 32.f});
+        //redRect.setFillColor(sf::Color(0,150,0,255));
+        cracked_dirt.setPosition({32.f*3, 0.f});
+        sf::Texture cracked_dirt_texture;
+        if (cracked_dirt_texture.loadFromFile("assets/dirt4.png")){}
+        cracked_dirt.setTexture(&cracked_dirt_texture);
+        cracked_dirt.setSize({32.f,32.f});
 
-        sf::RectangleShape Rect4({100.f, 100.f});
+        sf::RectangleShape dirt({32.f, 32.f});
+        //redRect.setFillColor(sf::Color(0,150,0,255));
+        dirt.setPosition({32.f*4, 0.f});
+        sf::Texture dirt_texture;
+        if (dirt_texture.loadFromFile("assets/dirt3.png")){}
+        dirt.setTexture(&dirt_texture);
+        dirt.setSize({32.f,32.f});
+
+        /*sf::RectangleShape Rect4({100.f, 100.f});
         Rect4.setFillColor(sf::Color(87, 73, 35,255));
         Rect4.setPosition({32.f*4, 0.f});
-        Rect4.setSize({32.f,32.f});
+        Rect4.setSize({32.f,32.f});*/
 
-        sf::RectangleShape Rect5({100.f, 100.f});
-        Rect5.setFillColor(sf::Color(115, 108, 91,255));
-        Rect5.setPosition({32.f*5, 0.f});
-        Rect5.setSize({32.f,32.f});
+        sf::RectangleShape salt({32.f, 32.f});
+        //redRect.setFillColor(sf::Color(0,150,0,255));
+        salt.setPosition({32.f*5, 0.f});
+        sf::Texture salt_texture;
+        if (salt_texture.loadFromFile("assets/salt.png")){}
+        salt.setTexture(&salt_texture);
+        salt.setSize({32.f,32.f});
 
-        curr_texture.draw(redRect);
+        sf::RectangleShape coal({32.f, 32.f});
+        coal.setPosition({32.f*6, 0.f});
+        sf::Texture coal_texture;
+        if (coal_texture.loadFromFile("assets/coal.png")){}
+        coal.setTexture(&coal_texture);
+        coal.setSize({32.f,32.f});
+
+        sf::RectangleShape copper({32.f, 32.f});
+        copper.setPosition({32.f*7, 0.f});
+        sf::Texture copper_texture;
+        if (copper_texture.loadFromFile("assets/copper.png")){}
+        copper.setTexture(&copper_texture);
+        copper.setSize({32.f,32.f});
+
+        sf::RectangleShape iron({32.f, 32.f});
+        iron.setPosition({32.f*8, 0.f});
+        sf::Texture iron_texture;
+        if (iron_texture.loadFromFile("assets/iron.png")){}
+        iron.setTexture(&iron_texture);
+        iron.setSize({32.f,32.f});
+
+        curr_texture.draw(water);
         curr_texture.draw(blueRect);
-        curr_texture.draw(Rect2);
-        curr_texture.draw(Rect3);
-        curr_texture.draw(Rect4);
-        curr_texture.draw(Rect5);
+        curr_texture.draw(sand);
+        curr_texture.draw(cracked_dirt);
+        curr_texture.draw(dirt);
+        curr_texture.draw(salt);
+        curr_texture.draw(coal);
+        curr_texture.draw(copper);
+        curr_texture.draw(iron);
 
         curr_texture.display();
+
+        sf::Image atlasImage = curr_texture.getTexture().copyToImage();
+        if (!atlasImage.saveToFile("../assets/atlas.png")) {
+            std::cout << "Failed to save atlas\n";
+        } else {
+            std::cout << "Atlas saved successfully\n";
+        }
 
         std::cout<<"Textures loaded\n";
         this->texture_maps.resize(1000);
