@@ -7,7 +7,6 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "../include/graphic_functions.h"
 
 game_engine::game_engine() : g_engine(loader,window){
 
@@ -15,6 +14,7 @@ game_engine::game_engine() : g_engine(loader,window){
 void game_engine::init() {
     std::cout<<"Init\n";
 //    this->load_texture(1,"test_config");
+    this->g_engine.load_texture(0,"../assets/configuration files/texture_config.txt");
     this->g_engine.load_texture(0,"default");
 }
 void game_engine::run() {
@@ -106,9 +106,6 @@ void game_engine::run() {
             break;
         }
 
-        sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
-        auto tileX = static_cast<float>(static_cast<int>((worldPos.x) / 32));
-        auto tileY = static_cast<float>(static_cast<int>((worldPos.y) / 32));
 
         //g_engine.set_camera(x_camera, y_camera);
 
@@ -116,7 +113,7 @@ void game_engine::run() {
         window.clear(sf::Color::White);
         window.setView(camera);
         this->g_engine.draw_chunks();
-        rect(window,tileX*32,tileY*32,(tileX+1)*32,(tileY+1)*32,sf::Color::White);
+        this->g_engine.render_mouse_position();
         window.setView(ui_camera);
         this->g_engine.render_uis();
         window.setView(camera);

@@ -5,12 +5,13 @@
 #include "../include/chunk.h"
 #include <SFML/Graphics.hpp>
 
-chunk::chunk(int i,int j,world_generator generator,bool visibility){
+chunk::chunk(int i,int j,world_generator& generator,float tile_size,bool visibility){
     layers.push_back("ground");
     layers.push_back("decoratives");
     this->i=i;
     this->j=j;
     generator.generate_chunk(this->i,this->j,this->ground,this->decoratives);
+    this->tile_size=tile_size;
     this->visible=visibility;
     sf::VertexArray ground_va;
     ground_va.setPrimitiveType(sf::PrimitiveType::Triangles);
@@ -18,13 +19,13 @@ chunk::chunk(int i,int j,world_generator generator,bool visibility){
     this->textures[this->layers[0]] = ground_va;
     sf::VertexArray decoratives_va;
     decoratives_va.setPrimitiveType(sf::PrimitiveType::Triangles);
-    decoratives_va.resize(32 * 32 * 7);
+    decoratives_va.resize(32 * 32 * 6);
     this->textures[this->layers[1]] = decoratives_va;
 }
 
 void chunk::compute_va() {
     for (const auto& layer : this->layers) {
-        const float tile_size = 32.f;
+        const float tile_size = this->tile_size;
         const int tiles_per_row = 256;
 
         for (int i = 0; i < 32; i++) {
@@ -70,7 +71,6 @@ void chunk::compute_va() {
         }
     }
 }
-
 void chunk::render(sf::RenderWindow& window_obj,float x,float y,sf::Texture& texture) {
     sf::RenderStates states;
     states.texture = &texture;

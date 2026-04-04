@@ -20,15 +20,18 @@ class graphic_engine {
     sf::RenderWindow& window;
     std::vector<sf::Texture> texture_maps;
     ui_system internal_ui_system;
+    float tile_size;
 public:
     graphic_engine(chunk_loader &loader,sf::RenderWindow &window);
     void draw_chunks();
     void set_camera(float x_camera,float y_camera);
     void set_zoom(float zoom_level);
+    void set_tile_size(float new_tile_size);
     void get_visible_chunks(std::vector<chunk_position>& visible_chunks) const;
     void get_chunk_coords(int chunk_i,int chunk_j,float tile_size,int chunk_size,float &x,float &y) const ;
     void load_texture(int index,std::string const &config_file);
     void render_uis();
+    void render_mouse_position();
 };
 
 

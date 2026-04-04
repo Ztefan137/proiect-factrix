@@ -26,7 +26,7 @@ chunk* chunk_loader::get_chunk(int chunk_i, int chunk_j) {
         return nullptr;
     }
     pending_chunks[cache_key] = std::async(std::launch::async, [=, this] {
-        chunk c(chunk_i, chunk_j, this->generator, true);
+        chunk c(chunk_i, chunk_j, this->generator,64.f,true);
         c.compute_va();
         return c;
     });

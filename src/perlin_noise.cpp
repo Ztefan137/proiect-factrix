@@ -37,7 +37,7 @@ inline float fade(float t) {
 inline float dot_product(vector a,vector b) {
     return a.x * b.x + a.y * b.y;
 }
-perlin_noise::perlin_noise(int seed) {
+perlin_noise::perlin_noise(int seed){
     this->seed = seed;
 }
 
