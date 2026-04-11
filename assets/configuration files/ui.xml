@@ -1,5 +1,5 @@
 <!-- wip -->
-<ui_list lenght="2">
+<ui_list length="1">
     <window visible_ribbon="true" name="Character" exit_button="true" display="flex" padding="16" flex-gap="16" flex-template="60-40">
         <section visible_ribbon="true" name="Inventory">
             <item_grid col_count="7" row_count="7">
@@ -18,7 +18,6 @@
                 </button>
                 <button text="Production">
                     <action>
-
                     </action>
                 </button>
                 <button text="Logistics">

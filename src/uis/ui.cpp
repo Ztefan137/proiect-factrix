@@ -3,7 +3,7 @@
 //
 #pragma GCC diagnostic ignored "-Winfinite-recursion"
 
-#include "../include/ui.h"
+#include "../../include/ui.h"
 #include <SFML/Graphics.hpp>
 #include "ui_style.h"
 #include <iostream>
@@ -66,5 +66,15 @@ float ui::get_width() const {
 }
 float ui::get_height() const {
     return this->height;
+}
+bool ui::get_visibility() const {
+    return this->visibility;
+}
+
+void ui::hide() {
+    this->visibility=false;
+}
+void ui::show() {
+    this->visibility=true;
 }
 

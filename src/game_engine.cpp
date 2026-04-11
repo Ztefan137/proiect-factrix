@@ -15,7 +15,7 @@ void game_engine::init() {
     std::cout<<"Init\n";
 //    this->load_texture(1,"test_config");
     this->g_engine.load_texture(0,"../assets/configuration files/texture_config.txt");
-    this->g_engine.load_texture(0,"default");
+    //this->g_engine.load_texture(0,"default");
 }
 void game_engine::run() {
     std::cout<<"Running\n";
@@ -34,11 +34,10 @@ void game_engine::run() {
     sf::View camera(sf::FloatRect({0, 0}, {worldWidth, worldHeight}));
     float zoomLevel=1.f;
 
-    const float ui_width  = 2880.f;
-    const float ui_height = 1800.f;
+    bool high_resolution=true;
 
-    //const float ui_width  = 1920.f;
-    //const float ui_height = 1080.f;
+    const float ui_width  = high_resolution?2880.f:1920.f;
+    const float ui_height = high_resolution?1800.f:1080.f;
 
     sf::View ui_camera(sf::FloatRect({0, 0}, {ui_width, ui_height}));
     ui_camera.setViewport(sf::FloatRect({0.f, 0.f}, {1.f, 1.f}));
@@ -57,10 +56,10 @@ void game_engine::run() {
 
         float dt = clock.restart().asSeconds();   // time since last frame
         fps = 1.f / dt;
-
         std::cout << "FPS: " << fps << "\n";
-
         bool shouldExit = false;
+
+        //
         while(const std::optional event = window.pollEvent()) {
             if (event->is<sf::Event::Closed>()) {
                 window.close();
@@ -83,6 +82,8 @@ void game_engine::run() {
                 }else if (keyPressed->scancode == sf::Keyboard::Scancode::D) {
                     x_camera += 1.0f;
                     g_engine.set_camera(x_camera,y_camera);
+                }else if (keyPressed->scancode == sf::Keyboard::Scancode::E) {
+                    //open inventory
                 }
             }else if (event->is<sf::Event::MouseWheelScrolled>()) {
                 const auto* scroll = event->getIf<sf::Event::MouseWheelScrolled>();
@@ -105,7 +106,7 @@ void game_engine::run() {
             this->window.close();
             break;
         }
-
+        //
 
         //g_engine.set_camera(x_camera, y_camera);
 

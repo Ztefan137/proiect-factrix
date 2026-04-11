@@ -30,7 +30,9 @@ void ui_system::add_ui(ui* ui) {
 
 void ui_system::render_uis(sf::RenderWindow& window) {
     for (auto &ui : this->ui_list) {
-        ui->render(window);
+        if (ui->get_visibility()) {
+            ui->render(window);
+        }
     }
 }
 
@@ -48,11 +50,12 @@ void ui_system::configure_uis(std::string config_xml) {
         ui* test_window = new ui_window(screenWidth/2,screenHeight/2,1800,1200,"Test window");
         test_window->set_style(default_style);
         test_window->set_type("window");
+        test_window->show();
         ui* test_section = new ui_section(screenWidth/2,screenHeight/2+25,1100,500,"Test section",true);
         test_section->set_style(default_style);
         test_section->set_type("section");
         test_window->add_sub_ui(test_section);
-        //this->add_ui(test_window);
+        this->add_ui(test_window);
         //this->add_ui(test_section);
     }else {
         std::ifstream xml_file(config_xml);

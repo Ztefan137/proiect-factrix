@@ -59,7 +59,7 @@ endif()
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${MAIN_EXECUTABLE_NAME}
     main.cpp
-        src/ui.cpp
+        src/uis/ui.cpp
         include/ui.h
         src/graphic_functions.cpp
         include/graphic_functions.h
@@ -78,14 +78,26 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/game_engine.h
         src/ui_system.cpp
         include/ui_system.h
-        src/ui_window.cpp
+        src/uis/ui_window.cpp
         include/ui_window.h
         include/ui_render_functions.h
         src/ui_render_functions.cpp
         src/ui_style.cpp
         include/ui_style.h
-        src/ui_section.cpp
+        src/uis/ui_section.cpp
         include/ui_section.h
+        src/uis/ui_button.cpp
+        include/ui_button.h
+        src/ui_actions.cpp
+        include/ui_actions.h
+        src/event_handler.cpp
+        include/event_handler.h
+        src/event.cpp
+        include/event.h
+        src/key_event.cpp
+        include/key_event.h
+        include/string_functions.h
+        src/string_functions.cpp
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

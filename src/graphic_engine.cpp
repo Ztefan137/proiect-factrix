@@ -8,9 +8,10 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <algorithm>
 #include "graphic_functions.h"
+#include "string_functions.h"
+#include <deque>
 
 void graphic_engine::set_camera(float new_x_camera,float new_y_camera) {
     this->x_camera = new_x_camera;
@@ -102,97 +103,59 @@ void graphic_engine::draw_chunks() {
     }
 }
 void graphic_engine::load_texture(int index,std::string const &config_file){
-    if (config_file == "default") {
-        float tile_size=this->tile_size;
-        sf::RenderTexture curr_texture({static_cast<unsigned>(tile_size*9),static_cast<unsigned>(tile_size)});
-        curr_texture.clear(sf::Color::Transparent);
+    float tile_size=this->tile_size;
+    sf::RenderTexture atlas({static_cast<unsigned>(tile_size*9),static_cast<unsigned>(tile_size)});
+    atlas.clear(sf::Color::Transparent);
+    std::cout<<"Atlas made\n";
 
-        std::cout<<"Atlas made\n";
-        sf::RectangleShape water({tile_size, tile_size});
-        //redRect.setFillColor(sf::Color(0,150,0,255));
-        water.setPosition({0.f, 0.f});
-        sf::Texture water_texture;
-        if (water_texture.loadFromFile("assets/water.jpg")){}
-        water_texture.setSmooth(false);
-        water.setTexture(&water_texture);
-
-        // Assume tile_size is already defined (e.g., float tile_size = 32.f;)
-        sf::RectangleShape blueRect({tile_size, tile_size});
-        blueRect.setPosition({tile_size, 0.f});
-        sf::Texture blueRect_texture;
-        if (blueRect_texture.loadFromFile("assets/dirt2.png")) {}
-        blueRect_texture.setSmooth(false);
-        blueRect.setTexture(&blueRect_texture);
-
-        sf::RectangleShape sand({tile_size , tile_size });
-        sand.setPosition({tile_size * 2, 0.f});
-        sf::Texture sand_texture;
-        if (sand_texture.loadFromFile("assets/ground_tiles/sand3.png")) {}
-        sand.setTexture(&sand_texture);
-
-        sf::RectangleShape cracked_dirt({tile_size, tile_size});
-        cracked_dirt.setPosition({tile_size * 3, 0.f});
-        sf::Texture cracked_dirt_texture;
-        if (cracked_dirt_texture.loadFromFile("assets/dirt4.png")) {}
-        cracked_dirt.setTexture(&cracked_dirt_texture);
-
-        sf::RectangleShape dirt({tile_size, tile_size});
-        dirt.setPosition({tile_size * 4, 0.f});
-        sf::Texture dirt_texture;
-        if (dirt_texture.loadFromFile("assets/dirt5.png")) {}
-        dirt.setTexture(&dirt_texture);
-
-        sf::RectangleShape salt({tile_size, tile_size});
-        salt.setPosition({tile_size * 5, 0.f});
-        sf::Texture salt_texture;
-        if (salt_texture.loadFromFile("assets/salt.png")) {}
-        salt.setTexture(&salt_texture);
-
-        sf::RectangleShape coal({tile_size, tile_size});
-        coal.setPosition({tile_size * 6, 0.f});
-        sf::Texture coal_texture;
-        if (coal_texture.loadFromFile("assets/coal.png")) {}
-        coal.setTexture(&coal_texture);
-
-        sf::RectangleShape copper({tile_size, tile_size});
-        copper.setPosition({tile_size * 7, 0.f});
-        sf::Texture copper_texture;
-        if (copper_texture.loadFromFile("assets/copper.png")) {}
-        copper.setTexture(&copper_texture);
-
-        sf::RectangleShape iron({tile_size, tile_size});
-        iron.setPosition({tile_size * 8, 0.f});
-        sf::Texture iron_texture;
-        if (iron_texture.loadFromFile("assets/iron.png")) {}
-        iron.setTexture(&iron_texture);
-
-        curr_texture.draw(water);
-        curr_texture.draw(blueRect);
-        curr_texture.draw(sand);
-        curr_texture.draw(cracked_dirt);
-        curr_texture.draw(dirt);
-        curr_texture.draw(salt);
-        curr_texture.draw(coal);
-        curr_texture.draw(copper);
-        curr_texture.draw(iron);
-
-        curr_texture.display();
-
-        sf::Image atlasImage = curr_texture.getTexture().copyToImage();
-        if (!atlasImage.saveToFile("../assets/atlas.png")) {
-            std::cout << "Failed to save atlas\n";
-        } else {
-            std::cout << "Atlas saved successfully\n";
+    std::ifstream config(config_file);
+    std::string text_line;
+    std::vector<sf::RectangleShape> loaded_rects;
+    std::deque<sf::Texture> loaded_textures;
+    int processing_step=-1;
+    while (std::getline (config, text_line)) {
+        std::cout << text_line<<std::endl;
+        auto words = st::split(text_line, ':');
+        if (words.size() < 2) continue;
+        if (st::trim(words[0]) == "size") {
+            if (atlas.resize({static_cast<unsigned>(tile_size*std::stof(st::trim(words[1]))),static_cast<unsigned>(tile_size)})){}
+            loaded_rects.reserve(std::stoi(st::trim(words[1])));
         }
-
-        std::cout<<"Textures loaded\n";
-        this->texture_maps.resize(1000);
-        this->texture_maps[index]=(sf::Texture(curr_texture.getTexture()));
-        //
-        //this->texture_maps[index] = copy;
+        if (st::trim(words[0]) == "texture") {
+            std::cout<<std::endl;
+            processing_step=0;
+            loaded_rects.emplace_back();
+            loaded_rects.back().setSize({tile_size,tile_size});
+        }
+        else if (processing_step==0 && st::trim(words[0]) == "position") {
+            float position=std::stof(st::trim(words[1]));
+            loaded_rects.back().setPosition({tile_size*position,0.f});
+            std::cout<<position<<std::endl;
+            processing_step=1;
+        }
+        else if (processing_step==1 && st::trim(words[0]) == "path") {
+            loaded_textures.emplace_back();
+            if (!loaded_textures.back().loadFromFile(st::trim(words[1]))) {
+                std::cout << "Failed to load texture\n";
+            }
+            loaded_rects.back().setTexture(&loaded_textures.back());
+            atlas.draw(loaded_rects.back());
+            processing_step=-1;
+        }else {
+            processing_step=-1;
+        }
     }
-    std::cout << "Vector size: " << this->texture_maps.size() << std::endl;
-    std::cout<<"Textures ready\n";
+    config.close();
+    atlas.display();
+    sf::Image atlasImage = atlas.getTexture().copyToImage();
+    if (!atlasImage.saveToFile("../assets/atlas.png")) {
+        std::cout << "Failed to save atlas\n";
+    } else {
+        std::cout << "Atlas saved successfully\n";
+    }
+
+    this->texture_maps.resize(1000);
+    this->texture_maps[index]=(sf::Texture(atlas.getTexture()));
 }
 
 void graphic_engine::render_uis() {

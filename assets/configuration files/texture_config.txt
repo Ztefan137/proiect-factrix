@@ -1,29 +1,30 @@
 /texture-configuration
+    size:10
     texture:water
         position:0
-        path:../assets/grouind_tiles/water.png
+        path:../assets/ground_tiles/water.png
     texture:dirt1
         position:1
-        path:../assets/grouind_tiles/dirt2.png
+        path:../assets/ground_tiles/dirt2.png
     texture:sand
         position:2
-        path:../assets/grouind_tiles/sand3.png
+        path:../assets/ground_tiles/sand3.png
     texture:dirt2
         position:3
-        path:../assets/grouind_tiles/dirt4.png
+        path:../assets/ground_tiles/dirt4.png
     texture:dirt3
         position:4
-        path:../assets/grouind_tiles/dirt5.png
+        path:../assets/ground_tiles/dirt5.png
     texture:salt
         position:5
-        path:../assets/grouind_tiles/salt.png
+        path:../assets/ground_tiles/salt.png
     texture:coal
         position:6
-        path:../assets/grouind_tiles/coal.png
+        path:../assets/coal.png
     texture:copper
         position:7
-        path:../assets/grouind_tiles/copper.png
+        path:../assets/copper.png
     texture:iron
         position:8
-        path:../assets/grouind_tiles/iron.png
+        path:../assets/iron.png
 texture-configuration/

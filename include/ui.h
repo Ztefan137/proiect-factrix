@@ -23,6 +23,8 @@ public:
     virtual ~ui();
     void set_type(std::string type);
     void set_style(ui_style new_ui_style);
+    void show();
+    void hide();
     void add_sub_ui(ui* new_sub_ui);
     void render(sf::RenderWindow &window) const;
     virtual void render_self(sf::RenderWindow &window) const;
@@ -30,6 +32,7 @@ public:
     float get_y() const;
     float get_width() const;
     float get_height() const;
+    bool get_visibility() const;
 };
 
 
