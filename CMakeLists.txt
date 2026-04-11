@@ -94,12 +94,12 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/event_handler.h
         src/event.cpp
         include/event.h
-        src/key_event.cpp
         include/key_event.h
+        src/key_event.cpp
         include/string_functions.h
         src/string_functions.cpp
         src/ui_constructor.cpp
-        src/ui_constructor.h
+        include/ui_constructor.h
         ext/tiny-xml2/tinyxml2.cpp
         ext/tiny-xml2/tinyxml2.h
 )

@@ -17,7 +17,7 @@
 
 #include <iostream>
 
-#include "ui_constructor.h"
+#include "../include/ui_constructor.h"
 
 ui_system::~ui_system() {
     for (ui* element : this->ui_list) {
