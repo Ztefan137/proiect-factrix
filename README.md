@@ -32,18 +32,18 @@ La acest pas putem cere să generăm fișiere de proiect pentru diverse medii de
 
 Nerespectarea duce la nepunctarea proiectului
 
-- programul va fi scris în C++
-- programul va avea un meniu interactiv (doar pentru ilustrarea funcționalității)
-- programul nu are erori de compilare
-- fară variabile globale
-- datele membre private(sau protected)
-- GitHub Actions trecute
-- commit-uri pe Git adecvate si punctuale
-- folosirea a funcționalităților limbajului fără sens
-- folosirea a funcționlităților limbajului cu scopul de a încălca "legal" o altă regulă
-  - folosirea excesivă a claselor friend
-  - folosirea excesviă a elementelor statice
-- lipsa separarea implementarii de definitie
+  - programul va fi scris în C++
+  - programul va avea un meniu interactiv (doar pentru ilustrarea funcționalității)
+  - programul nu are erori de compilare
+  - fară variabile globale
+  - datele membre private(sau protected)
+  - GitHub Actions trecute
+  - commit-uri pe Git adecvate si punctuale
+  - folosirea a funcționalităților limbajului fără sens
+  - folosirea a funcționlităților limbajului cu scopul de a încălca "legal" o altă regulă
+      - folosirea excesivă a claselor friend
+      - folosirea excesviă a elementelor statice
+  - lipsa separarea implementarii de definitie
 
 ## Cerințe
 - pentru fiecare cerință (sau subcerință) neîndeplinită se scade **1** punct
@@ -59,18 +59,18 @@ Nerespectarea duce la nepunctarea proiectului
     - [ ] alt operator supraîncărcat ca funcție membră [*](https://github.com/Ionnier/poo/blob/main/labs/L02/fractie.cpp#L32)
     - [ ] alt operator supraîncărcat ca funcție non-membră [*](https://github.com/Ionnier/poo/blob/main/labs/L02/fractie.cpp#L39) - nu neaparat ca friend
   - in derivate
-    - [ ] implementarea funcționalităților alese prin [upcast](https://github.com/Ionnier/poo/tree/main/labs/L04#solu%C8%9Bie-func%C8%9Bii-virtuale-late-binding) și [downcast](https://github.com/Ionnier/poo/tree/main/labs/L04#smarter-downcast-dynamic-cast)
-      - aceasta va fi făcută prin **2-3** metode specifice temei alese
-      - funcțiile pentru citire / afișare sau destructorul nu sunt incluse deși o să trebuiască să le implementați
-    - [ ] apelarea constructorului din clasa de bază din [constructori din derivate](https://github.com/Ionnier/poo/tree/main/labs/L04#comportamentul-constructorului-la-derivare)
-    - [ ] suprascris [cc](https://github.com/Ionnier/poo/tree/main/labs/L04#comportamentul-constructorului-de-copiere-la-derivare)/op= pentru copieri/atribuiri corecte
-    - [ ] destructor [virtual](https://github.com/Ionnier/poo/tree/main/labs/L04#solu%C8%9Bie-func%C8%9Bii-virtuale-late-binding)
+      - [ ] implementarea funcționalităților alese prin [upcast](https://github.com/Ionnier/poo/tree/main/labs/L04#solu%C8%9Bie-func%C8%9Bii-virtuale-late-binding) și [downcast](https://github.com/Ionnier/poo/tree/main/labs/L04#smarter-downcast-dynamic-cast)
+        - aceasta va fi făcută prin **2-3** metode specifice temei alese
+        - funcțiile pentru citire / afișare sau destructorul nu sunt incluse deși o să trebuiască să le implementați 
+      - [ ] apelarea constructorului din clasa de bază din [constructori din derivate](https://github.com/Ionnier/poo/tree/main/labs/L04#comportamentul-constructorului-la-derivare)
+      - [ ] suprascris [cc](https://github.com/Ionnier/poo/tree/main/labs/L04#comportamentul-constructorului-de-copiere-la-derivare)/op= pentru copieri/atribuiri corecte
+      - [ ] destructor [virtual](https://github.com/Ionnier/poo/tree/main/labs/L04#solu%C8%9Bie-func%C8%9Bii-virtuale-late-binding)
   - pentru celelalte clase se va definii doar ce e nevoie
   - minim o ierarhie mai dezvoltata (cu 2-3 clase dintr-o clasa de baza)
   - ierarhie de clasa se considera si daca exista doar o clasa de bază însă care nu moștenește dintr-o clasă din altă ierarhie
 - [ ] cât mai multe `const` [*](https://github.com/Ionnier/poo/tree/main/labs/L04#reminder-const-everywhere)
 - [ ] funcții și atribute `static` (în clase) [*](https://github.com/Ionnier/poo/tree/main/labs/L04#static)
-  - [ ] 1+ atribute statice non-triviale
+  - [ ] 1+ atribute statice non-triviale 
   - [ ] 1+ funcții statice non-triviale
 - [ ] excepții [*](https://github.com/Ionnier/poo/tree/main/labs/L04#exception-handling)
   - porniți de la `std::exception`
@@ -98,4 +98,4 @@ Nerespectarea duce la nepunctarea proiectului
 * În general, acestea sunt prezente în [CppCoreGuideline](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md), dar nu e nevoie să parcurgeți documentul, doar să scrieți codul suficient de organizat
 
 * folderele `build/` și `install_dir/` sunt adăugate în fișierul `.gitignore` deoarece
-  conțin fișiere generate și nu ne ajută să le versionăm.
+conțin fișiere generate și nu ne ajută să le versionăm.
