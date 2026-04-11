@@ -98,6 +98,10 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/key_event.h
         include/string_functions.h
         src/string_functions.cpp
+        src/ui_constructor.cpp
+        src/ui_constructor.h
+        ext/tiny-xml2/tinyxml2.cpp
+        ext/tiny-xml2/tinyxml2.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

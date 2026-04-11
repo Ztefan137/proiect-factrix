@@ -1,32 +1,13 @@
 <!-- wip -->
 <ui_list length="1">
-    <window visible_ribbon="true" name="Character" exit_button="true" display="flex" padding="16" flex-gap="16" flex-template="60-40">
+    <window x="1440" y="900" width="1800" height="1200" visible_ribbon="true" name="Character" exit_button="true" display="flex" padding="16" flex-gap="16" flex-template="60-40">
         <section visible_ribbon="true" name="Inventory">
             <item_grid col_count="7" row_count="7">
-                <action></action>
+
             </item_grid>
         </section>
         <section visible_ribbon="true" name="Crafting">
-            <section>
-                <button text="Products">
-                    <action>
-                    </action>
-                </button>
-                <button text="Weapons">
-                    <action>
-                    </action>
-                </button>
-                <button text="Production">
-                    <action>
-                    </action>
-                </button>
-                <button text="Logistics">
-                    <action>
 
-                    </action>
-                </button>
-            </section>
-            <section></section>
         </section>
     </window>
 </ui_list>

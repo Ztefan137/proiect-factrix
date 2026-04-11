@@ -36,6 +36,9 @@ void ui::set_type(std::string type) {
 
 void ui::set_style(ui_style new_ui_style){
     this->internal_ui_style=new_ui_style;
+    for (auto* sub_ui:sub_uis) {
+        sub_ui->set_style(new_ui_style);
+    }
 }
 void ui::add_sub_ui(ui* new_sub_ui) {
     this->sub_uis.push_back(new_sub_ui);

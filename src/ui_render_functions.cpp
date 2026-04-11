@@ -66,7 +66,7 @@ void section_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui){
     rect(window,edge_left,edge_top,edge_right,edge_bottom,sf::Color(0x0a,0x0a,0x0a,0xff));
     rect(window,edge_left+4,edge_top+4,edge_right-4,edge_bottom-2,sf::Color(0x3a,0x3a,0x3a,0xff));
     rect(window,edge_left+4,edge_bottom,edge_right-4,edge_bottom-2,sf::Color(0x5a,0x5a,0x5a,0xff));
-    if (dynamic_cast<const ui_section*>(ui)->get_header_visibility()) {
+    if (dynamic_cast<const ui_section*>(ui)->get_header_visibility()){
         rect(window,edge_left+4,edge_top+4,edge_right-4,edge_top+64,sf::Color(0x1a,0x1a,0x1a,0xff));
         rect(window,edge_left+4,edge_top+64,edge_right-4,edge_top+66,sf::Color(0x0a,0x0a,0x0a,0xff));
         text(window, edge_left + 15, edge_top + 10, dynamic_cast<const ui_section*>(ui)->get_section_name(),true);

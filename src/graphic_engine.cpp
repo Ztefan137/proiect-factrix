@@ -26,7 +26,8 @@ void graphic_engine::set_tile_size(float new_tile_size) {
 }
 
 graphic_engine::graphic_engine(chunk_loader &loader,sf::RenderWindow &window) : loader(loader), x_camera(0), y_camera(0), zoom_level(1.0f), window(window), texture_maps(1), tile_size(64.f){
-    this->internal_ui_system.configure_uis("default");
+    //this->internal_ui_system.configure_uis("default");
+    this->internal_ui_system.configure_uis("../assets/configuration files/ui.xml");
 }
 
 void graphic_engine::get_visible_chunks(std::vector<chunk_position>& visible_chunks) const{
@@ -106,7 +107,6 @@ void graphic_engine::load_texture(int index,std::string const &config_file){
     float tile_size=this->tile_size;
     sf::RenderTexture atlas({static_cast<unsigned>(tile_size*9),static_cast<unsigned>(tile_size)});
     atlas.clear(sf::Color::Transparent);
-    std::cout<<"Atlas made\n";
 
     std::ifstream config(config_file);
     std::string text_line;
@@ -114,7 +114,6 @@ void graphic_engine::load_texture(int index,std::string const &config_file){
     std::deque<sf::Texture> loaded_textures;
     int processing_step=-1;
     while (std::getline (config, text_line)) {
-        std::cout << text_line<<std::endl;
         auto words = st::split(text_line, ':');
         if (words.size() < 2) continue;
         if (st::trim(words[0]) == "size") {
@@ -122,7 +121,6 @@ void graphic_engine::load_texture(int index,std::string const &config_file){
             loaded_rects.reserve(std::stoi(st::trim(words[1])));
         }
         if (st::trim(words[0]) == "texture") {
-            std::cout<<std::endl;
             processing_step=0;
             loaded_rects.emplace_back();
             loaded_rects.back().setSize({tile_size,tile_size});
@@ -130,7 +128,6 @@ void graphic_engine::load_texture(int index,std::string const &config_file){
         else if (processing_step==0 && st::trim(words[0]) == "position") {
             float position=std::stof(st::trim(words[1]));
             loaded_rects.back().setPosition({tile_size*position,0.f});
-            std::cout<<position<<std::endl;
             processing_step=1;
         }
         else if (processing_step==1 && st::trim(words[0]) == "path") {
@@ -148,11 +145,7 @@ void graphic_engine::load_texture(int index,std::string const &config_file){
     config.close();
     atlas.display();
     sf::Image atlasImage = atlas.getTexture().copyToImage();
-    if (!atlasImage.saveToFile("../assets/atlas.png")) {
-        std::cout << "Failed to save atlas\n";
-    } else {
-        std::cout << "Atlas saved successfully\n";
-    }
+    if (!atlasImage.saveToFile("../assets/atlas.png")) {}
 
     this->texture_maps.resize(1000);
     this->texture_maps[index]=(sf::Texture(atlas.getTexture()));
