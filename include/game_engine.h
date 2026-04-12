@@ -6,6 +6,7 @@
 #include <string>
 #include <graphic_engine.h>
 #include <chrono>
+#include "player.h"
 
 #ifndef OOP_GAME_ENGINE_H
 #define OOP_GAME_ENGINE_H
@@ -15,19 +16,19 @@ class game_engine {
     chunk_loader loader;
     graphic_engine g_engine;
 
-    sf::View camera;
-    sf::View ui_camera;
+    player player;
+
+
     float x_camera = 0.f;
     float y_camera = 0.f;
     float zoomLevel = 1.f;
 
     sf::Clock clock;
-    float dt;
+    float dt=0.f;
 
     std::unordered_map<std::string,bool> key_input;
 
     void init_window();
-    void init_cameras();
 
     void process_events();
 

@@ -17,6 +17,7 @@ public:
     void add_ui(ui* ui);
     void render_uis(sf::RenderWindow& window);
     void configure_uis(std::string config_xml);
+    void process_event(std::string event);
 };
 
 

@@ -102,6 +102,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/ui_constructor.h
         ext/tiny-xml2/tinyxml2.cpp
         ext/tiny-xml2/tinyxml2.h
+        src/player.cpp
+        include/player.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

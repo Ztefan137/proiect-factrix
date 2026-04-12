@@ -40,6 +40,11 @@ void ui::set_style(ui_style new_ui_style){
         sub_ui->set_style(new_ui_style);
     }
 }
+
+void ui::set_visibility(bool new_visibility) {
+    this->visibility=new_visibility;
+}
+
 void ui::add_sub_ui(ui* new_sub_ui) {
     this->sub_uis.push_back(new_sub_ui);
 }

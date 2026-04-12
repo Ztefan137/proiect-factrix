@@ -7,9 +7,12 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "graphic_engine.h"
+#include "player.h"
+
 class event_handler {
 public:
-    void check_events(sf::RenderWindow& window);
+    void process_events(sf::RenderWindow& window,graphic_engine &graphic_engine,player& player);
 };
 
 

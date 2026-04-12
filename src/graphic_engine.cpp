@@ -13,6 +13,31 @@
 #include "string_functions.h"
 #include <deque>
 
+void graphic_engine::init_camera() {
+    sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+    const unsigned int screenWidth = desktop.size.x;
+    const unsigned int screenHeight = desktop.size.y;
+
+    sf::Vector2u windowSize = window.getSize();
+    float aspectRatio = static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y);
+    float worldHeight = 1000.f;
+    float worldWidth  = worldHeight * aspectRatio;
+    this->camera=sf::View(sf::FloatRect({0.f, 0.f}, {worldWidth, worldHeight}));
+
+    constexpr bool high_resolution=true;
+
+    const float ui_width  = high_resolution?2880.f:1920.f;
+    const float ui_height = high_resolution?1800.f:1080.f;
+
+    this->ui_camera=sf::View(sf::FloatRect({0.f, 0.f}, {ui_width, ui_height}));
+    this->ui_camera.setViewport(sf::FloatRect({0.f, 0.f}, {1.f, 1.f}));
+    this->ui_camera.setCenter({screenWidth / 2.f, screenHeight / 2.f});
+
+    this->window.setView(camera);
+    this->set_camera(x_camera,y_camera);
+    this->set_zoom(zoom_level);
+}
+
 void graphic_engine::set_camera(float new_x_camera,float new_y_camera) {
     this->x_camera = new_x_camera;
     this->y_camera = new_y_camera;
@@ -162,3 +187,31 @@ void graphic_engine::render_mouse_position(){
     rect(window,tileX*this->tile_size,tileY*this->tile_size,(tileX+1)*this->tile_size,(tileY+1)*this->tile_size,sf::Color::White);
 }
 
+void graphic_engine::render() {
+    this->window.clear(sf::Color::White);
+    this->window.setView(camera);
+    this->draw_chunks();
+    this->render_mouse_position();
+    this->window.setView(ui_camera);
+    this->render_uis();
+    this->window.setView(camera);
+    this->window.display();
+}
+
+void graphic_engine::zoom(float delta) {
+    float zoomFactor = delta > 0 ? 0.9f : 1.1f;
+    float newZoom = this->zoom_level * zoomFactor;
+    constexpr float min_zoom = 0.7f;
+    constexpr float max_zoom = 20.f;
+    if (newZoom < min_zoom || newZoom > max_zoom)
+        return;
+
+    this->zoom_level = newZoom;
+    this->camera.zoom(zoomFactor);
+}
+
+void graphic_engine::process_event(std::string event) {
+    if (event == "e") {
+        this->internal_ui_system.process_event("e");
+    }
+}

@@ -71,3 +71,9 @@ void ui_system::configure_uis(std::string config_xml) {
         std::cout<<this->ui_list.size()<<std::endl;
     }
 }
+
+void ui_system::process_event(std::string event) {
+    if (event == "e") {
+        this->ui_list[0]->set_visibility(!this->ui_list[0]->get_visibility());
+    }
+}
