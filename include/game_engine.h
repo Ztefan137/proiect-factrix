@@ -18,11 +18,6 @@ class game_engine {
 
     player player;
 
-
-    float x_camera = 0.f;
-    float y_camera = 0.f;
-    float zoomLevel = 1.f;
-
     sf::Clock clock;
     float dt=0.f;
 
