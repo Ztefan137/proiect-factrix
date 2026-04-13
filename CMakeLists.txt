@@ -104,6 +104,12 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         ext/tiny-xml2/tinyxml2.h
         src/player.cpp
         include/player.h
+        src/uis/ui_item_tile.cpp
+        include/ui_item_tile.h
+        src/item.cpp
+        include/item.h
+        src/uis/ui_item_tile_grid.cpp
+        include/ui_item_tile_grid.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

@@ -16,4 +16,6 @@ void ui_render_style_test1(sf::RenderWindow &window,const ui* ui);
 void window_render_style_style1(sf::RenderWindow &window,const ui* ui);
 void window_render_style_style1_opaque(sf::RenderWindow &window,const ui* ui);
 void section_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui);
+void item_tile_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui);
+void item_tile_grid_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui);
 #endif //OOP_UI_RENDER_FUNCTIONS_H

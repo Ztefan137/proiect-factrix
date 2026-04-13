@@ -72,3 +72,20 @@ void section_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui){
         text(window, edge_left + 15, edge_top + 10, dynamic_cast<const ui_section*>(ui)->get_section_name(),true);
     }
 }
+
+void item_tile_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui) {
+    auto edge_left=static_cast<float>(ui->get_x() - std::floor(ui->get_width() / 2));
+    auto edge_right=static_cast<float>(ui->get_x() + std::floor(ui->get_width()  / 2));
+    auto edge_top=static_cast<float>(ui->get_y() - std::floor(ui->get_height() / 2));
+    auto edge_bottom=static_cast<float>(ui->get_y() + std::floor(ui->get_height() / 2));
+
+    rect(window,edge_left,edge_top,edge_right,edge_bottom,sf::Color(0x1a,0x1a,0x1a,0xff));
+    rect(window,edge_left+2,edge_top+2,edge_right-2,edge_bottom-2,sf::Color(0x2a,0x2a,0x2a,0xff));
+    rect(window,edge_left+6,edge_top+6,edge_right-6,edge_bottom-6,sf::Color(0x2f,0x2f,0x2f,0xff));
+    rect(window,edge_left+10,edge_top+10,edge_right-10,edge_bottom-10,sf::Color(0x32,0x32,0x32,0xff));
+    rect(window,edge_left,edge_bottom,edge_right,edge_bottom-2,sf::Color(0x5a,0x5a,0x5a,0xff));
+}
+
+void item_tile_grid_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui) {
+
+}

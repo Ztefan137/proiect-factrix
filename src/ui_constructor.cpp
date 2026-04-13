@@ -13,55 +13,79 @@
 #include <map>
 #include "string_functions.h"
 #include "ui_button.h"
+#include "ui_item_tile_grid.h"
 #include "ui_section.h"
 
+inline void position_center_padding(float x_center,float y_center,float padding_left,float padding_right,float padding_top,float padding_bottom,float &new_x_center,float &new_y_center) {
+    new_x_center=x_center+0.5*(padding_left-padding_right);
+    new_y_center=y_center+0.5*(padding_top-padding_bottom);
+}
+
 void ui_constructor::construct_sub_ui_tree(ui * parent_ui, tinyxml2::XMLElement* parent) {
+    float flex_left_offset=0;
+    int child_index=0;
     for (tinyxml2::XMLElement* child = parent->FirstChildElement(); child != nullptr; child = child->NextSiblingElement()) {
         ui* child_ui=nullptr;
         std::string tag_name(child->Value());
-
-        std::map<std::string, std::string> parent_ui_properties;
-        for (const tinyxml2::XMLAttribute* attr = parent->FirstAttribute(); attr != nullptr; attr = attr->Next()) {
-            std::string name(attr->Name());
-            std::string value(attr->Value());
-            std::cout<<st::trim(name)<<": "<<st::trim(value)<<std::endl;
-            parent_ui_properties[name]=value;
+        float x=parent_ui->get_x();
+        float y=parent_ui->get_y();
+        float width=parent_ui->get_width();
+        float height=parent_ui->get_height();
+        float header_height=0;
+        float padding=0;
+        parent->QueryFloatAttribute("padding", &padding);
+        std::string parent_type(parent->Value());
+        if (parent_type == "window") {
+            header_height=64.f;
+        }else if (parent_type == "section") {
+            std::string section_ribbon_string(parent->Attribute("visible_ribbon"));
+            if (section_ribbon_string == "true") {
+                header_height=68.f;
+            }
         }
 
-        std::map<std::string, std::string> child_ui_properties;
-        for (const tinyxml2::XMLAttribute* attr = child->FirstAttribute(); attr != nullptr; attr = attr->Next()) {
-            std::string name(attr->Name());
-            std::string value(attr->Value());
-            std::cout<<st::trim(name)<<": "<<st::trim(value)<<std::endl;
-            child_ui_properties[name]=value;
+        float paded_x=0;
+        float paded_y=0;
+        width-=2*padding;
+        height-=(2*padding+header_height);
+        position_center_padding(x,y,padding,padding,padding+header_height,padding,paded_x,paded_y);
+        x=paded_x;
+        y=paded_y;
+
+        std::string parent_flex=parent->Attribute("flex");
+        if (parent_flex == "true") {
+            std::string flex_template=parent->Attribute("flex-template");
+            std::vector<float>flex_fractions;
+            for (auto fraction:st::split(flex_template,'-')) {
+                flex_fractions.push_back(std::stof(fraction)/100);
+            }
+            float gap=0.f;
+            parent->QueryFloatAttribute("flex-gap", &gap);
+            float new_width=(width-static_cast<float>(flex_fractions.size()-1)*gap)*flex_fractions[child_index];
+            position_center_padding(x,y,flex_left_offset,width-flex_left_offset-new_width,0,0,x,y);
+            flex_left_offset+=new_width;
+            flex_left_offset+=gap;
+            width=new_width;
         }
-        float header_height=66.f;
-        if (parent->Attribute("padding")) {
-            float padding=std::stof(parent_ui_properties["padding"]);
-            child_ui_properties["x"]=parent_ui_properties["x"];
-            child_ui_properties["y"]=std::to_string(std::stof(parent_ui_properties["y"])+0.5*(header_height));
-            child_ui_properties["width"]=std::to_string(std::stof(parent_ui_properties["width"])-2*padding);
-            child_ui_properties["height"]=std::to_string(std::stof(parent_ui_properties["height"])-header_height-2*padding);
-        }else {
-            child_ui_properties["x"]=parent_ui_properties["x"];
-            child_ui_properties["y"]=std::to_string(std::stof(parent_ui_properties["y"])+33.f);
-            child_ui_properties["width"]=parent_ui_properties["width"];
-            child_ui_properties["height"]=std::to_string(std::stof(parent_ui_properties["height"])-66.f);;
-        }
+
         if (tag_name == "section"){
-            child_ui=new ui_section(std::stof(child_ui_properties["x"]),std::stof(child_ui_properties["y"]),std::stof(child_ui_properties["width"]),std::stof(child_ui_properties["height"]),child_ui_properties["name"],(child_ui_properties["visible_ribbon"]=="true")?true:false); //NOLINT
+            std::string name(child->Attribute("name"));
+            std::string visible_ribbon_string(child->Attribute("visible_ribbon"));
+            bool visible_ribbon=visible_ribbon_string=="true";
+            child_ui=new ui_section(x,y,width,height,name,visible_ribbon); //NOLINT
             child_ui->set_type("section");
         }else if (tag_name == "button") {
             //child_ui=new ui_button(std::stof(child_ui_properties["x"]),std::stof(child_ui_properties["y"]),std::stof(child_ui_properties["width"]),std::stof(child_ui_properties["height"]),child_ui_properties["text"]);
         }else if (tag_name == "item_grid") {
-            //child_ui=new ui_button(std::stof(child_ui_properties["x"]),std::stof(child_ui_properties["y"]),std::stof(child_ui_properties["width"]),std::stof(child_ui_properties["height"]),child_ui_properties["text"]);
+            child_ui=new ui_item_tile_grid(x,y,width,height,7,7,100.f,nullptr);
+            child_ui->set_type("item_tile_grid");
         }
         std::cout<<"tree constructed"<<std::endl;
-        //this->construct_sub_ui_tree(child_ui,child);
+        this->construct_sub_ui_tree(child_ui,child);
         parent_ui->add_sub_ui(child_ui);
+        child_index++;
     }
 }
-
 ui *ui_constructor::construct_ui(tinyxml2::XMLElement* element) {
     std::map<std::string, std::string> ui_properties;
     for (const tinyxml2::XMLAttribute* attr = element->FirstAttribute(); attr != nullptr; attr = attr->Next()) {

@@ -1,7 +1,6 @@
 //
 // Created by stefa on 3/13/2026.
 //
-#pragma GCC diagnostic ignored "-Winfinite-recursion"
 
 #include "../../include/ui.h"
 #include <SFML/Graphics.hpp>
