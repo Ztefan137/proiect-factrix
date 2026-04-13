@@ -1,5 +1,5 @@
 /texture-configuration
-    size:10
+    size:40
     texture:water
         position:0
         path:../assets/ground_tiles/water.png
@@ -11,7 +11,7 @@
         path:../assets/ground_tiles/sand3.png
     texture:dirt2
         position:3
-        path:../assets/ground_tiles/dirt4.png
+        path:../assets/ground_tiles/dirt.png
     texture:dirt3
         position:4
         path:../assets/ground_tiles/dirt5.png
@@ -20,11 +20,17 @@
         path:../assets/ground_tiles/salt.png
     texture:coal
         position:6
-        path:../assets/coal.png
+        path:../assets/decoratives/coal.png
     texture:copper
         position:7
-        path:../assets/copper.png
+        path:../assets/decoratives/copper.png
     texture:iron
         position:8
-        path:../assets/iron.png
+        path:../assets/decoratives/iron.png
+    texture:tree
+        position:9
+        path:../assets/decoratives/tree.png
+    texture:furnace
+        position:10
+        path:../assets/buildings/furnace.png
 texture-configuration/

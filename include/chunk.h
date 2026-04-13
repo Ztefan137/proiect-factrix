@@ -19,9 +19,9 @@ class chunk {
     int decoratives[32*32];
     bool visible=false;
     float tile_size=64.f;
-    sf::VertexArray va;
-    std::unordered_map<std::string,sf::VertexArray> textures;
+    std::unordered_map<std::string,sf::VertexArray> grid_layers;
     std::vector<std::string> layers;
+    std::vector<sf::Vertex> non_grid_entities;
 public:
     chunk()=default;
     chunk(int i,int j,world_generator& generator,float tile_size,bool visibility);
