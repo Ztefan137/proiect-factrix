@@ -12,6 +12,8 @@
 
 #include <iostream>
 
+#include "ui_item_tile.h"
+
 /*void ui_render_style_default(sf::RenderWindow &window,const float x,const float y,const float width,const float height){
     rect(window,static_cast<float>(x - std::floor(width  / 2)),static_cast<float>(y - std::floor(height / 2)),static_cast<float>(x + std::floor(width  / 2)),static_cast<float>(y + std::floor(height / 2)),sf::Color::Black);
 }
@@ -84,8 +86,13 @@ void item_tile_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui
     rect(window,edge_left+6,edge_top+6,edge_right-6,edge_bottom-6,sf::Color(0x2f,0x2f,0x2f,0xff));
     rect(window,edge_left+10,edge_top+10,edge_right-10,edge_bottom-10,sf::Color(0x32,0x32,0x32,0xff));
     rect(window,edge_left,edge_bottom,edge_right,edge_bottom-2,sf::Color(0x5a,0x5a,0x5a,0xff));
+    render_item(window,edge_left,edge_top,dynamic_cast<const ui_item_tile*>(ui)->get_item()->get_name());
 }
 
 void item_tile_grid_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui) {
-
+    auto edge_left=static_cast<float>(ui->get_x() - std::floor(ui->get_width() / 2));
+    auto edge_right=static_cast<float>(ui->get_x() + std::floor(ui->get_width()  / 2));
+    auto edge_top=static_cast<float>(ui->get_y() - std::floor(ui->get_height() / 2));
+    auto edge_bottom=static_cast<float>(ui->get_y() + std::floor(ui->get_height() / 2));
+    rect(window,edge_left,edge_top,edge_right,edge_bottom,sf::Color(0x00,0x00,0x00,0x00));
 }

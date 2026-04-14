@@ -5,6 +5,14 @@
 #include "event_handler.h"
 #include <iostream>
 #include "player.h"
+#include "event.h"
+#include "key_event.h"
+#include "mouse_event.h"
+#include "ui_event.h"
+
+#include "ui_binder.h"
+
+#include "item.h"
 
 void event_handler::process_events(sf::RenderWindow &window,graphic_engine &graphic_engine,player& player) {
     bool shouldExit = false;
@@ -32,12 +40,24 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
                 graphic_engine.set_camera(player.get_x(),player.get_y());
             }else if (keyPressed->scancode == sf::Keyboard::Scancode::E) {
                 //open inventory
-                graphic_engine.process_event("e");
+                ui_binder inventory_binder;
+                inventory_binder.set<item>("inventory_pointer",player.get_inventory());
+                ui_event open_event(0,&inventory_binder);
+                graphic_engine.process_event(&open_event);
+                key_event curr_event("e");
+                graphic_engine.process_event(&curr_event);
             }
         }else if (event->is<sf::Event::MouseWheelScrolled>()) {
             const auto* scroll = event->getIf<sf::Event::MouseWheelScrolled>();
             float delta = scroll->delta;
             graphic_engine.zoom(delta);
+        }else if (event->is<sf::Event::MouseButtonPressed>()) {
+            const auto* mouseClick = event->getIf<sf::Event::MouseButtonPressed>();
+            if (mouseClick->button == sf::Mouse::Button::Left) {
+                sf::Vector2i mousePos = mouseClick->position;
+                mouse_event curr_event(mousePos.x, mousePos.y);
+                graphic_engine.process_event(&curr_event);
+            }
         }
     }
     if (shouldExit) {

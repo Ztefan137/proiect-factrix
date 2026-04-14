@@ -43,7 +43,6 @@ void ui_constructor::construct_sub_ui_tree(ui * parent_ui, tinyxml2::XMLElement*
                 header_height=68.f;
             }
         }
-
         float paded_x=0;
         float paded_y=0;
         width-=2*padding;
@@ -68,6 +67,9 @@ void ui_constructor::construct_sub_ui_tree(ui * parent_ui, tinyxml2::XMLElement*
             width=new_width;
         }
 
+        const char* attr = child->Attribute("bind");
+        std::string binding_string = attr ? attr : "";
+
         if (tag_name == "section"){
             std::string name(child->Attribute("name"));
             std::string visible_ribbon_string(child->Attribute("visible_ribbon"));
@@ -79,6 +81,7 @@ void ui_constructor::construct_sub_ui_tree(ui * parent_ui, tinyxml2::XMLElement*
         }else if (tag_name == "item_grid") {
             child_ui=new ui_item_tile_grid(x,y,width,height,7,7,100.f,nullptr);
             child_ui->set_type("item_tile_grid");
+            child_ui->set_bind_string(binding_string);
         }
         std::cout<<"tree constructed"<<std::endl;
         this->construct_sub_ui_tree(child_ui,child);
@@ -96,7 +99,7 @@ ui *ui_constructor::construct_ui(tinyxml2::XMLElement* element) {
     }
     ui* window=new ui_window(std::stof(ui_properties["x"]),std::stof(ui_properties["y"]),std::stof(ui_properties["width"]),std::stof(ui_properties["height"]),ui_properties["name"]); // NOLINT
     this->construct_sub_ui_tree(window,element);
-    window->show();
+    //window->show();
     window->set_type("window");
     return window;
 }

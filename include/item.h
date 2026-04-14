@@ -9,7 +9,10 @@
 class item {
     std::string name;
     int quantity;
+public:
     item(std::string name, int quantity);
+    std::string get_name();
+    int get_quantity();
 };
 
 

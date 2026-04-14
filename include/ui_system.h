@@ -8,7 +8,7 @@
 #include "ui.h"
 #include <SFML/Graphics.hpp>
 #include <string>
-
+#include "event.h"
 
 class ui_system {
     std::vector<ui*> ui_list;
@@ -17,7 +17,7 @@ public:
     void add_ui(ui* ui);
     void render_uis(sf::RenderWindow& window);
     void configure_uis(std::string config_xml);
-    void process_event(std::string event);
+    void process_event(event* event);
 };
 
 

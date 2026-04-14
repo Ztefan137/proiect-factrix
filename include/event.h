@@ -7,7 +7,7 @@
 
 #include <string>
 
-class event {
+class event{
     std::string type="default";
 protected:
     virtual std::string getType();

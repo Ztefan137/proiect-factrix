@@ -8,3 +8,11 @@ item::item(std::string name, int quantity) {
     this->name = name;
     this->quantity = quantity;
 }
+
+std::string item::get_name() {
+    return this->name;
+}
+
+int item::get_quantity() {
+    return this->quantity;
+}

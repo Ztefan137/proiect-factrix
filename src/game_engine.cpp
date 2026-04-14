@@ -28,6 +28,7 @@ void game_engine::render() {
 void game_engine::print_fps() {
     float fps = 1.f / this->dt;
     std::cout << "FPS: " << fps << "\n";
+    this->g_engine.display_fps(fps);
 }
 
 void game_engine::compute_dt() {
@@ -51,8 +52,8 @@ void game_engine::init(){
 void game_engine::run(){
     std::cout<<"Running\n";
     while(this->window.isOpen()) {
-        this->compute_dt();
         this->print_fps();
+        this->compute_dt();
         this->process_events();
         this->update(dt);
         this->render();

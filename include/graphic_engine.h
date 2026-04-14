@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "ui_system.h"
+#include "event.h"
 
 class graphic_engine {
     chunk_loader& loader;
@@ -36,8 +37,9 @@ public:
     void load_texture(int index,std::string const &config_file);
     void render_uis();
     void render_mouse_position();
+    void display_fps(float fps);
     void render();
-    void process_event(std::string event);
+    void process_event(event* event);
 };
 
 

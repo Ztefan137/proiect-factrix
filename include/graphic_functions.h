@@ -9,4 +9,5 @@
 
 void rect(sf::RenderWindow& window_obj,float xi,float yi, float xf, float yf,sf::Color color);
 void text(sf::RenderWindow& window_obj,float x,float y,std::string text,bool bold);
+void render_item(sf::RenderWindow& window_obj,float x,float y,std::string type);
 #endif //OOP_GRAPHIC_FUNCTIONS_H

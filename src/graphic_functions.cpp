@@ -26,3 +26,11 @@ void text(sf::RenderWindow& window_obj,float x,float y,std::string text,bool bol
     text_obj.setFillColor(sf::Color::White);
     window_obj.draw(text_obj);
 }
+
+void render_item(sf::RenderWindow &window_obj, float x, float y, std::string type) {
+    if (type == "test_item") {
+        rect(window_obj,x+10,y+10,x+90,y+90,sf::Color::Red);
+    }else {
+        rect(window_obj,x+10,y+10,x+90,y+90,sf::Color::White);
+    }
+}

@@ -14,6 +14,7 @@ public:
     int get_cols();
     int get_rows();
     float get_tile_size();
+    void bind_data(ui_binder *binder) override;
 };
 
 

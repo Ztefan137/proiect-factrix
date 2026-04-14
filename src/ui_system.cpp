@@ -21,6 +21,11 @@
 
 #include "../include/ui_constructor.h"
 
+#include "event.h"
+#include "key_event.h"
+#include "mouse_event.h"
+#include "ui_event.h"
+
 ui_system::~ui_system() {
     for (ui* element : this->ui_list) {
         delete element;
@@ -84,8 +89,18 @@ void ui_system::configure_uis(std::string config_xml) {
     }
 }
 
-void ui_system::process_event(std::string event) {
-    if (event == "e") {
+void ui_system::process_event(event* event) {
+    /*if (event == "e") {
         this->ui_list[0]->set_visibility(!this->ui_list[0]->get_visibility());
+        //aici ar trebui sa se intampel bindingul cu inventory ul
+    }*/
+    if (auto* ke = dynamic_cast<key_event*>(event)) {
+        if (ke->get_key() == "e") {
+            this->ui_list[0]->set_visibility(!this->ui_list[0]->get_visibility());
+        }
+    }else if (auto* me = dynamic_cast<mouse_event*>(event)) {
+
+    }else if (auto* uoe = dynamic_cast<ui_event*>(event)) {
+        this->ui_list[uoe->get_index()]->bind(uoe->get_binder());
     }
 }

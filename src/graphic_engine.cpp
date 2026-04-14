@@ -12,6 +12,10 @@
 #include "graphic_functions.h"
 #include "string_functions.h"
 #include <deque>
+#include "event.h"
+#include "key_event.h"
+#include "mouse_event.h"
+#include "ui_event.h"
 
 void graphic_engine::init_camera() {
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
@@ -210,8 +214,18 @@ void graphic_engine::zoom(float delta) {
     this->camera.zoom(zoomFactor);
 }
 
-void graphic_engine::process_event(std::string event) {
-    if (event == "e") {
-        this->internal_ui_system.process_event("e");
+void graphic_engine::process_event(event* event) {
+    if (auto* ke = dynamic_cast<key_event*>(event)) {
+        if (ke->get_key() == "e") {
+            this->internal_ui_system.process_event(event);
+        }
+    }else if (auto* me = dynamic_cast<mouse_event*>(event)) {
+        std::cout<<"Clicked"<<std::endl;
+    }else if (auto* uoe = dynamic_cast<ui_event*>(event)) {
+        this->internal_ui_system.process_event(uoe);
     }
+}
+
+void graphic_engine::display_fps(float fps) {
+    text(this->window,200.f,200.f,std::to_string(fps),false);
 }

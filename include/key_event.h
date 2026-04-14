@@ -12,6 +12,7 @@ class key_event : public event{
     std::string key="";
 public:
     key_event(std::string key);
+    std::string get_key();
 };
 
 

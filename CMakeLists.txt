@@ -92,10 +92,10 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/ui_actions.h
         src/event_handler.cpp
         include/event_handler.h
-        src/event.cpp
+        src/events/event.cpp
         include/event.h
         include/key_event.h
-        src/key_event.cpp
+        src/events/key_event.cpp
         include/string_functions.h
         src/string_functions.cpp
         src/ui_constructor.cpp
@@ -110,6 +110,12 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/item.h
         src/uis/ui_item_tile_grid.cpp
         include/ui_item_tile_grid.h
+        src/events/mouse_event.cpp
+        include/mouse_event.h
+        src/ui_binder.cpp
+        include/ui_binder.h
+        src/events/ui_event.cpp
+        include/ui_event.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

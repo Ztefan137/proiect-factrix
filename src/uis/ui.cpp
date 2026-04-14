@@ -40,6 +40,10 @@ void ui::set_style(ui_style new_ui_style){
     }
 }
 
+void ui::set_bind_string(std::string new_bind_string) {
+    this->bind_string=new_bind_string;
+}
+
 void ui::set_visibility(bool new_visibility) {
     this->visibility=new_visibility;
 }
@@ -83,5 +87,16 @@ void ui::hide() {
 }
 void ui::show() {
     this->visibility=true;
+}
+
+void ui::bind(ui_binder* binder){
+    this->bind_data(binder);
+    for (auto* sub_ui:sub_uis) {
+        sub_ui->bind(binder);
+    }
+}
+
+void ui::bind_data(ui_binder *binder) {
+    std::cout<<"this is a problem for later"<<std::endl;
 }
 

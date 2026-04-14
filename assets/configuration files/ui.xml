@@ -2,7 +2,7 @@
 <ui_list length="1">
     <window x="1440" y="900" width="1800" height="1200" visible_ribbon="true" name="Character" exit_button="true" flex="true" padding="16" flex-gap="16" flex-template="50-50">
         <section visible_ribbon="true" name="Inventory" flex="false">
-            <item_grid col_count="7" row_count="7" tile_size="100">
+            <item_grid col_count="7" row_count="7" tile_size="100" bind="inventory_pointer">
 
             </item_grid>
         </section>
