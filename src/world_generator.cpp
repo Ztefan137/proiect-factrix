@@ -6,8 +6,18 @@
 #include <../include/perlin_noise.h>
 #include <cmath>
 
-inline float seededRand(int x, int y, int seed) { return static_cast<float>(((x* 73856093) ^ (y * 19349663) ^ seed) % 100) / 100.f; }
+/*inline float seededRand(int x, int y, int seed) { return static_cast<float>(((x* 73856093) ^ (y * 19349663) ^ seed) % 100) / 100.f; }*/
+inline float seededRand(int x, int y, int seed) {
+    unsigned int h = static_cast<unsigned int>(x) * 0x45d9f3b +
+                     static_cast<unsigned int>(y) * 0x1234567 +
+                     static_cast<unsigned int>(seed);
+    h = ((h >> 16) ^ h) * 0x45d9f3b;
+    h = ((h >> 16) ^ h) * 0x45d9f3b;
+    h = (h >> 16) ^ h;
 
+    // Returns 0.0f to 1.0f
+    return static_cast<float>(h) / static_cast<float>(0xFFFFFFFF);
+}
 void world_generator::set_seed(int new_seed) {
     this->seed = new_seed;
 }
@@ -42,7 +52,7 @@ void world_generator::generate_chunk(int i_chunk, int j_chunk, int ground[], int
             bool biome_1=(temperature>-1 && temperature<1) && (aridity>-0.3 && aridity<0.3);
             bool biome_2=(temperature>-0.5 && temperature<1) && (aridity<-0.3 && aridity>-1);
             bool biome_5=(temperature>-1 && temperature<-0.5) && (aridity<-0.3 && aridity>-1);
-            ground[i*32+j]=(elevation>-0.5)*(1*biome_1+2*biome_2+3*biome_3+4*biome_4+5*biome_5);
+            ground[i*32+j]=(elevation>-0.5)*(1*biome_1+2*biome_2+3*biome_3+(floor(seededRand(i,j,this->seed)*16)+20)*biome_4+5*biome_5);
             float ore=ore_noise.value2(tile_x/100,tile_y/100,1,0.2,6,0.5,2);
             float ore2=ore_noise2.value2(tile_x/100,tile_y/100,1,0.2,6,0.5,2);
             //int decided_ore=static_cast<int>(ore>0.39 && ore2<-0.39)*6+static_cast<int>(ore>0.39 && ore2>0.39)*7+static_cast<int>(ore<-0.39 && ore2<-0.39)*8;
@@ -63,7 +73,7 @@ void world_generator::generate_chunk(int i_chunk, int j_chunk, int ground[], int
                 decoratives[i*32+j]=decided_ore;
             }
             if (forest>0.3 && floor(seededRand(i,j,this->seed)*20) == 0 && ground[i*32+j] != 0) {
-                decoratives[i*32+j]=9;
+                decoratives[i*32+j]=10;
             }
             //decoratives[i*32+j]=(decided_ore && ground[i*32+j] != 0)?decided_ore:40;
         }

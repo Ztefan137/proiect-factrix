@@ -28,6 +28,7 @@ public:
     void compute_va();
     void render(sf::RenderWindow& window_obj,float x,float y,sf::Texture& texture);
     bool is_visible();
+    void recompute_top_layer();
 };
 
 

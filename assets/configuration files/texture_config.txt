@@ -2,7 +2,7 @@
     size:40
     texture:water
         position:0
-        path:../assets/ground_tiles/water.png
+        path:../assets/ground_tiles/water.jpg
     texture:dirt1
         position:1
         path:../assets/ground_tiles/dirt2.png
@@ -33,4 +33,67 @@
     texture:furnace
         position:10
         path:../assets/buildings/furnace.png
+   texture:dirt0
+       position:20
+       path:../assets/ground_tiles/dirt/dirt0.png
+
+   texture:dirt1
+       position:21
+       path:../assets/ground_tiles/dirt/dirt1.png
+
+   texture:dirt2
+       position:22
+       path:../assets/ground_tiles/dirt/dirt2.png
+
+   texture:dirt3
+       position:23
+       path:../assets/ground_tiles/dirt/dirt3.png
+
+   texture:dirt4
+       position:24
+       path:../assets/ground_tiles/dirt/dirt4.png
+
+   texture:dirt5
+       position:25
+       path:../assets/ground_tiles/dirt/dirt5.png
+
+   texture:dirt6
+       position:26
+       path:../assets/ground_tiles/dirt/dirt6.png
+
+   texture:dirt7
+       position:27
+       path:../assets/ground_tiles/dirt/dirt7.png
+
+   texture:dirt8
+       position:28
+       path:../assets/ground_tiles/dirt/dirt8.png
+
+   texture:dirt9
+       position:29
+       path:../assets/ground_tiles/dirt/dirt9.png
+
+   texture:dirt10
+       position:30
+       path:../assets/ground_tiles/dirt/dirt10.png
+
+   texture:dirt11
+       position:31
+       path:../assets/ground_tiles/dirt/dirt11.png
+
+   texture:dirt12
+       position:32
+       path:../assets/ground_tiles/dirt/dirt12.png
+
+   texture:dirt13
+       position:33
+       path:../assets/ground_tiles/dirt/dirt13.png
+
+   texture:dirt14
+       position:34
+       path:../assets/ground_tiles/dirt/dirt14.png
+
+   texture:dirt15
+       position:35
+       path:../assets/ground_tiles/dirt/dirt15.png
 texture-configuration/

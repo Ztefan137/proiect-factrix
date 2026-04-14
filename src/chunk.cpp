@@ -94,6 +94,7 @@ void chunk::compute_va() {
         }
     }
 }
+
 void chunk::render(sf::RenderWindow& window_obj,float x,float y,sf::Texture& texture) {
     sf::RenderStates states;
     states.texture = &texture;
