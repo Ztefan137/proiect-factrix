@@ -73,7 +73,7 @@ void world_generator::generate_chunk(int i_chunk, int j_chunk, int ground[], int
                 decoratives[i*32+j]=decided_ore;
             }
             if (forest>0.3 && floor(seededRand(i,j,this->seed)*20) == 0 && ground[i*32+j] != 0) {
-                decoratives[i*32+j]=10;
+                decoratives[i*32+j]=9;
             }
             //decoratives[i*32+j]=(decided_ore && ground[i*32+j] != 0)?decided_ore:40;
         }

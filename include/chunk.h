@@ -17,6 +17,7 @@ class chunk {
     int j;
     int ground[32*32];
     int decoratives[32*32];
+    int buildings[32*32]={0};
     bool visible=false;
     float tile_size=64.f;
     std::unordered_map<std::string,sf::VertexArray> grid_layers;
@@ -29,6 +30,7 @@ public:
     void render(sf::RenderWindow& window_obj,float x,float y,sf::Texture& texture);
     bool is_visible();
     void recompute_top_layer();
+    void add_building(int id,int x,int y);
 };
 
 

@@ -195,6 +195,7 @@ void graphic_engine::render() {
     this->window.clear(sf::Color::White);
     this->window.setView(camera);
     this->draw_chunks();
+    this->render_player();
     this->render_mouse_position();
     this->window.setView(ui_camera);
     this->render_uis();
@@ -228,4 +229,8 @@ void graphic_engine::process_event(event* event) {
 
 void graphic_engine::display_fps(float fps) {
     text(this->window,200.f,200.f,std::to_string(fps),false);
+}
+
+void graphic_engine::render_player() {
+
 }

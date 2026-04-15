@@ -17,6 +17,7 @@ class game_engine {
     graphic_engine g_engine;
 
     player player;
+    //std::vector<machine*> machines;
 
     sf::Clock clock;
     float dt=0.f;

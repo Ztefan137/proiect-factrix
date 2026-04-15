@@ -40,6 +40,7 @@ public:
     void display_fps(float fps);
     void render();
     void process_event(event* event);
+    void render_player();
 };
 
 

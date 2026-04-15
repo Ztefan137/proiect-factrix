@@ -10,7 +10,6 @@
 #include "event_handler.h"
 
 game_engine::game_engine() : g_engine(loader,window), player(0.f,0.f){
-
 }
 
 void game_engine::init_window() {
