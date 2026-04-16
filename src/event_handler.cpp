@@ -5,7 +5,6 @@
 #include "event_handler.h"
 #include <iostream>
 #include "player.h"
-#include "event.h"
 #include "key_event.h"
 #include "mouse_event.h"
 #include "ui_event.h"
@@ -47,6 +46,9 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
                 key_event curr_event("e");
                 graphic_engine.process_event(&curr_event);
             }
+            else if (keyPressed->scancode == sf::Keyboard::Scancode::Q) {
+                player.add_item("furnace",10);
+            }
         }else if (event->is<sf::Event::MouseWheelScrolled>()) {
             const auto* scroll = event->getIf<sf::Event::MouseWheelScrolled>();
             float delta = scroll->delta;
@@ -55,12 +57,21 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
             const auto* mouseClick = event->getIf<sf::Event::MouseButtonPressed>();
             if (mouseClick->button == sf::Mouse::Button::Left) {
                 sf::Vector2i mousePos = mouseClick->position;
-                mouse_event curr_event(mousePos.x, mousePos.y);
+                mouse_event curr_event(mousePos.x, mousePos.y,true,nullptr);
                 graphic_engine.process_event(&curr_event);
+            }else if (mouseClick->button == sf::Mouse::Button::Right) {
+                sf::Vector2i mousePos = mouseClick->position;
+                mouse_event curr_event(mousePos.x, mousePos.y,true,nullptr);
             }
         }
     }
     if (shouldExit) {
         window.close();
     }
+    while (auto event=graphic_engine.get_event()) {
+        std::cout<<"hello";
+        graphic_engine.process_event(event);
+        delete event;
+    }
 }
+

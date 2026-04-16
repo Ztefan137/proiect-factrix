@@ -6,6 +6,7 @@
 #define OOP_PLAYER_H
 #include <vector>
 #include "item.h"
+#include "deque"
 
 class player {
     float x=0;
@@ -17,6 +18,7 @@ public:
     float get_x();
     float get_y();
     item* get_inventory();
+    void add_item(std::string type,int count);
 };
 
 

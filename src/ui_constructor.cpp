@@ -67,8 +67,11 @@ void ui_constructor::construct_sub_ui_tree(ui * parent_ui, tinyxml2::XMLElement*
             width=new_width;
         }
 
-        const char* attr = child->Attribute("bind");
-        std::string binding_string = attr ? attr : "";
+        const char* bind_attr = child->Attribute("bind");
+        std::string binding_string = bind_attr ? bind_attr : "";
+
+        const char* action_attr = child->Attribute("action");
+        std::string action_string = action_attr ? st::trim(action_attr) : "";
 
         if (tag_name == "section"){
             std::string name(child->Attribute("name"));
@@ -82,6 +85,7 @@ void ui_constructor::construct_sub_ui_tree(ui * parent_ui, tinyxml2::XMLElement*
             child_ui=new ui_item_tile_grid(x,y,width,height,7,7,100.f,nullptr);
             child_ui->set_type("item_tile_grid");
             child_ui->set_bind_string(binding_string);
+            child_ui->set_action_string(action_string);
         }
         std::cout<<"tree constructed"<<std::endl;
         this->construct_sub_ui_tree(child_ui,child);

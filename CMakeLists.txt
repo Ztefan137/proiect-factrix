@@ -116,6 +116,14 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/ui_binder.h
         src/events/ui_event.cpp
         include/ui_event.h
+        src/events/generic_event.cpp
+        include/generic_event.h
+        src/uis/interface_ui.cpp
+        include/interface_ui.h
+        src/uis/container_ui.cpp
+        include/container_ui.h
+        src/action_handler.cpp
+        include/action_handler.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

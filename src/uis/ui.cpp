@@ -6,6 +6,11 @@
 #include <SFML/Graphics.hpp>
 #include "ui_style.h"
 #include <iostream>
+#include "event.h"
+#include "generic_event.h"
+#include "queue"
+#include "structures.h"
+#include "ui_item_tile.h"
 
 ui::ui() {
     this->x=0;
@@ -39,6 +44,13 @@ void ui::set_style(ui_style new_ui_style){
         sub_ui->set_style(new_ui_style);
     }
 }
+void ui::set_actions(action_handler new_action_handler) {
+    this->internal_action_handler=new_action_handler;
+    for (auto* sub_ui:sub_uis) {
+        sub_ui->set_actions(new_action_handler);
+    }
+}
+
 
 void ui::set_bind_string(std::string new_bind_string) {
     this->bind_string=new_bind_string;
@@ -97,6 +109,34 @@ void ui::bind(ui_binder* binder){
 }
 
 void ui::bind_data(ui_binder *binder) {
-    std::cout<<"this is a problem for later"<<std::endl;
+    std::cout<<"this is a problem for later";
 }
 
+bool ui::is_mouse_inside(float x_mouse, float y_mouse) {
+    float half_w = this->width * 0.5f;
+    float half_h = this->height * 0.5f;
+
+    return x_mouse >= (this->x - half_w) && x_mouse <= (this->x + half_w) && y_mouse >= (this->y - half_h) && y_mouse <= (this->y + half_h);
+}
+void ui::check_click(float x_mouse,float y_mouse,std::queue<event*>* event_queue) {
+    if (!this->is_mouse_inside(x_mouse, y_mouse))
+        return;
+
+    for (auto& ui : this->sub_uis) {
+        if (ui->is_mouse_inside(x_mouse, y_mouse)) {
+            ui->check_click(x_mouse, y_mouse,event_queue);
+            return;
+        }
+    }
+    std::cout << "Deepest UI element clicked: " << this->ui_type << "\n";
+    if (this->action_string != "") {
+        if (this->ui_type == "item_tile") {
+            std::cout<<"Clicked item tile";
+            this->internal_action_handler.call_item(this->action_string,event_queue,dynamic_cast<ui_item_tile*>(this)->get_item()->get_name());
+        }
+    }
+}
+
+void ui::set_action_string(std::string new_action_string) {
+    this->action_string=new_action_string;
+}

@@ -7,6 +7,7 @@
 #include <graphic_engine.h>
 #include <chrono>
 #include "player.h"
+#include "event_handler.h"
 
 #ifndef OOP_GAME_ENGINE_H
 #define OOP_GAME_ENGINE_H
@@ -15,6 +16,7 @@ class game_engine {
     sf::RenderWindow window;
     chunk_loader loader;
     graphic_engine g_engine;
+    event_handler handler;
 
     player player;
     //std::vector<machine*> machines;

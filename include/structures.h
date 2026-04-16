@@ -9,4 +9,12 @@ struct chunk_position {
     int i,j;
 };
 
+struct mouse_position {
+    int x,y;
+};
+
+struct build_mode_info {
+    int current_building=0;
+};
+
 #endif //OOP_STRUCTURES_H

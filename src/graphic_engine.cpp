@@ -16,6 +16,7 @@
 #include "key_event.h"
 #include "mouse_event.h"
 #include "ui_event.h"
+#include "generic_event.h"
 
 void graphic_engine::init_camera() {
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
@@ -191,6 +192,12 @@ void graphic_engine::render_mouse_position(){
     rect(window,tileX*this->tile_size,tileY*this->tile_size,(tileX+1)*this->tile_size,(tileY+1)*this->tile_size,sf::Color::White);
 }
 
+void graphic_engine::render_build_mode() {
+    if (this->build_mode) {
+        rect(this->window,0,0,3000,3000,sf::Color(0x00,0x00,0xa0,0x33));
+    }
+}
+
 void graphic_engine::render() {
     this->window.clear(sf::Color::White);
     this->window.setView(camera);
@@ -198,6 +205,7 @@ void graphic_engine::render() {
     this->render_player();
     this->render_mouse_position();
     this->window.setView(ui_camera);
+    this->render_build_mode();
     this->render_uis();
     this->window.setView(camera);
     this->window.display();
@@ -218,12 +226,23 @@ void graphic_engine::zoom(float delta) {
 void graphic_engine::process_event(event* event) {
     if (auto* ke = dynamic_cast<key_event*>(event)) {
         if (ke->get_key() == "e") {
-            this->internal_ui_system.process_event(event);
+            this->internal_ui_system.process_event(event,&this->event_queue);
         }
     }else if (auto* me = dynamic_cast<mouse_event*>(event)) {
-        std::cout<<"Clicked"<<std::endl;
+        me->set_view(&this->ui_camera);
+        sf::Vector2f pos = window.mapPixelToCoords({ static_cast<int>(me->get_mouse_x()), static_cast<int>(me->get_mouse_y())},this->ui_camera);
+        mouse_event new_me(pos.x,pos.y,true,nullptr);
+        me=&new_me;
+        //this->internal_ui_system.process_event(me);
+        this->internal_ui_system.process_event(me,&this->event_queue);
     }else if (auto* uoe = dynamic_cast<ui_event*>(event)) {
-        this->internal_ui_system.process_event(uoe);
+        //this->internal_ui_system.process_event(uoe);
+        this->internal_ui_system.process_event(uoe,&this->event_queue);
+    }else if (auto* ge = dynamic_cast<generic_event<build_mode_info>*>(event)) {
+        this->build_mode=true;
+        //key_event ke("e");
+        //event=&ke;
+        //this->internal_ui_system.process_event(event,&this->event_queue);
     }
 }
 
@@ -233,4 +252,15 @@ void graphic_engine::display_fps(float fps) {
 
 void graphic_engine::render_player() {
 
+}
+
+event *graphic_engine::get_event() {
+    event* returned_event=nullptr;
+    if (this->event_queue.empty()){
+        returned_event=nullptr;
+    }else{
+        returned_event=this->event_queue.front();
+        this->event_queue.pop();
+    }
+    return returned_event;
 }

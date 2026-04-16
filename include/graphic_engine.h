@@ -13,6 +13,10 @@
 #include "ui_system.h"
 #include "event.h"
 
+#include "queue"
+
+class event_handler;
+
 class graphic_engine {
     chunk_loader& loader;
     sf::View camera;
@@ -20,10 +24,15 @@ class graphic_engine {
     float x_camera;
     float y_camera;
     float zoom_level;
+
+    bool build_mode=false;
+
     sf::RenderWindow& window;
     std::vector<sf::Texture> texture_maps;
     ui_system internal_ui_system;
     float tile_size;
+
+    std::queue <event*> event_queue;
 public:
     graphic_engine(chunk_loader &loader,sf::RenderWindow &window);
     void init_camera();
@@ -41,6 +50,8 @@ public:
     void render();
     void process_event(event* event);
     void render_player();
+    void render_build_mode();
+    event* get_event();
 };
 
 

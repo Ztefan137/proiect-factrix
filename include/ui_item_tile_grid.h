@@ -15,6 +15,7 @@ public:
     int get_rows();
     float get_tile_size();
     void bind_data(ui_binder *binder) override;
+    void set_action_string(std::string new_action_string) override;
 };
 
 

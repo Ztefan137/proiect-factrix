@@ -19,12 +19,15 @@
 
 #include <iostream>
 
+#include "../include/action_handler.h"
 #include "../include/ui_constructor.h"
 
 #include "event.h"
 #include "key_event.h"
 #include "mouse_event.h"
+#include "structures.h"
 #include "ui_event.h"
+#include "ui_actions.h"
 
 ui_system::~ui_system() {
     for (ui* element : this->ui_list) {
@@ -51,7 +54,10 @@ void ui_system::configure_uis(std::string config_xml) {
     default_style.set_function("window",window_render_style_style1_opaque);
     default_style.set_function("section",section_render_style_style1_opaque);
     default_style.set_function("item_tile",item_tile_render_style_style1_opaque);
-    default_style.set_function("item_tile_grid",item_tile_grid_render_style_style1_opaque);
+    default_style.set_function("item_tile_grid",item_tile_grid_render_style_style1_opaque);\
+
+    action_handler default_handler;
+    default_handler.add_item_action("build_mode",open_build_mode);
     if (config_xml == "default") {
 
         sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
@@ -83,24 +89,24 @@ void ui_system::configure_uis(std::string config_xml) {
         for (ui* element : constructed_uis) {
             std::cout<<"configuring uis"<<std::endl;
             element->set_style(default_style);
+            element->set_actions(default_handler);
             this->add_ui(element);
         }
         std::cout<<this->ui_list.size()<<std::endl;
     }
 }
-
-void ui_system::process_event(event* event) {
-    /*if (event == "e") {
-        this->ui_list[0]->set_visibility(!this->ui_list[0]->get_visibility());
-        //aici ar trebui sa se intampel bindingul cu inventory ul
-    }*/
-    if (auto* ke = dynamic_cast<key_event*>(event)) {
+void ui_system::process_event(event* processed_event,std::queue<event*>* event_queue){
+    if (auto* ke = dynamic_cast<key_event*>(processed_event)) {
         if (ke->get_key() == "e") {
             this->ui_list[0]->set_visibility(!this->ui_list[0]->get_visibility());
         }
-    }else if (auto* me = dynamic_cast<mouse_event*>(event)) {
-
-    }else if (auto* uoe = dynamic_cast<ui_event*>(event)) {
+    }else if (auto* me = dynamic_cast<mouse_event*>(processed_event)) {
+        for (auto &ui:this->ui_list) {
+            if (!ui->get_visibility())
+                continue;
+            ui->check_click(me->get_mouse_x(),me->get_mouse_y(),event_queue);
+        }
+    }else if (auto* uoe = dynamic_cast<ui_event*>(processed_event)) {
         this->ui_list[uoe->get_index()]->bind(uoe->get_binder());
     }
 }

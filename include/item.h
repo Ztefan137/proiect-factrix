@@ -10,9 +10,11 @@ class item {
     std::string name;
     int quantity;
 public:
+    item()=default;
     item(std::string name, int quantity);
-    std::string get_name();
-    int get_quantity();
+    std::string get_name() const;
+    int get_quantity() const;
+    void add_quantity(int quantity);
 };
 
 

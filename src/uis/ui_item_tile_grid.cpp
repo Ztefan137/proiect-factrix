@@ -47,3 +47,10 @@ void ui_item_tile_grid::bind_data(ui_binder *binder) {
         }
     }
 }
+
+void ui_item_tile_grid::set_action_string(std::string new_action_string) {
+    this->action_string=new_action_string;
+    for (ui* ui : sub_uis) {
+        ui->set_action_string(new_action_string);
+    }
+}

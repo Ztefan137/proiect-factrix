@@ -86,7 +86,7 @@ void item_tile_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui
     rect(window,edge_left+6,edge_top+6,edge_right-6,edge_bottom-6,sf::Color(0x2f,0x2f,0x2f,0xff));
     rect(window,edge_left+10,edge_top+10,edge_right-10,edge_bottom-10,sf::Color(0x32,0x32,0x32,0xff));
     rect(window,edge_left,edge_bottom,edge_right,edge_bottom-2,sf::Color(0x5a,0x5a,0x5a,0xff));
-    render_item(window,edge_left,edge_top,dynamic_cast<const ui_item_tile*>(ui)->get_item()->get_name());
+    render_item(window,edge_left,edge_top,dynamic_cast<const ui_item_tile*>(ui)->get_item());
 }
 
 void item_tile_grid_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui) {
