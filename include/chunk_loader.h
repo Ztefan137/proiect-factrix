@@ -16,8 +16,9 @@ class chunk_loader {
     std::unordered_map<std::string, std::future<chunk>> pending_chunks;
     public:
         chunk* get_chunk(int chunk_i,int chunk_j);
+        int peak_tile(int i,int j);
+        void add_building(int id,int x,int y);
 };
 
 
 #endif //OOP_CHUNK_LOADER_H
-

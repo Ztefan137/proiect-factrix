@@ -15,6 +15,7 @@
 class game_engine {
     sf::RenderWindow window;
     chunk_loader loader;
+    build_system build_system;
     graphic_engine g_engine;
     event_handler handler;
 

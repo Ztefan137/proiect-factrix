@@ -10,6 +10,7 @@
 #include "SFML/Graphics.hpp"
 #include <vector>
 
+#include "build_system.h"
 #include "ui_system.h"
 #include "event.h"
 
@@ -19,6 +20,7 @@ class event_handler;
 
 class graphic_engine {
     chunk_loader& loader;
+    build_system& builder;
     sf::View camera;
     sf::View ui_camera;
     float x_camera;
@@ -34,7 +36,7 @@ class graphic_engine {
 
     std::queue <event*> event_queue;
 public:
-    graphic_engine(chunk_loader &loader,sf::RenderWindow &window);
+    graphic_engine(chunk_loader &loader,build_system& builder,sf::RenderWindow &window);
     void init_camera();
     void draw_chunks();
     void set_camera(float x_camera,float y_camera);

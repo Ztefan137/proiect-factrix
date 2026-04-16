@@ -141,6 +141,10 @@ void chunk::recompute_top_layer() {
                 height_multiplier=2;
                 width_multiplier=2;
             }
+            if (tileID == 11) {
+                height_multiplier=2;
+                width_multiplier=1;
+            }
             x1 = (tile_j + 1) * tile_size;
             y1 = (tile_i + 1) * tile_size;
             x0 = x1 - (tile_size * width_multiplier);
@@ -154,7 +158,7 @@ void chunk::recompute_top_layer() {
             u1 = (tu + 1) * tile_size;
             v1 = (tv + 1) * tile_size;
 
-            if (tileID == 10) {
+            if (tileID == 10 || tileID == 11) {
                 va_vec.push_back(sf::Vertex{.position = {x0, y0}, .texCoords = {u0, v0}});
                 va_vec.push_back(sf::Vertex{.position = {x1, y0}, .texCoords = {u1, v0}});
                 va_vec.push_back(sf::Vertex{.position = {x1, y1}, .texCoords = {u1, v1}});
@@ -184,7 +188,10 @@ bool chunk::is_visible(){
 }
 
 void chunk::add_building(int id, int x, int y) {
-    std::cout<<"coords:"<<x<<" "<<y<<std::endl;
     this->buildings[y*32+x]=id;
     this->recompute_top_layer();
+}
+
+int chunk::peak_tile(int local_i, int local_j) {
+    return this->ground[local_j*32+local_i];
 }

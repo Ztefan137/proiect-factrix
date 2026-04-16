@@ -7,6 +7,7 @@
 #include <vector>
 #include "item.h"
 #include "deque"
+#include "chunk_loader.h"
 
 class player {
     float x=0;
@@ -14,7 +15,7 @@ class player {
     std::vector<item> inventory;
 public:
     player(float x,float y);
-    void move(float dx,float dy);
+    void move(float dx,float dy,chunk_loader& loader);
     float get_x();
     float get_y();
     item* get_inventory();

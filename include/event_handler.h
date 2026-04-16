@@ -11,11 +11,12 @@
 #include "player.h"
 #include "generic_event.h"
 #include "graphic_engine.h"
+#include "chunk_loader.h"
 
 class event_handler {
     std::queue<event*> event_queue;
 public:
-    void process_events(sf::RenderWindow& window,graphic_engine &graphic_engine,player& player);
+    void process_events(sf::RenderWindow& window,graphic_engine &graphic_engine,build_system &build_system,chunk_loader &loader,player& player);
 };
 
 

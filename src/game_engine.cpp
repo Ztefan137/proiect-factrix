@@ -9,7 +9,7 @@
 
 #include "event_handler.h"
 
-game_engine::game_engine() : g_engine(loader,window), player(0.f,0.f){
+game_engine::game_engine() : build_system(loader),g_engine(loader,build_system,window), player(0.f,0.f){
 }
 
 void game_engine::init_window() {
@@ -39,7 +39,7 @@ void game_engine::update(float dt) {
 }
 
 void game_engine::process_events(){
-    this->handler.process_events(this->window,this->g_engine,this->player);
+    this->handler.process_events(this->window,this->g_engine,this->build_system,this->loader,this->player);
 }
 
 void game_engine::init(){

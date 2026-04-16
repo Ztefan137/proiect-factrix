@@ -33,6 +33,9 @@
     texture:furnace
         position:10
         path:../assets/buildings/furnace.png
+    texture:furnace
+        position:11
+        path:../assets/player/engineer.png
    texture:dirt0
        position:20
        path:../assets/ground_tiles/dirt/dirt0.png

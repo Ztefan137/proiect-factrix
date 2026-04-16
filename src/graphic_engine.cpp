@@ -25,7 +25,7 @@ void graphic_engine::init_camera() {
 
     sf::Vector2u windowSize = window.getSize();
     float aspectRatio = static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y);
-    float worldHeight = 1000.f;
+    float worldHeight = windowSize.y;
     float worldWidth  = worldHeight * aspectRatio;
     this->camera=sf::View(sf::FloatRect({0.f, 0.f}, {worldWidth, worldHeight}));
 
@@ -55,7 +55,7 @@ void graphic_engine::set_tile_size(float new_tile_size) {
     this->tile_size=new_tile_size;
 }
 
-graphic_engine::graphic_engine(chunk_loader &loader,sf::RenderWindow &window) : loader(loader), x_camera(0), y_camera(0), zoom_level(1.0f), window(window), texture_maps(1), tile_size(64.f){
+graphic_engine::graphic_engine(chunk_loader &loader,build_system&build_system,sf::RenderWindow &window) : loader(loader), builder(build_system), x_camera(0), y_camera(0), zoom_level(1.0f), window(window), texture_maps(1), tile_size(64.f){
     //this->internal_ui_system.configure_uis("default");
     this->internal_ui_system.configure_uis("../assets/configuration files/ui.xml");
 }
@@ -82,7 +82,6 @@ void graphic_engine::get_visible_chunks(std::vector<chunk_position>& visible_chu
     int chunk_top    = static_cast<int>(std::floor(top    / CHUNK_SIZE));
     int chunk_bottom = static_cast<int>(std::floor(bottom / CHUNK_SIZE));
 
-    // Normalize ranges
     if (chunk_left > chunk_right) std::swap(chunk_left, chunk_right);
     if (chunk_top > chunk_bottom) std::swap(chunk_top, chunk_bottom);
 
@@ -193,22 +192,34 @@ void graphic_engine::render_mouse_position(){
 }
 
 void graphic_engine::render_build_mode() {
-    if (this->build_mode) {
-        rect(this->window,0,0,3000,3000,sf::Color(0x00,0x00,0xa0,0x33));
+    if (this->builder.get_on()) {
+        rect(this->window,0,0,3000,3000,sf::Color(0x00,0x00,0x50,0x11));
+        this->window.setView(camera);
+        sf::Vector2f worldPos1 = window.mapPixelToCoords(sf::Mouse::getPosition(window),window.getView());
+
+        auto tileX = static_cast<float>(static_cast<int>((worldPos1.x) / this->tile_size));
+        auto tileY = static_cast<float>(static_cast<int>((worldPos1.y) / this->tile_size));
+        render_image(this->window,tileX*tile_size,tileY*tile_size,tile_size*2,tile_size*2,"assets/buildings/furnace.png");
+
+        this->builder.set_mouse_tiles(tileX+this->x_camera,tileY+this->y_camera);
+
+        draw_selector(this->window,tileX*tile_size,tileY*tile_size,tile_size*2,1.f,this->builder.can_build()?sf::Color::Blue:sf::Color::Red);
+        this->window.setView(ui_camera);
     }
 }
 
 void graphic_engine::render() {
     this->window.clear(sf::Color::White);
     this->window.setView(camera);
-    this->draw_chunks();
     this->render_player();
-    this->render_mouse_position();
+    this->draw_chunks();
+    //this->render_mouse_position();
     this->window.setView(ui_camera);
     this->render_build_mode();
     this->render_uis();
     this->window.setView(camera);
     this->window.display();
+    this->loader.add_building(0,x_camera,y_camera);
 }
 
 void graphic_engine::zoom(float delta) {
@@ -251,7 +262,8 @@ void graphic_engine::display_fps(float fps) {
 }
 
 void graphic_engine::render_player() {
-
+    //consider temporar x_camera si y_camera ca x_player si y_player
+    this->loader.add_building(11,x_camera,y_camera);
 }
 
 event *graphic_engine::get_event() {

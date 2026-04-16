@@ -11,6 +11,8 @@ class event{
     std::string type="default";
 protected:
     virtual std::string getType();
+public:
+    virtual ~event()=default;
 };
 
 

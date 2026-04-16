@@ -124,6 +124,10 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/container_ui.h
         src/action_handler.cpp
         include/action_handler.h
+        src/build_system.cpp
+        include/build_system.h
+        src/collision_handler.cpp
+        src/collision_handler.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE
