@@ -4,6 +4,8 @@
 
 #include "event_handler.h"
 #include <iostream>
+
+#include "entity_data.h"
 #include "player.h"
 #include "key_event.h"
 #include "mouse_event.h"
@@ -63,6 +65,9 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
                 sf::Vector2i mousePos = mouseClick->position;
                 mouse_event curr_event(mousePos.x, mousePos.y,true,nullptr);
                 graphic_engine.process_event(&curr_event);
+                if (build_system.get_on()) {
+                    build_system.build();
+                }
             }else if (mouseClick->button == sf::Mouse::Button::Right) {
                 sf::Vector2i mousePos = mouseClick->position;
                 mouse_event curr_event(mousePos.x, mousePos.y,true,nullptr);
@@ -74,10 +79,14 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
     }
     while (auto event=graphic_engine.get_event()) {
         if (dynamic_cast<generic_event<build_mode_info>*>(event)) {
-            build_system.set_on(true);
-            //build_system.set_item(event..item);
-            key_event curr_event("e");
-            graphic_engine.process_event(&curr_event);
+            int curr_building=dynamic_cast<generic_event<build_mode_info>*>(event)->get_event_data().current_building;
+            entity_data data;
+            if (data.get_by_id(curr_building).buildable){
+                build_system.set_on(true);
+                build_system.set_item(data.get_by_id(curr_building).name);
+                key_event curr_event("e");
+                graphic_engine.process_event(&curr_event);
+            }
         }else{
             graphic_engine.process_event(event);
         }

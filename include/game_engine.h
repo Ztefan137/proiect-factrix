@@ -27,6 +27,7 @@ class game_engine {
 
     std::unordered_map<std::string,bool> key_input;
 
+    void init_entity_data();
     void init_window();
 
     void process_events();

@@ -4,7 +4,7 @@
 
 #include "../include/player.h"
 
-#include "collision_handler.h"
+#include "../include/collision_handler.h"
 
 player::player(float x, float y) {
     this->x = x;

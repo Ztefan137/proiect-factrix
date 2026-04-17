@@ -2,7 +2,7 @@
 // Created by stefa on 3/14/2026.
 //
 
-#include "../include/perlin_noise.h"
+#include "../../../include/perlin_noise.h"
 #include <cmath>
 #include <cstdint>
 #include <iostream>

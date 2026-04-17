@@ -2,7 +2,7 @@
 // Created by stefa on 3/13/2026.
 //
 
-#include "../include/world_generator.h"
+#include "../../../include/world_generator.h"
 #include <../include/perlin_noise.h>
 #include <cmath>
 

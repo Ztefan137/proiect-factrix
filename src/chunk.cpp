@@ -6,6 +6,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+#include "entity_data.h"
+
 chunk::chunk(int i,int j,world_generator& generator,float tile_size,bool visibility){
     layers.push_back("ground");
     layers.push_back("decoratives");
@@ -45,14 +47,11 @@ void chunk::compute_va() {
 
                 float width_multiplier=1;
                 float height_multiplier=1;
-                if (tileID == 9) {
-                    height_multiplier=3;
-                    width_multiplier=2;
-                }
-                if (tileID == 10) {
-                    height_multiplier=2;
-                    width_multiplier=2;
-                }
+
+                entity_data data;
+                width_multiplier=data.get_by_id(tileID).graphic_width;
+                height_multiplier=data.get_by_id(tileID).graphic_height;
+
                 float x1 = (tile_j + 1) * tile_size;
                 float y1 = (tile_i + 1) * tile_size;
                 float x0 = x1 - (tile_size * width_multiplier);
@@ -66,7 +65,7 @@ void chunk::compute_va() {
                 float u1 = (tu + 1) * tile_size;
                 float v1 = (tv + 1) * tile_size;
 
-                if (tileID == 9 || tileID == 10) {
+                if (width_multiplier != 1 && height_multiplier != 1) {
                     va_vec.push_back(sf::Vertex{.position = {x0, y0}, .texCoords = {u0, v0}});
                     va_vec.push_back(sf::Vertex{.position = {x1, y0}, .texCoords = {u1, v0}});
                     va_vec.push_back(sf::Vertex{.position = {x1, y1}, .texCoords = {u1, v1}});
@@ -104,13 +103,13 @@ void chunk::recompute_top_layer() {
         for (int tile_j = 0; tile_j < 32; tile_j++) {
             int tileID;
             tileID = this->decoratives[tile_i * 32 + tile_j];
-            int index = (tile_i * 32 + tile_j) * 6;
             float width_multiplier=1;
             float height_multiplier=1;
-            if (tileID == 9) {
-                height_multiplier=3;
-                width_multiplier=2;
-            }
+
+            entity_data data;
+            width_multiplier=data.get_by_id(tileID).graphic_width;
+            height_multiplier=data.get_by_id(tileID).graphic_height;
+
             float x1 = (tile_j + 1) * tile_size;
             float y1 = (tile_i + 1) * tile_size;
             float x0 = x1 - (tile_size * width_multiplier);
@@ -137,14 +136,8 @@ void chunk::recompute_top_layer() {
             if (tileID == 0) {
                 continue;
             }
-            if (tileID == 10) {
-                height_multiplier=2;
-                width_multiplier=2;
-            }
-            if (tileID == 11) {
-                height_multiplier=2;
-                width_multiplier=1;
-            }
+            width_multiplier=data.get_by_id(tileID).graphic_width;
+            height_multiplier=data.get_by_id(tileID).graphic_height;
             x1 = (tile_j + 1) * tile_size;
             y1 = (tile_i + 1) * tile_size;
             x0 = x1 - (tile_size * width_multiplier);

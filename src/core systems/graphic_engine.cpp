@@ -2,7 +2,7 @@
 // Created by stefa on 3/16/2026.
 //
 
-#include "../include/graphic_engine.h"
+#include "../../include/graphic_engine.h"
 #include <cmath>
 #include "structures.h"
 #include <SFML/Graphics.hpp>
@@ -12,6 +12,8 @@
 #include "graphic_functions.h"
 #include "string_functions.h"
 #include <deque>
+
+#include "entity_data.h"
 #include "event.h"
 #include "key_event.h"
 #include "mouse_event.h"
@@ -185,10 +187,9 @@ void graphic_engine::render_uis() {
 }
 void graphic_engine::render_mouse_position(){
     sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window),window.getView());
-
     auto tileX = static_cast<float>(static_cast<int>((worldPos.x) / this->tile_size));
     auto tileY = static_cast<float>(static_cast<int>((worldPos.y) / this->tile_size));
-    rect(window,tileX*this->tile_size,tileY*this->tile_size,(tileX+1)*this->tile_size,(tileY+1)*this->tile_size,sf::Color::White);
+    rect(window,tileX*this->tile_size,tileY*this->tile_size,(tileX+2)*this->tile_size,(tileY+2)*this->tile_size,sf::Color::White);
 }
 
 void graphic_engine::render_build_mode() {
@@ -199,11 +200,16 @@ void graphic_engine::render_build_mode() {
 
         auto tileX = static_cast<float>(static_cast<int>((worldPos1.x) / this->tile_size));
         auto tileY = static_cast<float>(static_cast<int>((worldPos1.y) / this->tile_size));
-        render_image(this->window,tileX*tile_size,tileY*tile_size,tile_size*2,tile_size*2,"assets/buildings/furnace.png");
 
-        this->builder.set_mouse_tiles(tileX+this->x_camera,tileY+this->y_camera);
+        entity_data data;
+        int width=data.get_by_name(this->builder.get_item()).graphic_width;
+        int height=data.get_by_name(this->builder.get_item()).graphic_height;
 
-        draw_selector(this->window,tileX*tile_size,tileY*tile_size,tile_size*2,1.f,this->builder.can_build()?sf::Color::Blue:sf::Color::Red);
+        //to do corectat pozitia mouseului
+
+        render_image(this->window,(tileX+width)*tile_size,(tileY+height)*tile_size,tile_size*width,tile_size*height,data.get_by_name(this->builder.get_item()).texture_path);
+        this->builder.set_mouse_tiles(tileX+this->x_camera-21,tileY+this->y_camera-13);
+        draw_selector(this->window,tileX*tile_size,tileY*tile_size,tile_size*data.get_by_name(this->builder.get_item()).graphic_width,1.f,this->builder.can_build()?sf::Color::Blue:sf::Color::Red);
         this->window.setView(ui_camera);
     }
 }
@@ -244,16 +250,11 @@ void graphic_engine::process_event(event* event) {
         sf::Vector2f pos = window.mapPixelToCoords({ static_cast<int>(me->get_mouse_x()), static_cast<int>(me->get_mouse_y())},this->ui_camera);
         mouse_event new_me(pos.x,pos.y,true,nullptr);
         me=&new_me;
-        //this->internal_ui_system.process_event(me);
         this->internal_ui_system.process_event(me,&this->event_queue);
     }else if (auto* uoe = dynamic_cast<ui_event*>(event)) {
-        //this->internal_ui_system.process_event(uoe);
         this->internal_ui_system.process_event(uoe,&this->event_queue);
     }else if (auto* ge = dynamic_cast<generic_event<build_mode_info>*>(event)) {
-        this->build_mode=true;
-        //key_event ke("e");
-        //event=&ke;
-        //this->internal_ui_system.process_event(event,&this->event_queue);
+
     }
 }
 

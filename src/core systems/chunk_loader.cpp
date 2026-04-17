@@ -2,7 +2,7 @@
 // Created by stefa on 3/16/2026.
 //
 
-#include "../include/chunk_loader.h"
+#include "../../include/chunk_loader.h"
 #include "chunk.h"
 #include <unordered_map>
 #include <string>

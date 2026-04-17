@@ -6,6 +6,9 @@
 
 #include <iostream>
 
+#include "collision_handler.h"
+#include "entity_data.h"
+
 build_system::build_system(chunk_loader &loader) : loader(loader){
 
 }
@@ -27,10 +30,18 @@ void build_system::set_on(bool on) {
 }
 
 bool build_system::can_build() {
-    return true;
+    collision_handler handler(this->loader);
+    return !handler.is_collision(this->mouse_tile_x,this->mouse_tile_y);
 }
 
 void build_system::set_mouse_tiles(int x, int y) {
     this->mouse_tile_x=x;
     this->mouse_tile_y=y;
+}
+
+void build_system::build(){
+    if (this->can_build()){
+        entity_data data;
+        this->loader.add_building(data.get_by_name(this->item).id,this->mouse_tile_x,this->mouse_tile_y);
+    }
 }

@@ -33,7 +33,7 @@
     texture:furnace
         position:10
         path:../assets/buildings/furnace.png
-    texture:furnace
+    texture:player
         position:11
         path:../assets/player/engineer.png
    texture:dirt0

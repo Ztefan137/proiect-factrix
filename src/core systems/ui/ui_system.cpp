@@ -19,8 +19,8 @@
 
 #include <iostream>
 
-#include "../include/action_handler.h"
-#include "../include/ui_constructor.h"
+#include "../../../include/action_handler.h"
+#include "../../../include/ui_constructor.h"
 
 #include "event.h"
 #include "key_event.h"

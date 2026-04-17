@@ -55,7 +55,7 @@ void render_item(sf::RenderWindow &window_obj, float x, float y, item* item) {
     sprite->setScale({scale, scale});
     window_obj.draw(*sprite);
     if (item->get_quantity() > 1) {
-        text(window_obj, x + 55, y + 55, std::to_string(item->get_quantity()), true);
+        text(window_obj, x + ((item->get_quantity() == 100 )? 40:58), y + 55, std::to_string(item->get_quantity()), true);
     }
 }
 void render_image(sf::RenderWindow& window_obj, float x, float y, float width, float height, std::string image_path) {
@@ -71,7 +71,7 @@ void render_image(sf::RenderWindow& window_obj, float x, float y, float width, f
     }
 
     sf::Sprite sprite(it->second);
-    sprite.setPosition({x, y});
+    sprite.setPosition({x - width, y - height});
 
     sf::Vector2u texture_size = it->second.getSize();
     if (texture_size.x != 0 && texture_size.y != 0) {
@@ -82,6 +82,8 @@ void render_image(sf::RenderWindow& window_obj, float x, float y, float width, f
 }
 
 void draw_selector(sf::RenderWindow& window, float x, float y, float size, float scale, sf::Color color) {
+    float ax = x - size;
+    float ay = y - size;
     float thickness = size * 0.08f * scale;
     float length = size * 0.25f;
     float s1 = thickness * 0.2f;
@@ -96,19 +98,17 @@ void draw_selector(sf::RenderWindow& window, float x, float y, float size, float
             float dy = isBottom ? -1.0f : 1.0f;
 
             auto safe_rect = [&](float x1, float y1, float x2, float y2) {
-                float rx1 = x1 + ox + x;
-                float ry1 = y1 + oy + y;
-                float rx2 = x2 + ox + x;
-                float ry2 = y2 + oy + y;
+                float rx1 = x1 + ox + ax;
+                float ry1 = y1 + oy + ay;
+                float rx2 = x2 + ox + ax;
+                float ry2 = y2 + oy + ay;
                 rect(window, std::min(rx1, rx2), std::min(ry1, ry2), std::max(rx1, rx2), std::max(ry1, ry2), c);
             };
 
             safe_rect(cx + dx * s3, cy, cx + dx * length, cy + dy * thickness);
             safe_rect(cx, cy + dy * s3, cx + dx * thickness, cy + dy * length);
-
             safe_rect(cx + dx * s2, cy + dy * s1, cx + dx * s3, cy + dy * thickness);
             safe_rect(cx + dx * s1, cy + dy * s2, cx + dx * thickness, cy + dy * s3);
-
             safe_rect(cx + dx * thickness, cy + dy * thickness, cx + dx * s3, cy + dy * s2);
             safe_rect(cx + dx * s3, cy + dy * s3, cx + dx * s2, cy + dy * thickness);
         };

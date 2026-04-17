@@ -61,34 +61,34 @@ add_executable(${MAIN_EXECUTABLE_NAME}
     main.cpp
         src/uis/ui.cpp
         include/ui.h
-        src/graphic_functions.cpp
+        src/utils/graphic_functions.cpp
         include/graphic_functions.h
-        src/world_generator.cpp
+        "src/core systems/world generation/world_generator.cpp"
         include/world_generator.h
         src/chunk.cpp
         include/chunk.h
-        src/perlin_noise.cpp
+        "src/core systems/world generation/perlin_noise.cpp"
         include/perlin_noise.h
-        src/graphic_engine.cpp
+        "src/core systems/graphic_engine.cpp"
         include/graphic_engine.h
-        src/chunk_loader.cpp
+        "src/core systems/chunk_loader.cpp"
         include/chunk_loader.h
         include/structures.h
-        src/game_engine.cpp
+        "src/core systems/game_engine.cpp"
         include/game_engine.h
-        src/ui_system.cpp
+        "src/core systems/ui/ui_system.cpp"
         include/ui_system.h
         src/uis/ui_window.cpp
         include/ui_window.h
         include/ui_render_functions.h
-        src/ui_render_functions.cpp
-        src/ui_style.cpp
+        "src/delegated functions/ui_render_functions.cpp"
+        "src/core systems/ui/ui_style.cpp"
         include/ui_style.h
         src/uis/ui_section.cpp
         include/ui_section.h
         src/uis/ui_button.cpp
         include/ui_button.h
-        src/ui_actions.cpp
+        "src/delegated functions/ui_actions.cpp"
         include/ui_actions.h
         src/event_handler.cpp
         include/event_handler.h
@@ -97,8 +97,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/key_event.h
         src/events/key_event.cpp
         include/string_functions.h
-        src/string_functions.cpp
-        src/ui_constructor.cpp
+        src/utils/string_functions.cpp
+        "src/core systems/ui/ui_constructor.cpp"
         include/ui_constructor.h
         ext/tiny-xml2/tinyxml2.cpp
         ext/tiny-xml2/tinyxml2.h
@@ -112,7 +112,7 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/ui_item_tile_grid.h
         src/events/mouse_event.cpp
         include/mouse_event.h
-        src/ui_binder.cpp
+        "src/core systems/ui/ui_binder.cpp"
         include/ui_binder.h
         src/events/ui_event.cpp
         include/ui_event.h
@@ -122,12 +122,18 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/interface_ui.h
         src/uis/container_ui.cpp
         include/container_ui.h
-        src/action_handler.cpp
+        "src/core systems/ui/action_handler.cpp"
         include/action_handler.h
-        src/build_system.cpp
+        "src/core systems/build_system.cpp"
         include/build_system.h
         src/collision_handler.cpp
-        src/collision_handler.h
+        include/collision_handler.h
+        src/machines/machine.cpp
+        include/machine.h
+        src/machines/furnace_prototype.cpp
+        include/furnace_prototype.h
+        src/entity_data.cpp
+        include/entity_data.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

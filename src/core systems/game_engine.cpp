@@ -2,11 +2,12 @@
 // Created by stefa on 3/18/2026.
 //
 
-#include "../include/game_engine.h"
+#include "../../include/game_engine.h"
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <iostream>
 
+#include "entity_data.h"
 #include "event_handler.h"
 
 game_engine::game_engine() : build_system(loader),g_engine(loader,build_system,window), player(0.f,0.f){
@@ -18,6 +19,10 @@ void game_engine::init_window() {
     const unsigned int screenHeight = desktop.size.y;
     this->window.create(sf::VideoMode({screenWidth, screenHeight}), "My Window", sf::State::Fullscreen);
     this->window.setVerticalSyncEnabled(true);
+}
+
+void game_engine::init_entity_data() {
+    entity_data::init();
 }
 
 void game_engine::render() {
@@ -44,6 +49,7 @@ void game_engine::process_events(){
 
 void game_engine::init(){
     std::cout<<"Init\n";
+    this->init_entity_data();
     this->g_engine.load_texture(0,"../assets/configuration files/texture_config.txt");
     this->init_window();
     this->g_engine.init_camera();

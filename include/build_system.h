@@ -22,6 +22,7 @@ public:
     bool get_on();
     bool can_build();
     void set_mouse_tiles(int x,int y);
+    void build();
 };
 
 
