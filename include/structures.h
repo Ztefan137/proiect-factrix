@@ -6,6 +6,8 @@
 #define OOP_STRUCTURES_H
 #include <string>
 
+#include "item.h"
+
 
 struct chunk_position {
     int i,j;
@@ -19,6 +21,10 @@ struct build_mode_info {
     int current_building=0;
 };
 
+struct ui_idx_info {
+    int ui_idx=0;
+};
+
 struct entity_data_prototype {
     int id;
     std::string name;
@@ -27,6 +33,14 @@ struct entity_data_prototype {
     bool solid=false;
     bool buildable=false;
     std::string texture_path;
+    int ui_idx=0;
+};
+
+struct item_move_data {
+    std::string name;
+    //int quantity
+    item* source;
+    std::string to;
 };
 
 #endif //OOP_STRUCTURES_H

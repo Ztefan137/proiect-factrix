@@ -10,7 +10,11 @@
 #include "entity_data.h"
 #include "event_handler.h"
 
-game_engine::game_engine() : build_system(loader),g_engine(loader,build_system,window), player(0.f,0.f){
+game_engine::game_engine() : build_system(loader,machine_handler),g_engine(loader,build_system,window), player(0.f,0.f), machine_handler(player){
+}
+
+game_engine::~game_engine() {
+    this->machine_handler.delete_machines();
 }
 
 void game_engine::init_window() {
@@ -40,11 +44,20 @@ void game_engine::compute_dt() {
 }
 
 void game_engine::update(float dt) {
-    //std::cout<<"Updating for "<<dt<<" milliseconds\n";
+    static float accumulator = 0.0f;
+    const float target_tps=10.f;
+    const float tick_interval = 1.0f / target_tps;
+
+    accumulator += dt;
+
+    while (accumulator >= tick_interval) {
+        this->machine_handler.update_machines();
+        accumulator -= tick_interval;
+    }
 }
 
 void game_engine::process_events(){
-    this->handler.process_events(this->window,this->g_engine,this->build_system,this->loader,this->player);
+    this->handler.process_events(this->window,this->g_engine,this->build_system,this->loader,this->player,this->machine_handler);
 }
 
 void game_engine::init(){

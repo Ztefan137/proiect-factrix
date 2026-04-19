@@ -8,6 +8,8 @@
 #include <chrono>
 #include "player.h"
 #include "event_handler.h"
+#include "machine.h"
+#include "machine_handler.h"
 
 #ifndef OOP_GAME_ENGINE_H
 #define OOP_GAME_ENGINE_H
@@ -20,7 +22,7 @@ class game_engine {
     event_handler handler;
 
     player player;
-    //std::vector<machine*> machines;
+    machine_handler machine_handler;
 
     sf::Clock clock;
     float dt=0.f;
@@ -37,9 +39,9 @@ class game_engine {
 
     void compute_dt();
     void print_fps();
-
 public:
     game_engine();
+    ~game_engine();
     void init();
     void run();
 };

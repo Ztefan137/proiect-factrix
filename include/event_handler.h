@@ -13,10 +13,13 @@
 #include "graphic_engine.h"
 #include "chunk_loader.h"
 
+#include "machine.h"
+#include "furnace_prototype.h"
+
 class event_handler {
     std::queue<event*> event_queue;
 public:
-    void process_events(sf::RenderWindow& window,graphic_engine &graphic_engine,build_system &build_system,chunk_loader &loader,player& player);
+    void process_events(sf::RenderWindow& window,graphic_engine &graphic_engine,build_system &build_system,chunk_loader &loader,player& player, machine_handler& machines);
 };
 
 

@@ -37,7 +37,7 @@ chunk* chunk_loader::get_chunk(int chunk_i, int chunk_j) {
     return nullptr;
 }
 
-int chunk_loader::peak_tile(int x, int y) {
+int chunk_loader::peak_tile(int x, int y,std::string layer) {
     const int chunk_size = 32;
     int chunk_i = static_cast<int>(std::floor(static_cast<float>(x) / chunk_size));
     int chunk_j = static_cast<int>(std::floor(static_cast<float>(y) / chunk_size));
@@ -46,7 +46,7 @@ int chunk_loader::peak_tile(int x, int y) {
     std::string cache_key = std::to_string(chunk_j) + "," + std::to_string(chunk_i);
     auto it = chunk_cache.find(cache_key);
     if (it != chunk_cache.end()) {
-        return it->second.peak_tile(local_x, local_y);
+        return it->second.peak_tile(local_x, local_y,layer);
     }
     return 0;
 }

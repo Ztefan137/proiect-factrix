@@ -134,6 +134,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/furnace_prototype.h
         src/entity_data.cpp
         include/entity_data.h
+        src/machine_handler.cpp
+        include/machine_handler.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

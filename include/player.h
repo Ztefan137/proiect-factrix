@@ -20,6 +20,7 @@ public:
     float get_y();
     item* get_inventory();
     void add_item(std::string type,int count);
+    void remove_item(std::string type,int count);
 };
 
 

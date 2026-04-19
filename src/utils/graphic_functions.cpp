@@ -6,6 +6,8 @@
 #include "item.h"
 #include <map>
 
+#include "entity_data.h"
+
 void rect(sf::RenderWindow& window_obj,float xi,float yi, float xf, float yf,sf::Color color) {
     sf::RectangleShape rect;
     rect.setPosition({xi,yi});
@@ -34,8 +36,11 @@ void render_item(sf::RenderWindow &window_obj, float x, float y, item* item) {
     static bool initialized = false;
     static std::optional<sf::Sprite> sprite;
     if (!initialized) {
-        icons["iron_ore"].loadFromFile("assets/icons/iron_ore.png");
-        icons["furnace"].loadFromFile("assets/buildings/furnace.png");
+        if (icons["iron_ore"].loadFromFile("assets/icons/iron_ore.png")){}
+        if (icons["coal_ore"].loadFromFile("assets/decoratives/coal.png")){}
+        if (icons["copper_ore"].loadFromFile("assets/decoratives/copper.png")){}
+        if (icons["furnace"].loadFromFile("assets/buildings/furnace.png")){}
+        if (icons["iron_plate"].loadFromFile("assets/icons/iron_plate.png")){}
         initialized = true;
     }
     auto it = icons.find(item->get_name());
@@ -55,7 +60,7 @@ void render_item(sf::RenderWindow &window_obj, float x, float y, item* item) {
     sprite->setScale({scale, scale});
     window_obj.draw(*sprite);
     if (item->get_quantity() > 1) {
-        text(window_obj, x + ((item->get_quantity() == 100 )? 40:58), y + 55, std::to_string(item->get_quantity()), true);
+        text(window_obj, x + ((item->get_quantity() >= 100 )? 40:58), y + 55, std::to_string(item->get_quantity()), true);
     }
 }
 void render_image(sf::RenderWindow& window_obj, float x, float y, float width, float height, std::string image_path) {

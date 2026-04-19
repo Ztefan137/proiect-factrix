@@ -9,6 +9,10 @@
 #include "event.h"
 #include <string>
 
-void open_build_mode(std::queue<event*>* event_queue,std::string item);
+#include "item.h"
+
+void open_build_mode(std::queue<event*>* event_queue,item* item);
+void furnace_item_transfer(std::queue<event*>* event_queue,item* item);
+void player_item_transfer(std::queue<event*>* event_queue,item* item);
 
 #endif //OOP_UI_ACTIONS_H

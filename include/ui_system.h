@@ -19,6 +19,9 @@ public:
     void render_uis(sf::RenderWindow& window);
     void configure_uis(std::string config_xml);
     void process_event(event* processed_event,std::queue<event*>* event_queue);
+    bool ui_at_coords(float x,float y);
+    bool visible_uis();
+    void close_uis();
 };
 
 

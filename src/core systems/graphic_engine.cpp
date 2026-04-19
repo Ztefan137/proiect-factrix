@@ -122,16 +122,15 @@ void graphic_engine::get_chunk_coords(int chunk_i,int chunk_j,float tile_size,in
 }
 void graphic_engine::draw_chunks() {
     std::vector<chunk_position> visible_chunks;
+    float chunk_x=0;
+    float chunk_y=0;
     this->get_visible_chunks(visible_chunks);
     for (unsigned int i=0;i<visible_chunks.size();i++){
         chunk *rendered_chunk=this->loader.get_chunk(visible_chunks[i].i,visible_chunks[i].j);
-        if (!rendered_chunk) {
-            continue;
+        if (rendered_chunk) {
+            get_chunk_coords(visible_chunks[i].i,visible_chunks[i].j,this->tile_size,32,chunk_x,chunk_y);
+            rendered_chunk->render(window,chunk_x,chunk_y,texture_maps[0]);
         }
-        float chunk_x=0;
-        float chunk_y=0;
-        get_chunk_coords(visible_chunks[i].i,visible_chunks[i].j,this->tile_size,32,chunk_x,chunk_y);
-        rendered_chunk->render(window,chunk_x,chunk_y,texture_maps[0]);
     }
 }
 void graphic_engine::load_texture(int index,std::string const &config_file){
@@ -189,14 +188,14 @@ void graphic_engine::render_mouse_position(){
     sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window),window.getView());
     auto tileX = static_cast<float>(static_cast<int>((worldPos.x) / this->tile_size));
     auto tileY = static_cast<float>(static_cast<int>((worldPos.y) / this->tile_size));
-    rect(window,tileX*this->tile_size,tileY*this->tile_size,(tileX+2)*this->tile_size,(tileY+2)*this->tile_size,sf::Color::White);
+    rect(window,(tileX-1)*this->tile_size,(tileY-1)*this->tile_size,(tileX+1)*this->tile_size,(tileY+1)*this->tile_size,sf::Color::White);
 }
 
 void graphic_engine::render_build_mode() {
     if (this->builder.get_on()) {
         rect(this->window,0,0,3000,3000,sf::Color(0x00,0x00,0x50,0x11));
         this->window.setView(camera);
-        sf::Vector2f worldPos1 = window.mapPixelToCoords(sf::Mouse::getPosition(window),window.getView());
+        sf::Vector2f worldPos1 = this->get_mouse_coords();
 
         auto tileX = static_cast<float>(static_cast<int>((worldPos1.x) / this->tile_size));
         auto tileY = static_cast<float>(static_cast<int>((worldPos1.y) / this->tile_size));
@@ -207,9 +206,9 @@ void graphic_engine::render_build_mode() {
 
         //to do corectat pozitia mouseului
 
-        render_image(this->window,(tileX+width)*tile_size,(tileY+height)*tile_size,tile_size*width,tile_size*height,data.get_by_name(this->builder.get_item()).texture_path);
-        this->builder.set_mouse_tiles(tileX+this->x_camera-21,tileY+this->y_camera-13);
-        draw_selector(this->window,tileX*tile_size,tileY*tile_size,tile_size*data.get_by_name(this->builder.get_item()).graphic_width,1.f,this->builder.can_build()?sf::Color::Blue:sf::Color::Red);
+        render_image(this->window,(tileX+1)*tile_size,(tileY+1)*tile_size,tile_size*width,tile_size*height,data.get_by_name(this->builder.get_item()).texture_path);
+        this->builder.set_mouse_tiles(tileX+this->x_camera-21-1,tileY+this->y_camera-13-1);
+        draw_selector(this->window,(tileX+1)*tile_size,(tileY+1)*tile_size,tile_size*data.get_by_name(this->builder.get_item()).graphic_width,1.f,this->builder.can_build()?sf::Color::Blue:sf::Color::Red);
         this->window.setView(ui_camera);
     }
 }
@@ -255,6 +254,8 @@ void graphic_engine::process_event(event* event) {
         this->internal_ui_system.process_event(uoe,&this->event_queue);
     }else if (auto* ge = dynamic_cast<generic_event<build_mode_info>*>(event)) {
 
+    }else if (auto* ge = dynamic_cast<generic_event<ui_idx_info>*>(event)) {
+        this->internal_ui_system.process_event(ge,&this->event_queue);
     }
 }
 
@@ -276,4 +277,12 @@ event *graphic_engine::get_event() {
         this->event_queue.pop();
     }
     return returned_event;
+}
+
+ui_system &graphic_engine::get_ui_system() {
+    return this->internal_ui_system;
+}
+
+sf::Vector2f graphic_engine::get_mouse_coords() {
+    return window.mapPixelToCoords(sf::Mouse::getPosition(window),window.getView());
 }

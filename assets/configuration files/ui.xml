@@ -12,14 +12,20 @@
     </window>
     <window x="1440" y="900" width="1800" height="1200" visible_ribbon="true" name="Character" exit_button="true" flex="true" padding="16" flex-gap="16" flex-template="50-50">
         <section visible_ribbon="true" name="Inventory" flex="false">
-            <item_grid col_count="7" row_count="7" tile_size="100" bind="inventory_pointer">
+            <item_grid col_count="7" row_count="7" tile_size="100" bind="inventory_pointer" action="furnace_item_transfer">
 
             </item_grid>
         </section>
         <section visible_ribbon="true" name="Furnace" flex="false">
-            <!-- <item_tile></item_tile>
-            <item_tile></item_tile>
-            <item_tile></item_tile> to do-->
+            <item_tile bind="fuel_pointer">
+
+            </item_tile>
+            <item_tile bind="source_pointer">
+
+            </item_tile>
+            <item_tile bind="destination_pointer" action="player_item_transfer">
+
+            </item_tile>
         </section>
     </window>
 </ui_list>

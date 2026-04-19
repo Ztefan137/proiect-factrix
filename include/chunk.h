@@ -31,7 +31,7 @@ public:
     bool is_visible();
     void recompute_top_layer();
     void add_building(int id,int x,int y);
-    int peak_tile(int local_i,int local_j);
+    int peak_tile(int local_i,int local_j,std::string layer);
 };
 
 

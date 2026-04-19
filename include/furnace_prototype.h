@@ -15,6 +15,12 @@ class furnace_prototype : public machine{
     public:
     furnace_prototype();
     void update() override;
+    item* get_source();
+    item* get_destination();
+    item* get_fuel();
+    void add_source(item &item);
+    void add_destination(item &item);
+    void add_fuel(item &item);
 };
 
 

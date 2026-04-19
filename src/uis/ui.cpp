@@ -132,7 +132,7 @@ void ui::check_click(float x_mouse,float y_mouse,std::queue<event*>* event_queue
     if (this->action_string != "") {
         if (this->ui_type == "item_tile") {
             std::cout<<"Clicked item tile";
-            this->internal_action_handler.call_item(this->action_string,event_queue,dynamic_cast<ui_item_tile*>(this)->get_item()->get_name());
+            this->internal_action_handler.call_item(this->action_string,event_queue,dynamic_cast<ui_item_tile*>(this)->get_item());
         }
     }
 }

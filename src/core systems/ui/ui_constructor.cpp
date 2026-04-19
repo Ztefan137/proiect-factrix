@@ -13,6 +13,7 @@
 #include <map>
 #include "string_functions.h"
 #include "ui_button.h"
+#include "ui_item_tile.h"
 #include "ui_item_tile_grid.h"
 #include "ui_section.h"
 
@@ -86,10 +87,17 @@ void ui_constructor::construct_sub_ui_tree(ui * parent_ui, tinyxml2::XMLElement*
             child_ui->set_type("item_tile_grid");
             child_ui->set_bind_string(binding_string);
             child_ui->set_action_string(action_string);
+        }else if (tag_name == "item_tile") {
+            child_ui=new ui_item_tile(x-0.5*width+flex_left_offset+80,y,100,100,nullptr);
+            child_ui->set_type("item_tile");
+            child_ui->set_bind_string(binding_string);
+            flex_left_offset+=120;
         }
         std::cout<<"tree constructed"<<std::endl;
-        this->construct_sub_ui_tree(child_ui,child);
-        parent_ui->add_sub_ui(child_ui);
+        if (child_ui != nullptr) {
+            this->construct_sub_ui_tree(child_ui,child);
+            parent_ui->add_sub_ui(child_ui);
+        }
         child_index++;
     }
 }

@@ -185,6 +185,14 @@ void chunk::add_building(int id, int x, int y) {
     this->recompute_top_layer();
 }
 
-int chunk::peak_tile(int local_i, int local_j) {
-    return this->ground[local_j*32+local_i];
+int chunk::peak_tile(int local_i, int local_j,std::string layer) {
+    if (layer == "ground") {
+        return this->ground[local_j*32+local_i];
+    }
+    if (layer == "decoratives") {
+        return this->decoratives[local_j*32+local_i];
+    }
+    if (layer == "buildings") {
+        return this->buildings[local_j*32+local_i];
+    }
 }

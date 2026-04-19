@@ -58,3 +58,21 @@ void player::add_item(std::string type, int count) {
         }
     }
 }
+
+void player::remove_item(std::string type, int count) {
+    for (auto it = inventory.begin(); it != inventory.end() && count > 0; ) {
+        if (it->get_name() == type) {
+            int qty = it->get_quantity();
+            if (qty <= count) {
+                count -= qty;
+                it = inventory.erase(it);
+            } else {
+                it->add_quantity(-count);
+                count = 0;
+                ++it;
+            }
+        } else {
+            ++it;
+        }
+    }
+}

@@ -53,7 +53,9 @@ public:
     void process_event(event* event);
     void render_player();
     void render_build_mode();
+    ui_system& get_ui_system();
     event* get_event();
+    sf::Vector2f get_mouse_coords();
 };
 
 

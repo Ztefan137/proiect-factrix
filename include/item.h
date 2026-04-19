@@ -13,8 +13,10 @@ public:
     item()=default;
     item(std::string name, int quantity);
     std::string get_name() const;
+    void set_name(std::string new_name);
     int get_quantity() const;
-    void add_quantity(int quantity);
+    void add_quantity(int d_quantity);
+    void take_quantity(int d_quantity);
 };
 
 

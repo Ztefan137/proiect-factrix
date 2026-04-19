@@ -28,6 +28,7 @@
 #include "structures.h"
 #include "ui_event.h"
 #include "ui_actions.h"
+#include "generic_event.h"
 
 ui_system::~ui_system() {
     for (ui* element : this->ui_list) {
@@ -58,6 +59,7 @@ void ui_system::configure_uis(std::string config_xml) {
 
     action_handler default_handler;
     default_handler.add_item_action("build_mode",open_build_mode);
+    default_handler.add_item_action("furnace_item_transfer",furnace_item_transfer);
     if (config_xml == "default") {
 
         sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
@@ -108,5 +110,33 @@ void ui_system::process_event(event* processed_event,std::queue<event*>* event_q
         }
     }else if (auto* uoe = dynamic_cast<ui_event*>(processed_event)) {
         this->ui_list[uoe->get_index()]->bind(uoe->get_binder());
+    }else if (auto* ge = dynamic_cast<generic_event<ui_idx_info>*>(processed_event)) {
+        this->ui_list[ge->get_event_data().ui_idx]->set_visibility(!this->ui_list[ge->get_event_data().ui_idx]->get_visibility());
+    }
+}
+
+bool ui_system::ui_at_coords(float x, float y) {
+    for (auto &ui:this->ui_list) {
+        if (!ui->get_visibility())
+            continue;
+        if (ui->is_mouse_inside(x,y)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool ui_system::visible_uis() {
+    for (auto &ui:this->ui_list) {
+        if (ui->get_visibility()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void ui_system::close_uis() {
+    for (auto &ui:this->ui_list) {
+        ui->set_visibility(false);
     }
 }

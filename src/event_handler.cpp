@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "entity_data.h"
+#include "furnace_prototype.h"
 #include "player.h"
 #include "key_event.h"
 #include "mouse_event.h"
@@ -16,7 +17,7 @@
 #include "item.h"
 #include "structures.h"
 
-void event_handler::process_events(sf::RenderWindow &window,graphic_engine &graphic_engine,build_system& build_system,chunk_loader& loader,player& player) {
+void event_handler::process_events(sf::RenderWindow &window,graphic_engine &graphic_engine,build_system& build_system,chunk_loader& loader,player& player,machine_handler &machines) {
     bool shouldExit = false;
     while(const std::optional event = window.pollEvent()) {
         if (event->is<sf::Event::Closed>()) {
@@ -25,9 +26,13 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
         }
         else if (event->is<sf::Event::KeyPressed>()) {
             const auto* keyPressed = event->getIf<sf::Event::KeyPressed>();
-            std::cout << "Received key " << (keyPressed->scancode == sf::Keyboard::Scancode::X ? "X" : "(other)") << "\n";
             if(keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
-                shouldExit = true;
+                if (graphic_engine.get_ui_system().visible_uis()) {
+                    graphic_engine.get_ui_system().close_uis();
+                    machines.close_machines();
+                }else {
+                    shouldExit = true;
+                }
             }else if (keyPressed->scancode == sf::Keyboard::Scancode::W) {
                 player.move(0,-1,loader);
                 graphic_engine.set_camera(player.get_x(),player.get_y());
@@ -59,14 +64,55 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
             const auto* scroll = event->getIf<sf::Event::MouseWheelScrolled>();
             float delta = scroll->delta;
             graphic_engine.zoom(delta);
-        }else if (event->is<sf::Event::MouseButtonPressed>()) {
-            const auto* mouseClick = event->getIf<sf::Event::MouseButtonPressed>();
+        }else if (event->is<sf::Event::MouseButtonReleased>()) {
+            const auto* mouseClick = event->getIf<sf::Event::MouseButtonReleased>();
             if (mouseClick->button == sf::Mouse::Button::Left) {
-                sf::Vector2i mousePos = mouseClick->position;
-                mouse_event curr_event(mousePos.x, mousePos.y,true,nullptr);
-                graphic_engine.process_event(&curr_event);
                 if (build_system.get_on()) {
                     build_system.build();
+                }else {
+                    sf::Vector2i mousePos = mouseClick->position;
+
+                    //putem sa luam aici pozitia si sa verificam la ce tile ne uitam
+                    if (!graphic_engine.get_ui_system().ui_at_coords(mousePos.x, mousePos.y)) {
+                        sf::Vector2f world_pos = graphic_engine.get_mouse_coords();
+                        std::cout<<"here"<<std::endl;
+                        const int tile_size=64;
+                        entity_data data;
+                        int tileX=0;
+                        int tileY=0;
+                        int tile=0;
+                        for (int i=0;i<3;i++) {
+                            for (int j=0;j<3;j++) {
+                                tileX = ((world_pos.x) / tile_size)+player.get_x()-23+i;
+                                tileY = ((world_pos.y) / tile_size)+player.get_y()-15+j;
+                                tile=loader.peak_tile(tileX,tileY,"buildings");
+                                if (data.get_by_id(tile).buildable && data.get_by_id(tile).width > i && data.get_by_id(tile).height > j) {
+                                    break;
+                                }
+                            }
+                            if (data.get_by_id(tile).buildable && data.get_by_id(tile).width > i) {
+                                break;
+                            }
+                        }
+                        if (data.get_by_id(tile).buildable) {
+                            if (data.get_by_id(tile).name == "furnace"){
+                                ui_binder furnace_binder;
+                                furnace_binder.set<item>("inventory_pointer",player.get_inventory());
+                                machines.open_machine(tileX,tileY);
+                                machine* interacted_machine=(machines.get_machine(tileX,tileY));
+                                furnace_binder.set<item>("fuel_pointer",dynamic_cast<furnace_prototype*>(interacted_machine)->get_fuel());
+                                furnace_binder.set<item>("source_pointer",dynamic_cast<furnace_prototype*>(interacted_machine)->get_source());
+                                furnace_binder.set<item>("destination_pointer",dynamic_cast<furnace_prototype*>(interacted_machine)->get_destination());
+                                ui_event open_event(1,&furnace_binder);
+                                graphic_engine.process_event(&open_event);
+                                generic_event<ui_idx_info> curr_event({data.get_by_id(tile).ui_idx});
+                                graphic_engine.process_event(&curr_event);
+                            }
+                        }
+                    }else{
+                        mouse_event curr_event(mousePos.x, mousePos.y,true,nullptr);
+                        graphic_engine.process_event(&curr_event);
+                    }
                 }
             }else if (mouseClick->button == sf::Mouse::Button::Right) {
                 sf::Vector2i mousePos = mouseClick->position;
@@ -87,10 +133,12 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
                 key_event curr_event("e");
                 graphic_engine.process_event(&curr_event);
             }
+        }else if (dynamic_cast<generic_event<item_move_data>*>(event)){
+            std::string item=dynamic_cast<generic_event<item_move_data>*>(event)->get_event_data().name;
+            machines.process_event(event);
         }else{
             graphic_engine.process_event(event);
         }
         delete event;
     }
 }
-
