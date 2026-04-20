@@ -26,9 +26,6 @@ class graphic_engine {
     float x_camera;
     float y_camera;
     float zoom_level;
-
-    bool build_mode=false;
-
     sf::RenderWindow& window;
     std::vector<sf::Texture> texture_maps;
     ui_system internal_ui_system;

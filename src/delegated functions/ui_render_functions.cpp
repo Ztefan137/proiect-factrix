@@ -13,6 +13,7 @@
 #include <iostream>
 
 #include "ui_item_tile.h"
+#include "ui_progress_bar.h"
 
 /*void ui_render_style_default(sf::RenderWindow &window,const float x,const float y,const float width,const float height){
     rect(window,static_cast<float>(x - std::floor(width  / 2)),static_cast<float>(y - std::floor(height / 2)),static_cast<float>(x + std::floor(width  / 2)),static_cast<float>(y + std::floor(height / 2)),sf::Color::Black);
@@ -95,4 +96,19 @@ void item_tile_grid_render_style_style1_opaque(sf::RenderWindow &window, const u
     auto edge_top=static_cast<float>(ui->get_y() - std::floor(ui->get_height() / 2));
     auto edge_bottom=static_cast<float>(ui->get_y() + std::floor(ui->get_height() / 2));
     rect(window,edge_left,edge_top,edge_right,edge_bottom,sf::Color(0x00,0x00,0x00,0x00));
+}
+
+void progress_bar_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui){
+
+    auto edge_left=static_cast<float>(ui->get_x() - std::floor(ui->get_width() / 2));
+    auto edge_right=static_cast<float>(ui->get_x() + std::floor(ui->get_width()  / 2));
+    auto edge_top=static_cast<float>(ui->get_y() - std::floor(ui->get_height() / 2));
+    auto edge_bottom=static_cast<float>(ui->get_y() + std::floor(ui->get_height() / 2));
+    auto width=static_cast<float>(ui->get_width());
+
+    rect(window,edge_left,edge_top,edge_right,edge_bottom,sf::Color(0x0a,0x0a,0x0a,0xff));
+    rect(window,edge_left+4,edge_top+4,edge_right-4,edge_bottom-2,sf::Color(0x3a,0x3a,0x3a,0xff));
+    rect(window,edge_left+4,edge_bottom,edge_right-4,edge_bottom-2,sf::Color(0x5a,0x5a,0x5a,0xff));
+
+    rect(window,edge_left+4,edge_top+4,edge_left+4+width*dynamic_cast<const ui_progress_bar*>(ui)->get_progress(),edge_bottom-4,dynamic_cast<const ui_progress_bar*>(ui)->get_color());
 }

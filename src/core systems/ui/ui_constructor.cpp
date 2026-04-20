@@ -15,6 +15,7 @@
 #include "ui_button.h"
 #include "ui_item_tile.h"
 #include "ui_item_tile_grid.h"
+#include "ui_progress_bar.h"
 #include "ui_section.h"
 
 inline void position_center_padding(float x_center,float y_center,float padding_left,float padding_right,float padding_top,float padding_bottom,float &new_x_center,float &new_y_center) {
@@ -91,7 +92,12 @@ void ui_constructor::construct_sub_ui_tree(ui * parent_ui, tinyxml2::XMLElement*
             child_ui=new ui_item_tile(x-0.5*width+flex_left_offset+80,y,100,100,nullptr);
             child_ui->set_type("item_tile");
             child_ui->set_bind_string(binding_string);
-            flex_left_offset+=120;
+            flex_left_offset+=210;
+        }else if (tag_name == "progress_bar") {
+            child_ui=new ui_progress_bar(x-0.5*width+flex_left_offset+80,y,300,80,sf::Color::Blue);
+            child_ui->set_type("progress_bar");
+            dynamic_cast<ui_progress_bar*>(child_ui)->advance_progress(0.5);
+            flex_left_offset+=180;
         }
         std::cout<<"tree constructed"<<std::endl;
         if (child_ui != nullptr) {

@@ -195,4 +195,5 @@ int chunk::peak_tile(int local_i, int local_j,std::string layer) {
     if (layer == "buildings") {
         return this->buildings[local_j*32+local_i];
     }
+    return -1;
 }

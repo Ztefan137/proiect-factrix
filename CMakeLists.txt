@@ -136,6 +136,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/entity_data.h
         src/machine_handler.cpp
         include/machine_handler.h
+        src/uis/ui_progress_bar.cpp
+        include/ui_progress_bar.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

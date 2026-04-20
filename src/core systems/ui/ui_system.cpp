@@ -55,7 +55,8 @@ void ui_system::configure_uis(std::string config_xml) {
     default_style.set_function("window",window_render_style_style1_opaque);
     default_style.set_function("section",section_render_style_style1_opaque);
     default_style.set_function("item_tile",item_tile_render_style_style1_opaque);
-    default_style.set_function("item_tile_grid",item_tile_grid_render_style_style1_opaque);\
+    default_style.set_function("item_tile_grid",item_tile_grid_render_style_style1_opaque);
+    default_style.set_function("progress_bar",progress_bar_render_style_style1_opaque);
 
     action_handler default_handler;
     default_handler.add_item_action("build_mode",open_build_mode);

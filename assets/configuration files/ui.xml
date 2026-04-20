@@ -26,6 +26,22 @@
             <item_tile bind="destination_pointer" action="player_item_transfer">
 
             </item_tile>
+            <progress_bar>
+
+            </progress_bar>
+        </section>
+    </window>
+    <window x="960" y="1800" width="300" height="800" name="Factrix" flex="false" padding="16">
+        <section flex="true" visible_ribbon="false" flex-direction="vertical" flex-gap="16" padding="16">
+            <button action="new_game" text="New game">
+
+            </button>
+            <button action="load_game" text="Load game">
+
+            </button>
+            <button action="quit_game" text="Quit game">
+
+            </button>
         </section>
     </window>
 </ui_list>
