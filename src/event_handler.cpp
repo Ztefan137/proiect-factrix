@@ -19,18 +19,24 @@
 
 void event_handler::process_events(sf::RenderWindow &window,graphic_engine &graphic_engine,build_system& build_system,chunk_loader& loader,player& player,machine_handler &machines) {
     bool shouldExit = false;
-    while(const std::optional event = window.pollEvent()) {
-        if (event->is<sf::Event::Closed>()) {
+    while(const std::optional curr_event = window.pollEvent()) {
+        if (curr_event->is<sf::Event::Closed>()) {
             window.close();
             std::cout << "Fereastra a fost închisă\n";
         }
-        else if (event->is<sf::Event::KeyPressed>()) {
-            const auto* keyPressed = event->getIf<sf::Event::KeyPressed>();
+        else if (curr_event->is<sf::Event::KeyPressed>()) {
+            const auto* keyPressed = curr_event->getIf<sf::Event::KeyPressed>();
             if(keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
-                if (graphic_engine.get_ui_system().visible_uis()) {
-                    graphic_engine.get_ui_system().close_uis();
-                    machines.close_machines();
-                }else {
+                if (graphic_engine.game_rendering_state() == 1) {
+                    if (graphic_engine.get_ui_system().visible_uis()) {
+                        graphic_engine.get_ui_system().close_uis();
+                        machines.close_machines();
+                    }else {
+                        graphic_engine.stop_game_rendering();
+                        generic_event<ui_idx_info> event({2});
+                        graphic_engine.process_event(&event);
+                    }
+                }else{
                     shouldExit = true;
                 }
             }else if (keyPressed->scancode == sf::Keyboard::Scancode::W) {
@@ -60,12 +66,12 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
             else if (keyPressed->scancode == sf::Keyboard::Scancode::LShift) {
                 build_system.set_on(false);
             }
-        }else if (event->is<sf::Event::MouseWheelScrolled>()) {
-            const auto* scroll = event->getIf<sf::Event::MouseWheelScrolled>();
+        }else if (curr_event->is<sf::Event::MouseWheelScrolled>()) {
+            const auto* scroll = curr_event->getIf<sf::Event::MouseWheelScrolled>();
             float delta = scroll->delta;
             graphic_engine.zoom(delta);
-        }else if (event->is<sf::Event::MouseButtonReleased>()) {
-            const auto* mouseClick = event->getIf<sf::Event::MouseButtonReleased>();
+        }else if (curr_event->is<sf::Event::MouseButtonReleased>()) {
+            const auto* mouseClick = curr_event->getIf<sf::Event::MouseButtonReleased>();
             if (mouseClick->button == sf::Mouse::Button::Left) {
                 if (build_system.get_on()) {
                     build_system.build();
@@ -136,6 +142,12 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
         }else if (dynamic_cast<generic_event<item_move_data>*>(event)){
             std::string item=dynamic_cast<generic_event<item_move_data>*>(event)->get_event_data().name;
             machines.process_event(event);
+        }else if (dynamic_cast<generic_event<simple_event_data>*>(event)){
+            int event_id=dynamic_cast<generic_event<simple_event_data>*>(event)->get_event_data().event_id;
+            if (event_id == 1) {
+                graphic_engine.start_game_rendering();
+                graphic_engine.get_ui_system().close_uis();
+            }
         }else{
             graphic_engine.process_event(event);
         }

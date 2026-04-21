@@ -31,6 +31,8 @@ class graphic_engine {
     ui_system internal_ui_system;
     float tile_size;
 
+    bool home_menu=true;
+
     std::queue <event*> event_queue;
 public:
     graphic_engine(chunk_loader &loader,build_system& builder,sf::RenderWindow &window);
@@ -50,6 +52,11 @@ public:
     void process_event(event* event);
     void render_player();
     void render_build_mode();
+    void render_game();
+    void render_home_menu();
+    void start_game_rendering();
+    void stop_game_rendering();
+    int game_rendering_state();
     ui_system& get_ui_system();
     event* get_event();
     sf::Vector2f get_mouse_coords();

@@ -10,7 +10,8 @@
 
 void rect(sf::RenderWindow& window_obj,float xi,float yi, float xf, float yf,sf::Color color);
 void text(sf::RenderWindow& window_obj,float x,float y,std::string text,bool bold);
+void center_text(sf::RenderWindow& window_obj, float x, float y, const std::string text, bool bold);
 void render_item(sf::RenderWindow& window_obj,float x,float y,item* type);
-void render_image(sf::RenderWindow& window_obj,float x,float y,float width,float height,std::string image);
+void render_image(sf::RenderWindow& window_obj,float x,float y,float width,float height,std::string image_path,bool bottom_right_anchor);
 void draw_selector(sf::RenderWindow& window, float x, float y, float size, float thickness, sf::Color color);
 #endif //OOP_GRAPHIC_FUNCTIONS_H

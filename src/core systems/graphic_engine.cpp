@@ -43,6 +43,9 @@ void graphic_engine::init_camera() {
     this->window.setView(camera);
     this->set_camera(x_camera,y_camera);
     this->set_zoom(zoom_level);
+
+    generic_event<ui_idx_info> curr_event({2});
+    this->internal_ui_system.process_event(&curr_event,&this->event_queue);
 }
 
 void graphic_engine::set_camera(float new_x_camera,float new_y_camera) {
@@ -206,19 +209,32 @@ void graphic_engine::render_build_mode() {
 
         //to do corectat pozitia mouseului
 
-        render_image(this->window,(tileX+1)*tile_size,(tileY+1)*tile_size,tile_size*width,tile_size*height,data.get_by_name(this->builder.get_item()).texture_path);
+        render_image(this->window,(tileX+1)*tile_size,(tileY+1)*tile_size,tile_size*width,tile_size*height,data.get_by_name(this->builder.get_item()).texture_path,true);
         this->builder.set_mouse_tiles(tileX+this->x_camera-21-1,tileY+this->y_camera-13-1);
         draw_selector(this->window,(tileX+1)*tile_size,(tileY+1)*tile_size,tile_size*data.get_by_name(this->builder.get_item()).graphic_width,1.f,this->builder.can_build()?sf::Color::Blue:sf::Color::Red);
         this->window.setView(ui_camera);
     }
 }
 
+void graphic_engine::render_game() {
+    this->render_player();
+    this->draw_chunks();
+}
+
+void graphic_engine::render_home_menu() {
+    this->window.setView(ui_camera);
+    sf::Vector2u windowSize = this->window.getSize();
+    const unsigned int screenWidth = windowSize.x;
+    const unsigned int screenHeight = windowSize.y;
+    render_image(this->window,0,0,screenWidth,screenHeight,"assets/wallpapers/wallpaper1.png",false);
+    render_image(this->window,(3.f/6.f)*screenWidth,screenHeight/2-500,1200,1000,"assets/wallpapers/logo.png",false);
+    //text(this->window,0,0,"Made by Stefan Denciu",false);
+}
 void graphic_engine::render() {
     this->window.clear(sf::Color::White);
     this->window.setView(camera);
-    this->render_player();
-    this->draw_chunks();
     //this->render_mouse_position();
+    this->home_menu?this->render_home_menu():this->render_game();
     this->window.setView(ui_camera);
     this->render_build_mode();
     this->render_uis();
@@ -285,4 +301,20 @@ ui_system &graphic_engine::get_ui_system() {
 
 sf::Vector2f graphic_engine::get_mouse_coords() {
     return window.mapPixelToCoords(sf::Mouse::getPosition(window),window.getView());
+}
+
+void graphic_engine::start_game_rendering() {
+    this->home_menu=false;
+}
+
+void graphic_engine::stop_game_rendering() {
+    this->home_menu=true;
+}
+
+int graphic_engine::game_rendering_state() {
+    if (this->home_menu) {
+        return 0;
+    }else {
+        return 1;
+    }
 }

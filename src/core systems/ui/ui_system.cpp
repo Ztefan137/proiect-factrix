@@ -57,12 +57,16 @@ void ui_system::configure_uis(std::string config_xml) {
     default_style.set_function("item_tile",item_tile_render_style_style1_opaque);
     default_style.set_function("item_tile_grid",item_tile_grid_render_style_style1_opaque);
     default_style.set_function("progress_bar",progress_bar_render_style_style1_opaque);
+    default_style.set_function("button",button_render_style_style1_opaque);
 
     action_handler default_handler;
     default_handler.add_item_action("build_mode",open_build_mode);
     default_handler.add_item_action("furnace_item_transfer",furnace_item_transfer);
+    default_handler.add_button_action("new_game",new_game);
+    default_handler.add_button_action("load_game",load_game);
+    default_handler.add_button_action("continue_game",continue_game);
+    default_handler.add_button_action("quit_game",quit_game);
     if (config_xml == "default") {
-
         sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
         const auto screenWidth = static_cast<float>(desktop.size.x);
         const auto screenHeight = static_cast<float>(desktop.size.y);

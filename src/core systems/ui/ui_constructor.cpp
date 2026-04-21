@@ -60,13 +60,25 @@ void ui_constructor::construct_sub_ui_tree(ui * parent_ui, tinyxml2::XMLElement*
             for (auto fraction:st::split(flex_template,'-')) {
                 flex_fractions.push_back(std::stof(fraction)/100);
             }
+            std::string flex_direction="horizontal";
+            if (parent->Attribute("flex-direction")) {
+                flex_direction=parent->Attribute("flex-direction");
+            }
             float gap=0.f;
             parent->QueryFloatAttribute("flex-gap", &gap);
-            float new_width=(width-static_cast<float>(flex_fractions.size()-1)*gap)*flex_fractions[child_index];
-            position_center_padding(x,y,flex_left_offset,width-flex_left_offset-new_width,0,0,x,y);
-            flex_left_offset+=new_width;
-            flex_left_offset+=gap;
-            width=new_width;
+            if (flex_direction == "horizontal") {
+                float new_width=(width-static_cast<float>(flex_fractions.size()-1)*gap)*flex_fractions[child_index];
+                position_center_padding(x,y,flex_left_offset,width-flex_left_offset-new_width,0,0,x,y);
+                flex_left_offset+=new_width;
+                flex_left_offset+=gap;
+                width=new_width;
+            }else {
+                float new_height=(height-static_cast<float>(flex_fractions.size()-1)*gap)*flex_fractions[child_index];
+                position_center_padding(x,y,0,0,flex_left_offset,height-flex_left_offset-new_height,x,y);
+                flex_left_offset+=new_height;
+                flex_left_offset+=gap;
+                height=new_height;
+            }
         }
 
         const char* bind_attr = child->Attribute("bind");
@@ -81,8 +93,6 @@ void ui_constructor::construct_sub_ui_tree(ui * parent_ui, tinyxml2::XMLElement*
             bool visible_ribbon=visible_ribbon_string=="true";
             child_ui=new ui_section(x,y,width,height,name,visible_ribbon); //NOLINT
             child_ui->set_type("section");
-        }else if (tag_name == "button") {
-            //child_ui=new ui_button(std::stof(child_ui_properties["x"]),std::stof(child_ui_properties["y"]),std::stof(child_ui_properties["width"]),std::stof(child_ui_properties["height"]),child_ui_properties["text"]);
         }else if (tag_name == "item_grid") {
             child_ui=new ui_item_tile_grid(x,y,width,height,7,7,100.f,nullptr);
             child_ui->set_type("item_tile_grid");
@@ -98,6 +108,11 @@ void ui_constructor::construct_sub_ui_tree(ui * parent_ui, tinyxml2::XMLElement*
             child_ui->set_type("progress_bar");
             dynamic_cast<ui_progress_bar*>(child_ui)->advance_progress(0.5);
             flex_left_offset+=180;
+        }else if (tag_name == "button") {
+            std::cout<<"button constructed"<<std::endl;
+            child_ui=new ui_button(x,y,width,height,child->Attribute("text"));
+            child_ui->set_type("button");
+            child_ui->set_action_string(action_string);
         }
         std::cout<<"tree constructed"<<std::endl;
         if (child_ui != nullptr) {

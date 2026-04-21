@@ -35,3 +35,22 @@ void player_item_transfer(std::queue<event *> *event_queue,item* item) {
     event* event=new generic_event<item_move_data>(info); //NOLINT
     event_queue->push(event);
 }
+
+void new_game(std::queue<event *> *event_queue) {
+    std::cout<<"mouse_clicked"<<std::endl;
+    simple_event_data info{1};
+    event* event=new generic_event<simple_event_data>(info); //NOLINT
+    event_queue->push(event);
+}
+
+void continue_game(std::queue<event *> *event_queue) {
+
+}
+
+void load_game(std::queue<event *> *event_queue) {
+
+}
+
+void quit_game(std::queue<event *> *event_queue) {
+    
+}

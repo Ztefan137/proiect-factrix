@@ -43,4 +43,8 @@ struct item_move_data {
     std::string to;
 };
 
+struct simple_event_data {
+    int event_id;
+};
+
 #endif //OOP_STRUCTURES_H

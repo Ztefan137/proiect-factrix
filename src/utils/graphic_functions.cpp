@@ -31,6 +31,23 @@ void text(sf::RenderWindow& window_obj,float x,float y,std::string text,bool bol
     window_obj.draw(text_obj);
 }
 
+void center_text(sf::RenderWindow& window_obj, float x, float y, std::string text, bool bold) {
+    static sf::Font normal_font;
+    static sf::Font bold_font;
+
+    if (!normal_font.openFromFile("assets/fonts/TitilliumWeb-Regular.ttf")){}
+    if (!bold_font.openFromFile("assets/fonts/TitilliumWeb-Bold.ttf")){}
+
+    sf::Text text_obj(bold ? bold_font : normal_font, text, 34);
+    text_obj.setFillColor(sf::Color::White);
+
+    sf::FloatRect text_rect = text_obj.getLocalBounds();
+
+    text_obj.setOrigin({text_rect.position.x + text_rect.size.x / 2.0f,text_rect.position.y + text_rect.size.y / 2.0f});
+
+    text_obj.setPosition({x, y});
+    window_obj.draw(text_obj);
+}
 void render_item(sf::RenderWindow &window_obj, float x, float y, item* item) {
     static std::unordered_map<std::string, sf::Texture> icons;
     static bool initialized = false;
@@ -63,28 +80,30 @@ void render_item(sf::RenderWindow &window_obj, float x, float y, item* item) {
         text(window_obj, x + ((item->get_quantity() >= 100 )? 40:58), y + 55, std::to_string(item->get_quantity()), true);
     }
 }
-void render_image(sf::RenderWindow& window_obj, float x, float y, float width, float height, std::string image_path) {
+void render_image(sf::RenderWindow& window_obj, float x, float y, float width, float height, const std::string image_path, bool bottom_right_anchor){
     static std::map<std::string, sf::Texture> texture_cache;
-
     auto it = texture_cache.find(image_path);
     if (it == texture_cache.end()) {
         sf::Texture new_texture;
-        if (!new_texture.loadFromFile(image_path)) {
-            return;
-        }
+        if (!new_texture.loadFromFile(image_path)) return;
         it = texture_cache.emplace(image_path, std::move(new_texture)).first;
     }
 
     sf::Sprite sprite(it->second);
-    sprite.setPosition({x - width, y - height});
+    if (bottom_right_anchor) sprite.setPosition({x - width, y - height});
+    else sprite.setPosition({x, y});
 
     sf::Vector2u texture_size = it->second.getSize();
     if (texture_size.x != 0 && texture_size.y != 0) {
-        sprite.setScale({width / static_cast<float>(texture_size.x), height / static_cast<float>(texture_size.y)});
+        sprite.setScale({
+            width  / static_cast<float>(texture_size.x),
+            height / static_cast<float>(texture_size.y)
+        });
     }
 
     window_obj.draw(sprite);
 }
+
 
 void draw_selector(sf::RenderWindow& window, float x, float y, float size, float scale, sf::Color color) {
     float ax = x - size;

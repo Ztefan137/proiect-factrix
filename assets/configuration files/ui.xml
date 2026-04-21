@@ -1,5 +1,5 @@
 <!-- wip -->
-<ui_list length="2">
+<ui_list length="3">
     <window x="1440" y="900" width="1800" height="1200" visible_ribbon="true" name="Character" exit_button="true" flex="true" padding="16" flex-gap="16" flex-template="50-50">
         <section visible_ribbon="true" name="Inventory" flex="false">
             <item_grid col_count="7" row_count="7" tile_size="100" bind="inventory_pointer" action="build_mode">
@@ -31,8 +31,11 @@
             </progress_bar>
         </section>
     </window>
-    <window x="960" y="1800" width="300" height="800" name="Factrix" flex="false" padding="16">
-        <section flex="true" visible_ribbon="false" flex-direction="vertical" flex-gap="16" padding="16">
+    <window x="700" y="900" width="600" height="800" name="Factrix" flex="false" padding="16" visible_ribbon="false" exit_button="true" flex-gap="16" flex-template="100">
+        <section flex="true" visible_ribbon="false" name="Sebastian" flex-direction="vertical" flex-gap="16" padding="16" flex-template="25-25-25-25">
+            <button action="continue_game" text="Continue game">
+
+            </button>
             <button action="new_game" text="New game">
 
             </button>

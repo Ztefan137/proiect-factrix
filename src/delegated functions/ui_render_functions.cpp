@@ -12,6 +12,7 @@
 
 #include <iostream>
 
+#include "ui_button.h"
 #include "ui_item_tile.h"
 #include "ui_progress_bar.h"
 
@@ -112,3 +113,56 @@ void progress_bar_render_style_style1_opaque(sf::RenderWindow &window, const ui*
 
     rect(window,edge_left+4,edge_top+4,edge_left+4+width*dynamic_cast<const ui_progress_bar*>(ui)->get_progress(),edge_bottom-4,dynamic_cast<const ui_progress_bar*>(ui)->get_color());
 }
+
+/*void button_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui)
+{
+    float edge_left=(ui->get_x() - std::floor(ui->get_width() / 2));
+    float edge_right=(ui->get_x() + std::floor(ui->get_width()  / 2));
+    float edge_top=(ui->get_y() - std::floor(ui->get_height() / 2));
+    float edge_bottom=(ui->get_y() + std::floor(ui->get_height() / 2));
+
+    rect(window, edge_left, edge_top+4, edge_right, edge_bottom, sf::Color(0x7a,0x7a,0x7a,0xff));
+    rect(window, edge_left+4, edge_top+4, edge_right-4, edge_bottom-4, sf::Color(0x9a,0x9a,0x9a,0xff));
+    rect(window, edge_left, edge_top, edge_right, edge_top+4, sf::Color(0xba,0xba,0xba,0xff));
+    center_text(window,ui->get_x(),ui->get_y(),dynamic_cast<const ui_button*>(ui)->get_string(),false);
+}*/
+
+void button_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui)
+{
+    float x1 = ui->get_x() - std::floor(ui->get_width()  / 2);
+    float x2 = ui->get_x() + std::floor(ui->get_width()  / 2);
+    float y1 = ui->get_y() - std::floor(ui->get_height() / 2);
+    float y2 = ui->get_y() + std::floor(ui->get_height() / 2);
+
+    // --- COLORS (warm desert metal palette) ---
+    sf::Color outer_dark(  60,  40,  25, 255); // deep bronze
+    sf::Color outer_light(120,  85,  50, 255); // warm sand metal
+    sf::Color inner_panel(165, 115,  70, 255); // desert copper
+    sf::Color highlight(255, 180,  90, 255);   // sunlit edge
+    sf::Color shadow(  20,  10,   5, 180);     // soft bottom shadow
+
+    // --- LAYER 1: Outer plate (dark frame) ---
+    rect(window, x1, y1, x2, y2, outer_dark);
+
+    // --- LAYER 2: Inner plate inset ---
+    rect(window, x1+3, y1+3, x2-3, y2-3, outer_light);
+
+    // --- LAYER 3: Main panel ---
+    rect(window, x1+6, y1+6, x2-6, y2-6, inner_panel);
+
+    // --- LAYER 4: Top highlight (sunlight) ---
+    rect(window, x1+6, y1+6, x2-6, y1+10, highlight);
+
+    // --- LAYER 5: Bottom shadow (depth) ---
+    rect(window, x1+6, y2-10, x2-6, y2-6, shadow);
+
+    // --- TEXT ---
+    center_text(
+        window,
+        ui->get_x(),
+        ui->get_y(),
+        dynamic_cast<const ui_button*>(ui)->get_string(),
+        false
+    );
+}
+
