@@ -58,6 +58,8 @@ void ui_system::configure_uis(std::string config_xml) {
     default_style.set_function("item_tile_grid",item_tile_grid_render_style_style1_opaque);
     default_style.set_function("progress_bar",progress_bar_render_style_style1_opaque);
     default_style.set_function("button",button_render_style_style1_opaque);
+    default_style.set_function("button_hover",button_render_style_style1_opaque_hover);
+    default_style.set_function("item_tile_hover",item_tile_render_style_style1_opaque_hover);
 
     action_handler default_handler;
     default_handler.add_item_action("build_mode",open_build_mode);
@@ -111,7 +113,11 @@ void ui_system::process_event(event* processed_event,std::queue<event*>* event_q
         for (auto &ui:this->ui_list) {
             if (!ui->get_visibility())
                 continue;
-            ui->check_click(me->get_mouse_x(),me->get_mouse_y(),event_queue);
+            if (me->is_clicked()) {
+                ui->check_click(me->get_mouse_x(),me->get_mouse_y(),event_queue);
+            }else {
+                ui->check_hover(me->get_mouse_x(),me->get_mouse_y());
+            }
         }
     }else if (auto* uoe = dynamic_cast<ui_event*>(processed_event)) {
         this->ui_list[uoe->get_index()]->bind(uoe->get_binder());

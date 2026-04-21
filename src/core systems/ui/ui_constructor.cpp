@@ -79,7 +79,15 @@ void ui_constructor::construct_sub_ui_tree(ui * parent_ui, tinyxml2::XMLElement*
                 flex_left_offset+=gap;
                 height=new_height;
             }
+        }else {
+            if (child->Attribute("x") && child->Attribute("y")) {
+                x-=width/2;
+                y-=height/2;
+                x+=std::stof(child->Attribute("x"));
+                y+=std::stof(child->Attribute("y"));
+            }
         }
+
 
         const char* bind_attr = child->Attribute("bind");
         std::string binding_string = bind_attr ? bind_attr : "";
@@ -99,7 +107,7 @@ void ui_constructor::construct_sub_ui_tree(ui * parent_ui, tinyxml2::XMLElement*
             child_ui->set_bind_string(binding_string);
             child_ui->set_action_string(action_string);
         }else if (tag_name == "item_tile") {
-            child_ui=new ui_item_tile(x-0.5*width+flex_left_offset+80,y,100,100,nullptr);
+            child_ui=new ui_item_tile(x,y,100,100,nullptr);
             child_ui->set_type("item_tile");
             child_ui->set_bind_string(binding_string);
             flex_left_offset+=210;
@@ -143,12 +151,10 @@ std::vector<ui *> ui_constructor::construct_from_xml(std::string &config_xml) {
     tinyxml2::XMLError err=doc.LoadFile(config_xml.c_str());
     if (err) {}
     tinyxml2::XMLElement* pRoot = doc.FirstChildElement("ui_list");
-    tinyxml2::XMLElement* curr_ui=pRoot->FirstChildElement();
-    std::string ui_count_text(pRoot->Attribute("length"));
-    for (int i=0;i<std::stoi(ui_count_text);i++) {
-        std::cout<<"ui:"<<i+1<<"/"<<ui_count_text<<std::endl;
+    int cnt=0;
+    for (tinyxml2::XMLElement* curr_ui = pRoot->FirstChildElement(); curr_ui != nullptr; curr_ui = curr_ui->NextSiblingElement(),cnt++) {
+        std::cout<<"ui: "<<cnt+1<<std::endl;
         uis.push_back(this->construct_ui(curr_ui));
-        curr_ui=curr_ui->NextSiblingElement();
     }
     return uis; // NOLINT
 }

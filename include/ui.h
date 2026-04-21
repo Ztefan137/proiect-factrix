@@ -24,6 +24,7 @@ protected:
     std::string bind_string="";
     std::string action_string="";
     action_handler internal_action_handler;
+    bool hovered=false;
 public:
     ui();
     ui(float x,float y,float width,float height);
@@ -34,8 +35,8 @@ public:
     void set_visibility(bool new_visibility);
     void show();
     void hide();
-    void render(sf::RenderWindow &window) const;
-    void render_self(sf::RenderWindow &window) const;
+    void render(sf::RenderWindow &window);
+    virtual void render_self(sf::RenderWindow &window);
     float get_x() const;
     float get_y() const;
     float get_width() const;
@@ -43,6 +44,7 @@ public:
     bool get_visibility() const;
     bool is_mouse_inside(float x_mouse,float y_mouse);
     void check_click(float x_mouse,float y_mouse,std::queue<event*>* event_queue);
+    void check_hover(float x_mouse,float y_mouse);
 
     void set_bind_string(std::string new_bind_string);
     virtual void set_action_string(std::string new_action_string);

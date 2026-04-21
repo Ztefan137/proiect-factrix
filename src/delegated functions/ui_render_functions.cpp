@@ -91,6 +91,20 @@ void item_tile_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui
     render_item(window,edge_left,edge_top,dynamic_cast<const ui_item_tile*>(ui)->get_item());
 }
 
+void item_tile_render_style_style1_opaque_hover(sf::RenderWindow &window, const ui* ui) {
+    auto edge_left=static_cast<float>(ui->get_x() - std::floor(ui->get_width() / 2));
+    auto edge_right=static_cast<float>(ui->get_x() + std::floor(ui->get_width()  / 2));
+    auto edge_top=static_cast<float>(ui->get_y() - std::floor(ui->get_height() / 2));
+    auto edge_bottom=static_cast<float>(ui->get_y() + std::floor(ui->get_height() / 2));
+
+    rect(window,edge_left,edge_top,edge_right,edge_bottom,sf::Color(0x80,0x19,0x00,0xff));
+    rect(window,edge_left+2,edge_top+2,edge_right-2,edge_bottom-2,sf::Color(0xcc,0x28,0x00,0xff));
+    rect(window,edge_left+6,edge_top+6,edge_right-6,edge_bottom-6,sf::Color(0xe5,0x2d,0x00,0xff));
+    rect(window,edge_left+10,edge_top+10,edge_right-10,edge_bottom-10,sf::Color(0xff,0x33,0x00,0xff));
+    rect(window,edge_left,edge_bottom,edge_right,edge_bottom-2,sf::Color(0xff,0x55,0x00,0xff));
+    render_item(window,edge_left,edge_top,dynamic_cast<const ui_item_tile*>(ui)->get_item());
+}
+
 void item_tile_grid_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui) {
     auto edge_left=static_cast<float>(ui->get_x() - std::floor(ui->get_width() / 2));
     auto edge_right=static_cast<float>(ui->get_x() + std::floor(ui->get_width()  / 2));
@@ -114,7 +128,7 @@ void progress_bar_render_style_style1_opaque(sf::RenderWindow &window, const ui*
     rect(window,edge_left+4,edge_top+4,edge_left+4+width*dynamic_cast<const ui_progress_bar*>(ui)->get_progress(),edge_bottom-4,dynamic_cast<const ui_progress_bar*>(ui)->get_color());
 }
 
-/*void button_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui)
+void button_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui)
 {
     float edge_left=(ui->get_x() - std::floor(ui->get_width() / 2));
     float edge_right=(ui->get_x() + std::floor(ui->get_width()  / 2));
@@ -125,44 +139,18 @@ void progress_bar_render_style_style1_opaque(sf::RenderWindow &window, const ui*
     rect(window, edge_left+4, edge_top+4, edge_right-4, edge_bottom-4, sf::Color(0x9a,0x9a,0x9a,0xff));
     rect(window, edge_left, edge_top, edge_right, edge_top+4, sf::Color(0xba,0xba,0xba,0xff));
     center_text(window,ui->get_x(),ui->get_y(),dynamic_cast<const ui_button*>(ui)->get_string(),false);
-}*/
+}
 
-void button_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui)
+void button_render_style_style1_opaque_hover(sf::RenderWindow &window, const ui* ui)
 {
-    float x1 = ui->get_x() - std::floor(ui->get_width()  / 2);
-    float x2 = ui->get_x() + std::floor(ui->get_width()  / 2);
-    float y1 = ui->get_y() - std::floor(ui->get_height() / 2);
-    float y2 = ui->get_y() + std::floor(ui->get_height() / 2);
+    float edge_left=(ui->get_x() - std::floor(ui->get_width() / 2));
+    float edge_right=(ui->get_x() + std::floor(ui->get_width()  / 2));
+    float edge_top=(ui->get_y() - std::floor(ui->get_height() / 2));
+    float edge_bottom=(ui->get_y() + std::floor(ui->get_height() / 2));
 
-    // --- COLORS (warm desert metal palette) ---
-    sf::Color outer_dark(  60,  40,  25, 255); // deep bronze
-    sf::Color outer_light(120,  85,  50, 255); // warm sand metal
-    sf::Color inner_panel(165, 115,  70, 255); // desert copper
-    sf::Color highlight(255, 180,  90, 255);   // sunlit edge
-    sf::Color shadow(  20,  10,   5, 180);     // soft bottom shadow
-
-    // --- LAYER 1: Outer plate (dark frame) ---
-    rect(window, x1, y1, x2, y2, outer_dark);
-
-    // --- LAYER 2: Inner plate inset ---
-    rect(window, x1+3, y1+3, x2-3, y2-3, outer_light);
-
-    // --- LAYER 3: Main panel ---
-    rect(window, x1+6, y1+6, x2-6, y2-6, inner_panel);
-
-    // --- LAYER 4: Top highlight (sunlight) ---
-    rect(window, x1+6, y1+6, x2-6, y1+10, highlight);
-
-    // --- LAYER 5: Bottom shadow (depth) ---
-    rect(window, x1+6, y2-10, x2-6, y2-6, shadow);
-
-    // --- TEXT ---
-    center_text(
-        window,
-        ui->get_x(),
-        ui->get_y(),
-        dynamic_cast<const ui_button*>(ui)->get_string(),
-        false
-    );
+    //rect(window, edge_left, edge_top+4, edge_right, edge_bottom, sf::Color(0x7a,0x7a,0x7a,0xff));
+    rect(window, edge_left+4, edge_top+4, edge_right-4, edge_bottom-4, sf::Color(0xff,0x33,0x00,0xff));
+    //rect(window, edge_left, edge_top, edge_right, edge_top+4, sf::Color(0xba,0xba,0xba,0xff));
+    center_text(window,ui->get_x(),ui->get_y(),dynamic_cast<const ui_button*>(ui)->get_string(),false);
 }
 

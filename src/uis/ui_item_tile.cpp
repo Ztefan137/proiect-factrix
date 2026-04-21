@@ -11,10 +11,7 @@ ui_item_tile::ui_item_tile(float x,float y,float width,float height,item *new_it
 }
 
 void ui_item_tile::bind_data(ui_binder *binder) {
-    if (!this->internal_item) {
-        //std::cout<<binder->get<item>(this->bind_string)->get_name()<<"\n";
-        this->internal_item = binder->get<item>(this->bind_string);
-    }
+    this->internal_item = binder->get<item>(this->bind_string);
 }
 
 void ui_item_tile::set_item(item * new_item) {

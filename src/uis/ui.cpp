@@ -63,20 +63,21 @@ void ui::set_visibility(bool new_visibility) {
 void ui::add_sub_ui(ui* new_sub_ui) {
     this->sub_uis.push_back(new_sub_ui);
 }
-void ui::render(sf::RenderWindow& window) const{
-    std::vector<const ui*> to_render;
+void ui::render(sf::RenderWindow& window){
+    std::vector<ui*> to_render;
     to_render.push_back(this);
     while (!to_render.empty()) {
-        const ui* current = to_render.back();
+        ui* current = to_render.back();
         to_render.pop_back();
         current->render_self(window);
-        for (const auto* sub_ui : current->sub_uis) {
+        for (auto* sub_ui : current->sub_uis) {
             to_render.push_back(sub_ui);
         }
     }
 }
-void ui::render_self(sf::RenderWindow& window) const{
-    this->internal_ui_style.render(this->ui_type,window,this);
+void ui::render_self(sf::RenderWindow& window){
+    this->internal_ui_style.render(this->hovered?(this->ui_type+"_hover"):this->ui_type,window,this);
+    this->hovered=false;
 }
 float ui::get_x() const {
     return this->x;
@@ -103,8 +104,10 @@ void ui::show() {
 
 void ui::bind(ui_binder* binder){
     this->bind_data(binder);
-    for (auto* sub_ui:sub_uis) {
-        sub_ui->bind(binder);
+    for (auto* sub_ui:sub_uis){
+        if (this -> ui_type != "item_tile_grid") {
+            sub_ui->bind(binder);
+        }
     }
 }
 
@@ -139,6 +142,22 @@ void ui::check_click(float x_mouse,float y_mouse,std::queue<event*>* event_queue
             std::cout<<"Clicked button";
             this->internal_action_handler.call_button(this->action_string,event_queue);
         }
+    }
+}
+
+void ui::check_hover(float x_mouse, float y_mouse) {
+    if (!this->is_mouse_inside(x_mouse, y_mouse))
+        return;
+
+    for (auto& ui : this->sub_uis) {
+        if (ui->is_mouse_inside(x_mouse, y_mouse)) {
+            ui->check_hover(x_mouse, y_mouse);
+            return;
+        }
+    }
+    std::cout<<"Deepest UI element hovered: " << this->ui_type << "\n";
+    if (this->ui_type == "item_tile"|| this->ui_type == "button") {
+        this->hovered=true;
     }
 }
 

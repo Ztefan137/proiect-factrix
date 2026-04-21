@@ -16,19 +16,24 @@
 
             </item_grid>
         </section>
-        <section visible_ribbon="true" name="Furnace" flex="false">
-            <item_tile bind="fuel_pointer">
+        <section visible_ribbon="true" name="Furnace" flex="true" flex-gap="8" padding="0" flex-direction="vertical" flex-template="50-50">
+            <section visible_ribbon="false" name="Furnace-section1" flex="false">
+
+            </section>
+            <section visible_ribbon="false" name="Furnace-section1" flex="false">
+            <item_tile bind="fuel_pointer" x="150" y="300">
 
             </item_tile>
-            <item_tile bind="source_pointer">
+            <item_tile bind="source_pointer" x="150" y="150">
 
             </item_tile>
-            <item_tile bind="destination_pointer" action="player_item_transfer">
+            <item_tile bind="destination_pointer" action="player_item_transfer" x="450" y="150">
 
             </item_tile>
             <progress_bar>
 
             </progress_bar>
+            </section>
         </section>
     </window>
     <window x="700" y="900" width="600" height="800" name="Factrix" flex="false" padding="16" visible_ribbon="false" exit_button="true" flex-gap="16" flex-template="100">

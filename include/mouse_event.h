@@ -11,12 +11,14 @@ class mouse_event : public event{
     std::string type="key_event";
     float mouse_x,mouse_y;
     sf::View* view=nullptr;
+    bool clicked=false;
 public:
     mouse_event(float mouse_x,float mouse_y,bool clicked,sf::View* view);
     float get_mouse_x();
     float get_mouse_y();
     void set_view(sf::View* view);
     sf::View* get_view();
+    bool is_clicked();
 };
 
 

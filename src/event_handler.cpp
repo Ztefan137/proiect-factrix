@@ -87,6 +87,8 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
                         int tileX=0;
                         int tileY=0;
                         int tile=0;
+                        int entityX=0;
+                        int entityY=0;
                         for (int i=0;i<3;i++) {
                             for (int j=0;j<3;j++) {
                                 tileX = ((world_pos.x) / tile_size)+player.get_x()-23+i;
@@ -106,6 +108,7 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
                                 furnace_binder.set<item>("inventory_pointer",player.get_inventory());
                                 machines.open_machine(tileX,tileY);
                                 machine* interacted_machine=(machines.get_machine(tileX,tileY));
+                                std::cout<<dynamic_cast<furnace_prototype*>(interacted_machine)->get_fuel()<<" "<<dynamic_cast<furnace_prototype*>(interacted_machine)->get_source()<<" "<<dynamic_cast<furnace_prototype*>(interacted_machine)->get_destination()<<std::endl;
                                 furnace_binder.set<item>("fuel_pointer",dynamic_cast<furnace_prototype*>(interacted_machine)->get_fuel());
                                 furnace_binder.set<item>("source_pointer",dynamic_cast<furnace_prototype*>(interacted_machine)->get_source());
                                 furnace_binder.set<item>("destination_pointer",dynamic_cast<furnace_prototype*>(interacted_machine)->get_destination());
@@ -153,4 +156,7 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
         }
         delete event;
     }
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    mouse_event curr_event(mousePos.x, mousePos.y,false,nullptr);
+    graphic_engine.process_event(&curr_event);
 }

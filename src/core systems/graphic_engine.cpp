@@ -263,7 +263,7 @@ void graphic_engine::process_event(event* event) {
     }else if (auto* me = dynamic_cast<mouse_event*>(event)) {
         me->set_view(&this->ui_camera);
         sf::Vector2f pos = window.mapPixelToCoords({ static_cast<int>(me->get_mouse_x()), static_cast<int>(me->get_mouse_y())},this->ui_camera);
-        mouse_event new_me(pos.x,pos.y,true,nullptr);
+        mouse_event new_me(pos.x,pos.y,me->is_clicked(),nullptr);
         me=&new_me;
         this->internal_ui_system.process_event(me,&this->event_queue);
     }else if (auto* uoe = dynamic_cast<ui_event*>(event)) {
