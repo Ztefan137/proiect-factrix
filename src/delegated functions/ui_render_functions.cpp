@@ -25,7 +25,7 @@ void window_render_style_1(sf::RenderWindow &window,const float x,const float y,
 void window_render_style_teststyle(sf::RenderWindow &window,const float x,const float y,const float width,const float height) {
     rect(window,static_cast<float>(x - std::floor(width  / 2)),static_cast<float>(y - std::floor(height / 2)),static_cast<float>(x + std::floor(width  / 2)),static_cast<float>(y + std::floor(height / 2)),sf::Color::Blue);
 }*/
-void ui_render_style_test1(sf::RenderWindow &window,const ui* ui){
+void ui_render_style_test1(sf::RenderWindow &window,const ui* ui) {
     auto edge_left=static_cast<float>(ui->get_x() - std::floor(ui->get_width() / 2));
     auto edge_right=static_cast<float>(ui->get_x() + std::floor(ui->get_width()  / 2));
     auto edge_top=static_cast<float>(ui->get_y() - std::floor(ui->get_height() / 2));
@@ -35,8 +35,7 @@ void ui_render_style_test1(sf::RenderWindow &window,const ui* ui){
     rect(window,edge_left,edge_top,edge_right,edge_top+4,sf::Color(0x6a,0x6a,0x6a,0xaa));
     text(window,edge_left+40,edge_top+40,"Test ui",false);
 }
-void window_render_style_style1(sf::RenderWindow &window, const ui* ui)
-{
+void window_render_style_style1(sf::RenderWindow &window, const ui* ui) {
     auto edge_left=static_cast<float>(ui->get_x() - std::floor(ui->get_width() / 2));
     auto edge_right=static_cast<float>(ui->get_x() + std::floor(ui->get_width()  / 2));
     auto edge_top=static_cast<float>(ui->get_y() - std::floor(ui->get_height() / 2));
@@ -47,8 +46,7 @@ void window_render_style_style1(sf::RenderWindow &window, const ui* ui)
     rect(window, edge_left, edge_top+60, edge_right, edge_top+62, sf::Color(0x1a,0x1a,0x1a,0xaa));
     text(window, edge_left + 15, edge_top + 10, dynamic_cast<const ui_window*>(ui)->get_window_name(),false);
 }
-void window_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui)
-{
+void window_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui) {
     float edge_left=(ui->get_x() - std::floor(ui->get_width() / 2));
     float edge_right=(ui->get_x() + std::floor(ui->get_width()  / 2));
     float edge_top=(ui->get_y() - std::floor(ui->get_height() / 2));
@@ -60,7 +58,7 @@ void window_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui)
     rect(window, edge_left+4, edge_top+62, edge_right-4, edge_top+64, sf::Color(0x4a,0x4a,0x4a,0xff));
     text(window, edge_left + 15, edge_top + 10, dynamic_cast<const ui_window*>(ui)->get_window_name(),true);
 }
-void section_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui){
+void section_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui) {
 
     auto edge_left=static_cast<float>(ui->get_x() - std::floor(ui->get_width() / 2));
     auto edge_right=static_cast<float>(ui->get_x() + std::floor(ui->get_width()  / 2));
@@ -154,3 +152,16 @@ void button_render_style_style1_opaque_hover(sf::RenderWindow &window, const ui*
     center_text(window,ui->get_x(),ui->get_y(),dynamic_cast<const ui_button*>(ui)->get_string(),false);
 }
 
+void item_sticker_style_style1_opaque(sf::RenderWindow &window, const ui* ui) {
+    auto edge_left=static_cast<float>(ui->get_x() - std::floor(ui->get_width() / 2));
+    auto edge_right=static_cast<float>(ui->get_x() + std::floor(ui->get_width()  / 2));
+    auto edge_top=static_cast<float>(ui->get_y() - std::floor(ui->get_height() / 2));
+    auto edge_bottom=static_cast<float>(ui->get_y() + std::floor(ui->get_height() / 2));
+
+    rect(window,edge_left,edge_top,edge_right,edge_bottom,sf::Color(0x2a,0x2a,0x2a,0xff));
+    rect(window,edge_left,edge_top,edge_right,edge_top-4,sf::Color(0x5a,0x5a,0x5a,0xff));
+    rect(window,edge_left+2,edge_bottom,edge_right-2,edge_bottom+4,sf::Color(0x0a,0x0a,0x0a,0xff));
+    rect(window,edge_left,edge_top+4,edge_left+4,edge_bottom-4,sf::Color(0x20,0x20,0x20,0xff));
+    rect(window,edge_right-4,edge_top+4,edge_right,edge_bottom-4,sf::Color(0x20,0x20,0x20,0xff));
+    //render_item(window,edge_left,edge_top,dynamic_cast<const ui_item_element*>(ui)->get_item());
+}

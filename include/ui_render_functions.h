@@ -22,4 +22,5 @@ void item_tile_grid_render_style_style1_opaque(sf::RenderWindow &window, const u
 void progress_bar_render_style_style1_opaque(sf::RenderWindow &window, const ui* ui);
 void button_render_style_style1_opaque(sf::RenderWindow &window,const ui* ui);
 void button_render_style_style1_opaque_hover(sf::RenderWindow &window,const ui* ui);
+void item_sticker_style_style1_opaque(sf::RenderWindow &window, const ui* ui);
 #endif //OOP_UI_RENDER_FUNCTIONS_H

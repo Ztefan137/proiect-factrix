@@ -13,6 +13,7 @@ class player {
     float x=0;
     float y=0;
     std::vector<item> inventory;
+    float mining_progress=0.f;
 public:
     player(float x,float y);
     void move(float dx,float dy,chunk_loader& loader);
@@ -21,6 +22,9 @@ public:
     item* get_inventory();
     void add_item(std::string type,int count);
     void remove_item(std::string type,int count);
+    bool has_item(std::string type);
+    void mine(float dp);
+    bool has_mined();
 };
 
 

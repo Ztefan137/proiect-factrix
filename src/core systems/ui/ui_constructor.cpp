@@ -13,6 +13,7 @@
 #include <map>
 #include "string_functions.h"
 #include "ui_button.h"
+#include "ui_item_sticker.h"
 #include "ui_item_tile.h"
 #include "ui_item_tile_grid.h"
 #include "ui_progress_bar.h"
@@ -102,7 +103,7 @@ void ui_constructor::construct_sub_ui_tree(ui * parent_ui, tinyxml2::XMLElement*
             child_ui=new ui_section(x,y,width,height,name,visible_ribbon); //NOLINT
             child_ui->set_type("section");
         }else if (tag_name == "item_grid") {
-            child_ui=new ui_item_tile_grid(x,y,width,height,7,7,100.f,nullptr);
+            child_ui=new ui_item_tile_grid(x,y,width,height,7,9,100.f,nullptr);
             child_ui->set_type("item_tile_grid");
             child_ui->set_bind_string(binding_string);
             child_ui->set_action_string(action_string);
@@ -120,6 +121,11 @@ void ui_constructor::construct_sub_ui_tree(ui * parent_ui, tinyxml2::XMLElement*
             std::cout<<"button constructed"<<std::endl;
             child_ui=new ui_button(x,y,width,height,child->Attribute("text"));
             child_ui->set_type("button");
+            child_ui->set_action_string(action_string);
+        }else if (tag_name == "item_sticker") {
+            std::cout<<"item_sticker constructed"<<std::endl;
+            child_ui=new ui_item_sticker(x,y,100,100,nullptr);
+            child_ui->set_type("item_sticker");
             child_ui->set_action_string(action_string);
         }
         std::cout<<"tree constructed"<<std::endl;

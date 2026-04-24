@@ -155,7 +155,6 @@ void ui::check_hover(float x_mouse, float y_mouse) {
             return;
         }
     }
-    std::cout<<"Deepest UI element hovered: " << this->ui_type << "\n";
     if (this->ui_type == "item_tile"|| this->ui_type == "button") {
         this->hovered=true;
     }

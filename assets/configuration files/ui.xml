@@ -6,8 +6,10 @@
 
             </item_grid>
         </section>
-        <section visible_ribbon="true" name="Crafting">
+        <section visible_ribbon="true" name="Crafting" flex="false">
+            <item_sticker x="120" y="120">
 
+            </item_sticker>
         </section>
     </window>
     <window x="1440" y="900" width="1800" height="1200" visible_ribbon="true" name="Character" exit_button="true" flex="true" padding="16" flex-gap="16" flex-template="50-50">

@@ -10,7 +10,7 @@
 #include "entity_data.h"
 #include "furnace_prototype.h"
 
-build_system::build_system(chunk_loader &loader,machine_handler &machine_handler) : loader(loader),machines(machine_handler){
+build_system::build_system(chunk_loader &loader,machine_handler &machine_handler,player &player) : loader(loader),machines(machine_handler) , player_instance(player){
 
 }
 
@@ -41,6 +41,9 @@ bool build_system::can_build() {
             }
         }
     }
+    if (!player_instance.has_item(this->item)) {
+        return false;
+    }
     return !collision_found;
 }
 
@@ -54,5 +57,6 @@ void build_system::build(){
         entity_data data;
         this->loader.add_building(data.get_by_name(this->item).id,this->mouse_tile_x,this->mouse_tile_y);
         this->machines.add_machine(new furnace_prototype(),this->mouse_tile_x,this->mouse_tile_y);
+        player_instance.remove_item(this->item,1);
     }
 }

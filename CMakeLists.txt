@@ -138,6 +138,10 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/machine_handler.h
         src/uis/ui_progress_bar.cpp
         include/ui_progress_bar.h
+        src/uis/ui_item_sticker.cpp
+        include/ui_item_sticker.h
+        src/uis/ui_item_element.cpp
+        include/ui_item_element.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

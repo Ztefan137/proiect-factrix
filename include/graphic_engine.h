@@ -60,6 +60,7 @@ public:
     ui_system& get_ui_system();
     event* get_event();
     sf::Vector2f get_mouse_coords();
+    float get_tile_size();
 };
 
 

@@ -10,7 +10,7 @@
 #include "entity_data.h"
 #include "event_handler.h"
 
-game_engine::game_engine() : build_system(loader,machine_handler),g_engine(loader,build_system,window), player(0.f,0.f), machine_handler(player){
+game_engine::game_engine() : build_system(loader,machine_handler,player),g_engine(loader,build_system,window), player(0.f,0.f), machine_handler(player){
 }
 
 game_engine::~game_engine() {
@@ -52,6 +52,13 @@ void game_engine::update(float dt) {
 
     while (accumulator >= tick_interval) {
         this->machine_handler.update_machines();
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right)) {
+            mining_info info;
+            info.tile_x = (this->g_engine.get_mouse_coords().x / this->g_engine.get_tile_size())+player.get_x()-23;
+            info.tile_y= (this->g_engine.get_mouse_coords().y / this->g_engine.get_tile_size())+player.get_y()-14;
+            event* event=new generic_event<mining_info>(info);
+            this->handler.add_event(event);
+        }
         accumulator -= tick_interval;
     }
 }

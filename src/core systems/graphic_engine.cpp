@@ -300,7 +300,11 @@ ui_system &graphic_engine::get_ui_system() {
 }
 
 sf::Vector2f graphic_engine::get_mouse_coords() {
-    return window.mapPixelToCoords(sf::Mouse::getPosition(window),window.getView());
+    sf::View curr_view = this->window.getView();
+    this->window.setView(camera);
+    sf::Vector2f mouse_coords=window.mapPixelToCoords(sf::Mouse::getPosition(window),window.getView());
+    this->window.setView(curr_view);
+    return mouse_coords;
 }
 
 void graphic_engine::start_game_rendering() {
@@ -317,4 +321,8 @@ int graphic_engine::game_rendering_state() {
     }else {
         return 1;
     }
+}
+
+float graphic_engine::get_tile_size() {
+    return this->tile_size;
 }

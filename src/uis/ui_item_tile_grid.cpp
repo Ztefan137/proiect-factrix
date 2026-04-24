@@ -14,7 +14,7 @@ ui_item_tile_grid::ui_item_tile_grid(float x, float y, float width, float height
     this->tile_size = tile_size;
     for (int i=0;i<rows;i++) {
         for (int j=0;j<cols;j++) {
-            ui* grid_tile=new ui_item_tile(x-3*120+j*120,y-3*120+i*120,tile_size,tile_size,reference);
+            ui* grid_tile=new ui_item_tile(x-3*120+j*120,y-4*110+i*110,tile_size,tile_size,reference);
             grid_tile->set_type("item_tile");
             if (reference != nullptr) {
                 reference++;

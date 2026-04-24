@@ -53,18 +53,22 @@ void world_generator::generate_chunk(int i_chunk, int j_chunk, int ground[], int
             bool biome_2=(temperature>-0.5 && temperature<1) && (aridity<-0.3 && aridity>-1);
             bool biome_5=(temperature>-1 && temperature<-0.5) && (aridity<-0.3 && aridity>-1);
             ground[i*32+j]=(elevation>-0.5)*(1*biome_1+2*biome_2+3*biome_3+(floor(seededRand(i,j,this->seed)*16)+20)*biome_4+5*biome_5);
-            float ore=ore_noise.value2(tile_x/100,tile_y/100,1,0.2,6,0.5,2);
-            float ore2=ore_noise2.value2(tile_x/100,tile_y/100,1,0.2,6,0.5,2);
-            //int decided_ore=static_cast<int>(ore>0.39 && ore2<-0.39)*6+static_cast<int>(ore>0.39 && ore2>0.39)*7+static_cast<int>(ore<-0.39 && ore2<-0.39)*8;
+            float ore=ore_noise.value2(tile_x/64,tile_y/64,1,0.7,6,0.5,2);
+            float ore2=ore_noise2.value2(tile_x/64,tile_y/64,1,0.75,6,0.5,2);
+            int decided_ore = 0;
 
-            int decided_ore = 0; // Default: no ore
-
-            if (ore > 0.39f) {
-                if (ore2 < -0.39f)      decided_ore = 6;
-                else if (ore2 > 0.39f)  decided_ore = 7;
+            if (ore > 0.38f) {
+                if (ore2 < -0.38f) {
+                    decided_ore = 6;
+                }
+                else if (ore2 > 0.38f){
+                    decided_ore = 7;
+                }
             }
-            else if (ore < -0.39f) {
-                if (ore2 < -0.39f)      decided_ore = 8;
+            else if (ore < -0.38f) {
+                if (ore2 < -0.38f) {
+                    decided_ore = 8;
+                }
             }
 
             float forest=forest_noise.value2(tile_x/100,tile_y/100,1,0.4,3,0.5,2);

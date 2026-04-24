@@ -47,4 +47,8 @@ struct simple_event_data {
     int event_id;
 };
 
+struct mining_info {
+    int tile_x=0,tile_y=0;
+};
+
 #endif //OOP_STRUCTURES_H

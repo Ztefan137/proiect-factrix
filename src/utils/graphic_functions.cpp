@@ -77,7 +77,7 @@ void render_item(sf::RenderWindow &window_obj, float x, float y, item* item) {
     sprite->setScale({scale, scale});
     window_obj.draw(*sprite);
     if (item->get_quantity() > 1) {
-        text(window_obj, x + ((item->get_quantity() >= 100 )? 40:58), y + 55, std::to_string(item->get_quantity()), true);
+        text(window_obj, x + ((item->get_quantity() >= 100 )? 40:((item->get_quantity() >= 10 )? 58:76)), y + 55, std::to_string(item->get_quantity()), true);
     }
 }
 void render_image(sf::RenderWindow& window_obj, float x, float y, float width, float height, const std::string image_path, bool bottom_right_anchor){

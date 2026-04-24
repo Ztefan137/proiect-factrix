@@ -17,8 +17,9 @@ class build_system {
     int mouse_tile_x=0;
     int mouse_tile_y=0;
     machine_handler &machines;
+    player &player_instance;
 public:
-    build_system(chunk_loader &loader,machine_handler &machine_handler);
+    build_system(chunk_loader &loader,machine_handler &machine_handler,player &player);
     void set_item(std::string item);
     void set_on(bool on);
     std::string get_item();

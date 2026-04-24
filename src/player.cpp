@@ -9,7 +9,7 @@
 player::player(float x, float y) {
     this->x = x;
     this->y = y;
-    this->inventory.resize(50);
+    this->inventory.resize(70);
     this->add_item("iron_ore",110);
 }
 
@@ -75,4 +75,26 @@ void player::remove_item(std::string type, int count) {
             ++it;
         }
     }
+}
+
+bool player::has_item(std::string type) {
+    for (const auto &it : this->inventory) {
+        if (it.get_name() == type && it.get_quantity() > 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+void player::mine(float dp) {
+    this->mining_progress+=dp;
+}
+
+bool player::has_mined() {
+    if (this->mining_progress > 1) {
+        this->mining_progress = 0;
+        return true;
+    }
+    return false;
 }

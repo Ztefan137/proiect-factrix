@@ -6,14 +6,12 @@
 #define OOP_UI_ITEM_TILE_H
 #include "ui.h"
 #include "item.h"
+#include "ui_item_element.h"
 
-class ui_item_tile : public ui{
+class ui_item_tile : public ui_item_element{
     item* internal_item=nullptr;
 public:
     ui_item_tile(float x,float y,float width,float height,item* new_item=nullptr);
-    void bind_data(ui_binder *binder) override;
-    void set_item(item* new_item);
-    item* get_item() const;
 };
 
 
