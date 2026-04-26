@@ -36,6 +36,9 @@
     texture:player
         position:11
         path:../assets/player/engineer.png
+    texture:rock1
+        position:12
+        path:../assets/decoratives/rock1.png
    texture:dirt0
        position:20
        path:../assets/ground_tiles/dirt/dirt0.png

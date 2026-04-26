@@ -38,6 +38,7 @@ add({8,  "iron",     1,1, 1,1, false, false, "../assets/decoratives/iron.png", 0
 add({9,  "tree",     1,1, 2,3, true,  false, "../assets/decoratives/tree.png", 0});
 add({10, "furnace",  2,2, 2,2, true,  true,  "../assets/buildings/furnace.png", 1});
 add({11, "player",   1,1, 1,2, true, false, "../assets/player/engineer.png", 0});
+add({12, "rock",     3,2, 3,3, true, false, "../assets/decoratives/rock1.png", 0});
 
 add({20, "dirt0",    1,1, 1,1, false, false, "../assets/ground_tiles/dirt/dirt0.png", 0});
 add({21, "dirt1",    1,1, 1,1, false, false, "../assets/ground_tiles/dirt/dirt1.png", 0});

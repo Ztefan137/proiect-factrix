@@ -51,4 +51,8 @@ struct mining_info {
     int tile_x=0,tile_y=0;
 };
 
+struct crafting_event_data {
+    item* crafted;
+};
+
 #endif //OOP_STRUCTURES_H

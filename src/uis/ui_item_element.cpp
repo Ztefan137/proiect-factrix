@@ -8,8 +8,14 @@ ui_item_element::ui_item_element(float x, float y, float width, float height, it
 
 }
 
+ui_item_element::~ui_item_element() {
+    delete this->internal_item;
+}
+
 void ui_item_element::bind_data(ui_binder *binder) {
-    this->internal_item = binder->get<item>(this->bind_string);
+    if (!(this->ui_type == "item_sticker")){
+        this->internal_item = binder->get<item>(this->bind_string);
+    }
 }
 
 void ui_item_element::set_item(item * new_item) {

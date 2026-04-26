@@ -49,7 +49,7 @@ public:
     void set_bind_string(std::string new_bind_string);
     virtual void set_action_string(std::string new_action_string);
     virtual void bind_data(ui_binder* binder);
-    void bind(ui_binder* binder);
+    virtual void bind(ui_binder* binder);
 
     void add_sub_ui(ui* new_sub_ui);
 };

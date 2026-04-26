@@ -12,6 +12,7 @@ protected:
     item* internal_item=nullptr;
 public:
     ui_item_element(float x,float y,float width,float height,item* new_item=nullptr);
+    ~ui_item_element();
     void bind_data(ui_binder *binder) override;
     void set_item(item* new_item);
     item* get_item() const;

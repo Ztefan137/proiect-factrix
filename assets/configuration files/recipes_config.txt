@@ -1,0 +1,5 @@
+iron_plate: iron_ore 1
+copper_plate: copper_ore 1
+gear: iron_plate 2
+circuit: copper_plate 1, iron_plate 1
+furnace: iron_plate 1, rock 4

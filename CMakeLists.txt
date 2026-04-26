@@ -142,6 +142,10 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/ui_item_sticker.h
         src/uis/ui_item_element.cpp
         include/ui_item_element.h
+        src/crafter.cpp
+        include/crafter.h
+        src/uis/ui_item_sticker_grid.cpp
+        include/ui_item_sticker_grid.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

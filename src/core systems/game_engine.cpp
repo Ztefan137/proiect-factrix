@@ -25,7 +25,7 @@ void game_engine::init_window() {
     this->window.setVerticalSyncEnabled(true);
 }
 
-void game_engine::init_entity_data() {
+void game_engine::init_entity_data(){
     entity_data::init();
 }
 
@@ -59,6 +59,7 @@ void game_engine::update(float dt) {
             event* event=new generic_event<mining_info>(info);
             this->handler.add_event(event);
         }
+        this->player.update();
         accumulator -= tick_interval;
     }
 }

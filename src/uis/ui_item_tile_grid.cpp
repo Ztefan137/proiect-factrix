@@ -12,9 +12,14 @@ ui_item_tile_grid::ui_item_tile_grid(float x, float y, float width, float height
     this->cols = cols;
     this->rows = rows;
     this->tile_size = tile_size;
+    const float padding=24.f;
+    width-=padding*2;
+    height-=padding*2;
     for (int i=0;i<rows;i++) {
         for (int j=0;j<cols;j++) {
-            ui* grid_tile=new ui_item_tile(x-3*120+j*120,y-4*110+i*110,tile_size,tile_size,reference);
+            float horizontal_gap=(width-cols*tile_size)/(cols-1);
+            float vertical_gap=(height-rows*tile_size)/(rows-1);
+            ui* grid_tile=new ui_item_tile(x-(cols/2)*(horizontal_gap+tile_size)+j*(horizontal_gap+tile_size),y-(rows/2)*(vertical_gap+tile_size)+i*(vertical_gap+tile_size),tile_size,tile_size,reference);
             grid_tile->set_type("item_tile");
             if (reference != nullptr) {
                 reference++;

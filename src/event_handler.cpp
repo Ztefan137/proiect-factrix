@@ -55,6 +55,7 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
                 //open inventory
                 ui_binder inventory_binder;
                 inventory_binder.set<item>("inventory_pointer",player.get_inventory());
+                inventory_binder.set<item>("crafting_grid_pointer",player.get_crafting_grid());
                 ui_event open_event(0,&inventory_binder);
                 graphic_engine.process_event(&open_event);
                 key_event curr_event("e");
@@ -151,6 +152,9 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
                 graphic_engine.start_game_rendering();
                 graphic_engine.get_ui_system().close_uis();
             }
+        }else if (dynamic_cast<generic_event<crafting_event_data>*>(event)){
+            std::cout<<"crafting";
+            player.craft(*dynamic_cast<generic_event<crafting_event_data>*>(event)->get_event_data().crafted);
         }else{
             graphic_engine.process_event(event);
         }
@@ -169,7 +173,9 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
                     player.add_item("copper_ore",1);
                 }else if (mined_decorative == 8) {
                     player.add_item("iron_ore",1);
-                }else {
+                }else if (mined_decorative == 12) {
+                    player.add_item("rock",1);
+                }else{
                     /*std::string building=data.get_by_id(loader.peak_tile(static_cast<int>(mine_event->get_event_data().tile_x), static_cast<int>(mine_event->get_event_data().tile_y),"buildings")).name;
                     std::cout<<building<<std::endl;
                     if (building != "" && building != "player"){

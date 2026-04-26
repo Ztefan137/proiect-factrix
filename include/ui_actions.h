@@ -14,6 +14,7 @@
 void open_build_mode(std::queue<event*>* event_queue,item* item);
 void furnace_item_transfer(std::queue<event*>* event_queue,item* item);
 void player_item_transfer(std::queue<event*>* event_queue,item* item);
+void craft_action(std::queue<event*>* event_queue,item* item);
 void new_game(std::queue<event*>* event_queue);
 void continue_game(std::queue<event*>* event_queue);
 void load_game(std::queue<event*>* event_queue);

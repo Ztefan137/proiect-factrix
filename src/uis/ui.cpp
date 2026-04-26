@@ -10,6 +10,7 @@
 #include "generic_event.h"
 #include "queue"
 #include "structures.h"
+#include "ui_item_sticker.h"
 #include "ui_item_tile.h"
 
 ui::ui() {
@@ -105,7 +106,7 @@ void ui::show() {
 void ui::bind(ui_binder* binder){
     this->bind_data(binder);
     for (auto* sub_ui:sub_uis){
-        if (this -> ui_type != "item_tile_grid") {
+        if (this -> ui_type != "item_tile_grid" && this -> ui_type != "item_tile_grid") {
             sub_ui->bind(binder);
         }
     }
@@ -134,9 +135,9 @@ void ui::check_click(float x_mouse,float y_mouse,std::queue<event*>* event_queue
     }
     std::cout << "Deepest UI element clicked: " << this->ui_type << "\n";
     if (this->action_string != "") {
-        if (this->ui_type == "item_tile") {
-            std::cout<<"Clicked item tile";
-            this->internal_action_handler.call_item(this->action_string,event_queue,dynamic_cast<ui_item_tile*>(this)->get_item());
+        if (this->ui_type == "item_tile" || this->ui_type == "item_sticker") {
+            std::cout<<"Clicked item tile"<<dynamic_cast<ui_item_element*>(this)->get_item();
+            this->internal_action_handler.call_item(this->action_string,event_queue,dynamic_cast<ui_item_element*>(this)->get_item());
         }
         if (this->ui_type == "button") {
             std::cout<<"Clicked button";

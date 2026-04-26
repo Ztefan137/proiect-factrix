@@ -14,6 +14,7 @@
 #include "string_functions.h"
 #include "ui_button.h"
 #include "ui_item_sticker.h"
+#include "ui_item_sticker_grid.h"
 #include "ui_item_tile.h"
 #include "ui_item_tile_grid.h"
 #include "ui_progress_bar.h"
@@ -124,8 +125,17 @@ void ui_constructor::construct_sub_ui_tree(ui * parent_ui, tinyxml2::XMLElement*
             child_ui->set_action_string(action_string);
         }else if (tag_name == "item_sticker") {
             std::cout<<"item_sticker constructed"<<std::endl;
-            child_ui=new ui_item_sticker(x,y,100,100,nullptr);
+            item* sticker=new item("iron_plate",1);
+            child_ui=new ui_item_sticker(x,y,100,100,sticker);
             child_ui->set_type("item_sticker");
+            child_ui->set_action_string(action_string);
+
+            std::cout<<dynamic_cast<ui_item_element*>(child_ui)->get_item()->get_name();
+        }else if (tag_name == "item_sticker_grid") {
+            std::cout<<"item_sticker_grid constructed"<<std::endl;
+            child_ui=new ui_item_sticker_grid(x,y,width,height,7,7,100.f,nullptr);
+            child_ui->set_type("item_sticker_grid");
+            child_ui->set_bind_string(binding_string);
             child_ui->set_action_string(action_string);
         }
         std::cout<<"tree constructed"<<std::endl;

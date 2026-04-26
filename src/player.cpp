@@ -6,11 +6,18 @@
 
 #include "../include/collision_handler.h"
 
-player::player(float x, float y) {
+player::player(float x, float y){
     this->x = x;
     this->y = y;
     this->inventory.resize(70);
     this->add_item("iron_ore",110);
+    this->add_item("iron_plate",1);
+    internal_crafter.bind_items(&inventory);
+    internal_crafter.init_recipes("assets/configuration files/recipes_config.txt");
+
+    this->crafting_grid.resize(70);
+    this->crafting_grid[0]={"iron_plate",1};
+    this->crafting_grid[1]={"furnace",1};
 }
 
 void player::move(float dx, float dy,chunk_loader &loader) {
@@ -31,6 +38,10 @@ float player::get_y() {
 
 item* player::get_inventory() {
     return this->inventory.data();
+}
+
+item* player::get_crafting_grid() {
+    return this->crafting_grid.data();
 }
 void player::add_item(std::string type, int count) {
     const int stack_size = 100;
@@ -97,4 +108,12 @@ bool player::has_mined() {
         return true;
     }
     return false;
+}
+
+void player::update() {
+    this->internal_crafter.craft();
+}
+
+void player::craft(item item) {
+    this->internal_crafter.init_craft(item);
 }

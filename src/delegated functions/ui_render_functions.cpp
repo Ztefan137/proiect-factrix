@@ -13,6 +13,7 @@
 #include <iostream>
 
 #include "ui_button.h"
+#include "ui_item_sticker.h"
 #include "ui_item_tile.h"
 #include "ui_progress_bar.h"
 
@@ -158,10 +159,29 @@ void item_sticker_style_style1_opaque(sf::RenderWindow &window, const ui* ui) {
     auto edge_top=static_cast<float>(ui->get_y() - std::floor(ui->get_height() / 2));
     auto edge_bottom=static_cast<float>(ui->get_y() + std::floor(ui->get_height() / 2));
 
-    rect(window,edge_left,edge_top,edge_right,edge_bottom,sf::Color(0x2a,0x2a,0x2a,0xff));
+    /*rect(window,edge_left,edge_top,edge_right,edge_bottom,sf::Color(0x2a,0x2a,0x2a,0xff));
     rect(window,edge_left,edge_top,edge_right,edge_top-4,sf::Color(0x5a,0x5a,0x5a,0xff));
-    rect(window,edge_left+2,edge_bottom,edge_right-2,edge_bottom+4,sf::Color(0x0a,0x0a,0x0a,0xff));
+    rect(window,edge_left,edge_top-6,edge_right,edge_top-4,sf::Color(0x4a,0x4a,0x4a,0xff));
+    rect(window,edge_left,edge_bottom+4,edge_right,edge_bottom+6,sf::Color(0x0f,0x0f,0x0f,0xff));
+    rect(window,edge_left,edge_bottom,edge_right,edge_bottom+4,sf::Color(0x0a,0x0a,0x0a,0xff));
     rect(window,edge_left,edge_top+4,edge_left+4,edge_bottom-4,sf::Color(0x20,0x20,0x20,0xff));
     rect(window,edge_right-4,edge_top+4,edge_right,edge_bottom-4,sf::Color(0x20,0x20,0x20,0xff));
-    //render_item(window,edge_left,edge_top,dynamic_cast<const ui_item_element*>(ui)->get_item());
+    render_item(window,edge_left,edge_top,dynamic_cast<const ui_item_sticker*>(ui)->get_item());*/
+
+    rect(window,edge_left,edge_top,edge_right,edge_bottom,sf::Color(0x3a,0x3a,0x3a,0xff));
+    rect(window,edge_left,edge_top,edge_right,edge_top-4,sf::Color(0x6a,0x6a,0x6a,0xff));
+    rect(window,edge_left,edge_bottom+4,edge_right,edge_bottom,sf::Color(0x0a,0x0a,0x0a,0xff));
+    render_item(window,edge_left,edge_top,dynamic_cast<const ui_item_sticker*>(ui)->get_item());
+}
+
+void item_sticker_grid_style_style1_opaque(sf::RenderWindow &window, const ui* ui) {
+    auto edge_left=static_cast<float>(ui->get_x() - std::floor(ui->get_width() / 2));
+    auto edge_right=static_cast<float>(ui->get_x() + std::floor(ui->get_width()  / 2));
+    auto edge_top=static_cast<float>(ui->get_y() - std::floor(ui->get_height() / 2));
+    auto edge_bottom=static_cast<float>(ui->get_y() + std::floor(ui->get_height() / 2));
+
+    rect(window,edge_left,edge_top,edge_right,edge_bottom,sf::Color(0x0a,0x0a,0x0a,0xff));
+    rect(window,edge_left+2,edge_top+2,edge_right-2,edge_bottom-6,sf::Color(0x1a,0x1a,0x1a,0xff));
+    rect(window,edge_left+4,edge_top+4,edge_right-4,edge_bottom-8,sf::Color(0x2a,0x2a,0x2a,0xff));
+    rect(window,edge_left,edge_bottom-4,edge_right,edge_bottom,sf::Color(0x5a,0x5a,0x5a,0xff));
 }

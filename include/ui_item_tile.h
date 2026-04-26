@@ -9,7 +9,7 @@
 #include "ui_item_element.h"
 
 class ui_item_tile : public ui_item_element{
-    item* internal_item=nullptr;
+    //item* internal_item=nullptr;
 public:
     ui_item_tile(float x,float y,float width,float height,item* new_item=nullptr);
 };

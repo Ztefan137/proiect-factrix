@@ -58,6 +58,7 @@ void render_item(sf::RenderWindow &window_obj, float x, float y, item* item) {
         if (icons["copper_ore"].loadFromFile("assets/decoratives/copper.png")){}
         if (icons["furnace"].loadFromFile("assets/buildings/furnace.png")){}
         if (icons["iron_plate"].loadFromFile("assets/icons/iron_plate.png")){}
+        if (icons["rock"].loadFromFile("assets/icons/rock.png")){}
         initialized = true;
     }
     auto it = icons.find(item->get_name());

@@ -6,13 +6,31 @@
 
             </item_grid>
         </section>
-        <section visible_ribbon="true" name="Crafting" flex="false">
-            <item_sticker x="120" y="120">
+        <section visible_ribbon="true" name="Crafting" flex="false" padding="24">
+            <section visible_ribbon="false" name="crafting" flex="true" flex-direction="vertical" flex-template="17-83">
+                <section visible_ribbon="false" flex="true" name="buttons" flex-template="25-25-25-25">
+                    <button text="Products">
 
-            </item_sticker>
+                    </button>
+                    <button text="Weapons">
+
+                    </button>
+                    <button text="Production">
+
+                    </button>
+                    <button text="Logistics">
+
+                    </button>
+                </section>
+                <section visible_ribbon="false" name="crafting-grid" flex="false">
+                    <item_sticker_grid col_count="7" row_count="7" tile_size="100" action="craft" bind="crafting_grid_pointer">
+
+                    </item_sticker_grid>
+                </section>
+            </section>
         </section>
     </window>
-    <window x="1440" y="900" width="1800" height="1200" visible_ribbon="true" name="Character" exit_button="true" flex="true" padding="16" flex-gap="16" flex-template="50-50">
+    <window x="1440" y="900" width="1800" height="1200" visible_ribbon="true" name="Furnace" exit_button="true" flex="true" padding="16" flex-gap="16" flex-template="50-50">
         <section visible_ribbon="true" name="Inventory" flex="false">
             <item_grid col_count="7" row_count="7" tile_size="100" bind="inventory_pointer" action="furnace_item_transfer">
 

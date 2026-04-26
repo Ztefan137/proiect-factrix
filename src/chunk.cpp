@@ -123,7 +123,7 @@ void chunk::recompute_top_layer() {
             float u1 = (tu + 1) * tile_size;
             float v1 = (tv + 1) * tile_size;
 
-            if (tileID == 9 || tileID == 10) {
+            if (width_multiplier != 1 || height_multiplier != 1) {
                 va_vec.push_back(sf::Vertex{.position = {x0, y0}, .texCoords = {u0, v0}});
                 va_vec.push_back(sf::Vertex{.position = {x1, y0}, .texCoords = {u1, v0}});
                 va_vec.push_back(sf::Vertex{.position = {x1, y1}, .texCoords = {u1, v1}});
@@ -151,7 +151,7 @@ void chunk::recompute_top_layer() {
             u1 = (tu + 1) * tile_size;
             v1 = (tv + 1) * tile_size;
 
-            if (tileID == 10 || tileID == 11) {
+            if (width_multiplier != 1 || height_multiplier != 1) {
                 va_vec.push_back(sf::Vertex{.position = {x0, y0}, .texCoords = {u0, v0}});
                 va_vec.push_back(sf::Vertex{.position = {x1, y0}, .texCoords = {u1, v0}});
                 va_vec.push_back(sf::Vertex{.position = {x1, y1}, .texCoords = {u1, v1}});

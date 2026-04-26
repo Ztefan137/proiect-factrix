@@ -5,19 +5,19 @@
 #include "../../../include/world_generator.h"
 #include <../include/perlin_noise.h>
 #include <cmath>
+#include <cstdint>
 
-/*inline float seededRand(int x, int y, int seed) { return static_cast<float>(((x* 73856093) ^ (y * 19349663) ^ seed) % 100) / 100.f; }*/
+#include "../../../cmake-build-release/_deps/sfml-src/extlibs/headers/glad/include/glad/gl.h"
+
 inline float seededRand(int x, int y, int seed) {
-    unsigned int h = static_cast<unsigned int>(x) * 0x45d9f3b +
-                     static_cast<unsigned int>(y) * 0x1234567 +
-                     static_cast<unsigned int>(seed);
-    h = ((h >> 16) ^ h) * 0x45d9f3b;
-    h = ((h >> 16) ^ h) * 0x45d9f3b;
-    h = (h >> 16) ^ h;
-
-    // Returns 0.0f to 1.0f
-    return static_cast<float>(h) / static_cast<float>(0xFFFFFFFF);
+    uint32_t n = static_cast<uint32_t>(x) * 374761393u +
+                 static_cast<uint32_t>(y) * 668265263u +
+                 static_cast<uint32_t>(seed) * 982451653u;
+    n = (n ^ (n >> 13)) * 1274126177u;
+    uint32_t final_n = (n ^ (n >> 16));
+    return static_cast<float>(final_n) / 4294967295.0f;
 }
+
 void world_generator::set_seed(int new_seed) {
     this->seed = new_seed;
 }
@@ -76,8 +76,11 @@ void world_generator::generate_chunk(int i_chunk, int j_chunk, int ground[], int
             if (decided_ore && ground[i*32+j] != 0) {
                 decoratives[i*32+j]=decided_ore;
             }
-            if (forest>0.3 && floor(seededRand(i,j,this->seed)*20) == 0 && ground[i*32+j] != 0) {
+            if (forest>0.3 && floor(seededRand(i*i_chunk,j*j_chunk,this->seed)*20) == 0 && ground[i*32+j] != 0) {
                 decoratives[i*32+j]=9;
+            }
+            if (elevation>0 && floor(seededRand(i*i_chunk,j*j_chunk,this->seed)*8000) == 0 && aridity<0.4 && decoratives[i*32+j] == 40) {
+                decoratives[i*32+j]=12;
             }
             //decoratives[i*32+j]=(decided_ore && ground[i*32+j] != 0)?decided_ore:40;
         }
