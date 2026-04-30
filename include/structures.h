@@ -7,7 +7,7 @@
 #include <string>
 
 #include "item.h"
-
+#include <SFML/Graphics.hpp>
 
 struct chunk_position {
     int i,j;

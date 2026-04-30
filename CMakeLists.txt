@@ -69,7 +69,7 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/chunk.h
         "src/core systems/world generation/perlin_noise.cpp"
         include/perlin_noise.h
-        "src/core systems/graphic_engine.cpp"
+        "src/core systems/rendering/graphic_engine.cpp"
         include/graphic_engine.h
         "src/core systems/chunk_loader.cpp"
         include/chunk_loader.h
@@ -146,6 +146,10 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/crafter.h
         src/uis/ui_item_sticker_grid.cpp
         include/ui_item_sticker_grid.h
+        "src/core systems/rendering/chunk_renderer.cpp"
+        "include/chunk_renderer.h"
+        "src/core systems/rendering/camera_system.cpp"
+        "include/camera_system.h"
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

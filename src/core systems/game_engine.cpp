@@ -45,23 +45,21 @@ void game_engine::compute_dt() {
 
 void game_engine::update(float dt) {
     static float accumulator = 0.0f;
-    const float target_tps=10.f;
+    const float target_tps=100.f;
     const float tick_interval = 1.0f / target_tps;
 
     accumulator += dt;
 
     while (accumulator >= tick_interval) {
-        this->machine_handler.update_machines();
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right)) {
-            mining_info info;
-            info.tile_x = (this->g_engine.get_mouse_coords().x / this->g_engine.get_tile_size())+player.get_x()-23;
-            info.tile_y= (this->g_engine.get_mouse_coords().y / this->g_engine.get_tile_size())+player.get_y()-14;
-            event* event=new generic_event<mining_info>(info);
-            this->handler.add_event(event);
-        }
-        this->player.update();
+        this->tick();
         accumulator -= tick_interval;
     }
+}
+
+void game_engine::tick() {
+    this->machine_handler.update_machines();
+    this->handler.process_tick_events(this->window,this->g_engine,this->build_system,this->loader,this->player,this->machine_handler);
+    this->player.update();
 }
 
 void game_engine::process_events(){
@@ -69,19 +67,24 @@ void game_engine::process_events(){
 }
 
 void game_engine::init(){
-    std::cout<<"Init\n";
     this->init_entity_data();
     this->g_engine.load_texture(0,"../assets/configuration files/texture_config.txt");
     this->init_window();
     this->g_engine.init_camera();
+    //this->g_engine.get_camera_system().load textures
+
+    //generic_event<ui_idx_info> curr_event({2});
+    //this->internal_ui_system.process_event(&curr_event,&this->event_queue);
+
+    //this->g_engine.get_camera_system().init_camera();
 }
 void game_engine::run(){
-    std::cout<<"Running\n";
     while(this->window.isOpen()) {
-        this->print_fps();
+        //astea se executa per frame
         this->compute_dt();
         this->process_events();
-        this->update(dt);
+        this->update(dt); //asta se amortizeaza la o executie per tick
         this->render();
+        this->print_fps();
     }
 }

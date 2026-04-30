@@ -42,15 +42,19 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
             }else if (keyPressed->scancode == sf::Keyboard::Scancode::W) {
                 player.move(0,-1,loader);
                 graphic_engine.set_camera(player.get_x(),player.get_y());
+                //graphic_engine.get_camera_system().set_camera(player.get_x(),player.get_y());
             }else if (keyPressed->scancode == sf::Keyboard::Scancode::S) {
                 player.move(0,1,loader);
                 graphic_engine.set_camera(player.get_x(),player.get_y());
+                //graphic_engine.get_camera_system().set_camera(player.get_x(),player.get_y());
             }else if (keyPressed->scancode == sf::Keyboard::Scancode::A) {
                 player.move(-1,0,loader);
                 graphic_engine.set_camera(player.get_x(),player.get_y());
+                //graphic_engine.get_camera_system().set_camera(player.get_x(),player.get_y());
             }else if (keyPressed->scancode == sf::Keyboard::Scancode::D) {
                 player.move(1,0,loader);
                 graphic_engine.set_camera(player.get_x(),player.get_y());
+                //graphic_engine.get_camera_system().set_camera(player.get_x(),player.get_y());
             }else if (keyPressed->scancode == sf::Keyboard::Scancode::E) {
                 //open inventory
                 ui_binder inventory_binder;
@@ -71,6 +75,7 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
             const auto* scroll = curr_event->getIf<sf::Event::MouseWheelScrolled>();
             float delta = scroll->delta;
             graphic_engine.zoom(delta);
+            //graphic_engine.get_camera_system.zoom();
         }else if (curr_event->is<sf::Event::MouseButtonReleased>()) {
             const auto* mouseClick = curr_event->getIf<sf::Event::MouseButtonReleased>();
             if (mouseClick->button == sf::Mouse::Button::Left) {
@@ -163,27 +168,6 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
     while (!this->event_queue.empty()) {
         auto event=this->event_queue.front();
         if (auto mine_event=dynamic_cast<generic_event<mining_info>*>(event)) {
-            player.mine(0.1);
-            if (player.has_mined()) {
-                entity_data data;
-                int mined_decorative=loader.peak_tile(static_cast<int>(mine_event->get_event_data().tile_x), static_cast<int>(mine_event->get_event_data().tile_y),"decoratives");
-                if (mined_decorative == 6){
-                    player.add_item("coal_ore",1);
-                }else if (mined_decorative == 7) {
-                    player.add_item("copper_ore",1);
-                }else if (mined_decorative == 8) {
-                    player.add_item("iron_ore",1);
-                }else if (mined_decorative == 12) {
-                    player.add_item("rock",1);
-                }else{
-                    /*std::string building=data.get_by_id(loader.peak_tile(static_cast<int>(mine_event->get_event_data().tile_x), static_cast<int>(mine_event->get_event_data().tile_y),"buildings")).name;
-                    std::cout<<building<<std::endl;
-                    if (building != "" && building != "player"){
-                        machines.delete_machine(mine_event->get_event_data().tile_x,mine_event->get_event_data().tile_y);
-                        player.add_item(building,1);
-                    }*/
-                }
-            }
         }
         delete event;
         this->event_queue.pop();
@@ -191,8 +175,43 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     mouse_event curr_event(mousePos.x, mousePos.y,false,nullptr);
     graphic_engine.process_event(&curr_event);
+
+
 }
 
 void event_handler::add_event(event *event) {
     this->event_queue.push(event);
+
+}
+
+void event_handler::process_tick_events(sf::RenderWindow &window, graphic_engine &graphic_engine, build_system &build_system, chunk_loader &loader, player &player, machine_handler &machines) {
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right)){
+        mining_info info;
+        info.tile_x = (graphic_engine.get_mouse_coords().x / graphic_engine.get_tile_size())+player.get_x()-23;
+        info.tile_y= (graphic_engine.get_mouse_coords().y / graphic_engine.get_tile_size())+player.get_y()-14;
+
+        //info.tile_x=graphic_engine.get_mouse_tiles().x;
+        //info.tile_y=graphic_engine.get_mouse_tiles().y;
+        player.mine(0.1);
+        if (player.has_mined()) {
+            entity_data data;
+            int mined_decorative=loader.peak_tile(static_cast<int>(info.tile_x), static_cast<int>(info.tile_y),"decoratives");
+            if (mined_decorative == 6){
+                player.add_item("coal_ore",1);
+            }else if (mined_decorative == 7) {
+                player.add_item("copper_ore",1);
+            }else if (mined_decorative == 8) {
+                player.add_item("iron_ore",1);
+            }else if (mined_decorative == 12) {
+                player.add_item("rock",1);
+            }else{
+                /*std::string building=data.get_by_id(loader.peak_tile(static_cast<int>(mine_event->get_event_data().tile_x), static_cast<int>(mine_event->get_event_data().tile_y),"buildings")).name;
+                std::cout<<building<<std::endl;
+                if (building != "" && building != "player"){
+                    machines.delete_machine(mine_event->get_event_data().tile_x,mine_event->get_event_data().tile_y);
+                    player.add_item(building,1);
+                }*/
+            }
+        }
+    }
 }

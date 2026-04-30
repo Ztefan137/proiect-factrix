@@ -35,6 +35,8 @@ class game_engine {
     void process_events();
 
     void update(float dt);
+    void tick();
+
     void render();
 
     void compute_dt();

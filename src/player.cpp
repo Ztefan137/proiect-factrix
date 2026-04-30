@@ -103,7 +103,7 @@ void player::mine(float dp) {
 }
 
 bool player::has_mined() {
-    if (this->mining_progress > 1) {
+    if (this->mining_progress >= 5) {
         this->mining_progress = 0;
         return true;
     }

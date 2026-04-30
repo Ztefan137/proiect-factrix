@@ -11,41 +11,48 @@
 #include <vector>
 
 #include "build_system.h"
+#include "camera_system.h"
+#include "chunk_renderer.h"
 #include "ui_system.h"
 #include "event.h"
 
 #include "queue"
 
-class event_handler;
-
 class graphic_engine {
     chunk_loader& loader;
     build_system& builder;
+    //mutate in camera_system
     sf::View camera;
     sf::View ui_camera;
     float x_camera;
     float y_camera;
     float zoom_level;
+    //\mutate in camera_system\//
     sf::RenderWindow& window;
     std::vector<sf::Texture> texture_maps;
     ui_system internal_ui_system;
+    camera_system internal_camera_system;
+    chunk_renderer internal_chunk_renderer;
     float tile_size;
 
     bool home_menu=true;
-
     std::queue <event*> event_queue;
 public:
     graphic_engine(chunk_loader &loader,build_system& builder,sf::RenderWindow &window);
+    /* mutat tot*/
     void init_camera();
-    void draw_chunks();
     void set_camera(float x_camera,float y_camera);
     void set_zoom(float zoom_level);
     void zoom(float delta);
     void set_tile_size(float new_tile_size);
+    /* mutat */
+    void draw_chunks();
+    /* mutat */
     void get_visible_chunks(std::vector<chunk_position>& visible_chunks) const;
-    void get_chunk_coords(int chunk_i,int chunk_j,float tile_size,int chunk_size,float &x,float &y) const ;
+    /* mutat */
+    void get_chunk_coords(int chunk_i,int chunk_j,float tile_size,int chunk_size,float &x,float &y) const;
     void load_texture(int index,std::string const &config_file);
-    void render_uis();
+    inline void render_uis();
     void render_mouse_position();
     void display_fps(float fps);
     void render();
@@ -58,6 +65,8 @@ public:
     void stop_game_rendering();
     int game_rendering_state();
     ui_system& get_ui_system();
+    camera_system& get_camera_system();
+    chunk_renderer& get_chunk_renderer();
     event* get_event();
     sf::Vector2f get_mouse_coords();
     float get_tile_size();
