@@ -112,11 +112,16 @@ void ui_constructor::construct_sub_ui_tree(ui * parent_ui, tinyxml2::XMLElement*
             child_ui=new ui_item_tile(x,y,100,100,nullptr);
             child_ui->set_type("item_tile");
             child_ui->set_bind_string(binding_string);
+            child_ui->set_action_string(action_string);
             flex_left_offset+=210;
         }else if (tag_name == "progress_bar") {
-            child_ui=new ui_progress_bar(x-0.5*width+flex_left_offset+80,y,300,80,sf::Color::Blue);
+            width=std::stof(child->Attribute("width"));
+            height=std::stof(child->Attribute("height"));
+            std::string color_string(child->Attribute("color"));
+            sf::Color color=(color_string == "blue")?sf::Color::Blue:sf::Color::Red;
+            child_ui=new ui_progress_bar(x,y,width,height,color);
             child_ui->set_type("progress_bar");
-            dynamic_cast<ui_progress_bar*>(child_ui)->advance_progress(0.5);
+            child_ui->set_bind_string(binding_string);
             flex_left_offset+=180;
         }else if (tag_name == "button") {
             std::cout<<"button constructed"<<std::endl;

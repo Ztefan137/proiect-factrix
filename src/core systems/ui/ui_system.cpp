@@ -66,6 +66,7 @@ void ui_system::configure_uis(std::string config_xml) {
     action_handler default_handler;
     default_handler.add_item_action("build_mode",open_build_mode);
     default_handler.add_item_action("furnace_item_transfer",furnace_item_transfer);
+    default_handler.add_item_action("player_item_transfer",player_item_transfer);
     default_handler.add_button_action("new_game",new_game);
     default_handler.add_button_action("load_game",load_game);
     default_handler.add_button_action("continue_game",continue_game);

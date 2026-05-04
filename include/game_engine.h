@@ -40,7 +40,6 @@ class game_engine {
     void render();
 
     void compute_dt();
-    void print_fps();
 public:
     game_engine();
     ~game_engine();

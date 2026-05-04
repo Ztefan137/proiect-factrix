@@ -55,4 +55,10 @@ struct crafting_event_data {
     item* crafted;
 };
 
+struct entity_position_info {
+    int id=0;
+    int x=0;
+    int y=0;
+};
+
 #endif //OOP_STRUCTURES_H

@@ -41,23 +41,26 @@
 
             </section>
             <section visible_ribbon="false" name="Furnace-section1" flex="false">
-            <item_tile bind="fuel_pointer" x="150" y="300">
+            <item_tile bind="fuel_pointer" action="player_item_transfer" x="150" y="300">
 
             </item_tile>
-            <item_tile bind="source_pointer" x="150" y="150">
+            <item_tile bind="source_pointer" action="player_item_transfer"  x="150" y="150">
 
             </item_tile>
-            <item_tile bind="destination_pointer" action="player_item_transfer" x="450" y="150">
+            <item_tile bind="destination_pointer" action="player_item_transfer" x="750" y="150">
 
             </item_tile>
-            <progress_bar>
+            <progress_bar x="450" y="150" bind="smelting_progress"  width="400" height="80" color="blue">
+
+            </progress_bar>
+            <progress_bar x="520" y="300" bind="curr_fuel" width="550" height="20" color="red">
 
             </progress_bar>
             </section>
         </section>
     </window>
     <window x="700" y="900" width="600" height="800" name="Factrix" flex="false" padding="16" visible_ribbon="false" exit_button="true" flex-gap="16" flex-template="100">
-        <section flex="true" visible_ribbon="false" name="Sebastian" flex-direction="vertical" flex-gap="16" padding="16" flex-template="25-25-25-25">
+        <section flex="true" visible_ribbon="false" name="Factrix" flex-direction="vertical" flex-gap="16" padding="16" flex-template="25-25-25-25">
             <button action="continue_game" text="Continue game">
 
             </button>
@@ -70,6 +73,37 @@
             <button action="quit_game" text="Quit game">
 
             </button>
+        </section>
+    </window>
+    <window x="1440" y="100" width="2000" height="120" name="mining" flex="false" padding="4" exit_button="false">
+        <progress_bar bind="mining_progress" width="1992" height="40" color="red">
+
+        </progress_bar>
+    </window>
+    <window x="1440" y="900" width="1800" height="1200" visible_ribbon="true" name="Drill" exit_button="true" flex="true" padding="16" flex-gap="16" flex-template="50-50">
+        <section visible_ribbon="true" name="Inventory" flex="false">
+            <item_grid col_count="7" row_count="7" tile_size="100" bind="inventory_pointer" action="furnace_item_transfer">
+
+            </item_grid>
+        </section>
+        <section visible_ribbon="true" name="Furnace" flex="true" flex-gap="8" padding="0" flex-direction="vertical" flex-template="50-50">
+            <section visible_ribbon="false" name="Furnace-section1" flex="false">
+
+            </section>
+            <section visible_ribbon="false" name="Furnace-section1" flex="false">
+                <item_tile bind="fuel_pointer" action="player_item_transfer" x="150" y="300">
+
+                </item_tile>
+                <item_tile bind="destination_pointer" action="player_item_transfer" x="750" y="150">
+
+                </item_tile>
+                <progress_bar x="400" y="150" bind="smelting_progress"  width="500" height="80" color="blue">
+
+                </progress_bar>
+                <progress_bar x="520" y="300" bind="curr_fuel" width="550" height="20" color="red">
+
+                </progress_bar>
+            </section>
         </section>
     </window>
 </ui_list>

@@ -86,19 +86,17 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
 
                     //putem sa luam aici pozitia si sa verificam la ce tile ne uitam
                     if (!graphic_engine.get_ui_system().ui_at_coords(mousePos.x, mousePos.y)) {
-                        sf::Vector2f world_pos = graphic_engine.get_mouse_coords();
+                        //sf::Vector2f world_pos = graphic_engine.get_mouse_coords();
                         std::cout<<"here"<<std::endl;
-                        const int tile_size=64;
+                        //const int tile_size=64;
                         entity_data data;
                         int tileX=0;
                         int tileY=0;
                         int tile=0;
-                        int entityX=0;
-                        int entityY=0;
-                        for (int i=0;i<3;i++) {
+                        /*for (int i=0;i<3;i++) {
                             for (int j=0;j<3;j++) {
-                                tileX = ((world_pos.x) / tile_size)+player.get_x()-23+i;
-                                tileY = ((world_pos.y) / tile_size)+player.get_y()-15+j;
+                                tileX = graphic_engine.get_mouse_tile_coords().x+i;
+                                tileY = graphic_engine.get_mouse_tile_coords().y+j;
                                 tile=loader.peak_tile(tileX,tileY,"buildings");
                                 if (data.get_by_id(tile).buildable && data.get_by_id(tile).width > i && data.get_by_id(tile).height > j) {
                                     break;
@@ -107,8 +105,11 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
                             if (data.get_by_id(tile).buildable && data.get_by_id(tile).width > i) {
                                 break;
                             }
-                        }
-                        if (data.get_by_id(tile).buildable) {
+                        }*/
+                        tile=graphic_engine.get_hovered_entity("buildings").id;
+                        tileX=graphic_engine.get_hovered_entity("buildings").x;
+                        tileY=graphic_engine.get_hovered_entity("buildings").y;
+                        if (entity_data::get_by_id(tile).buildable){
                             if (data.get_by_id(tile).name == "furnace"){
                                 ui_binder furnace_binder;
                                 furnace_binder.set<item>("inventory_pointer",player.get_inventory());
@@ -118,6 +119,9 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
                                 furnace_binder.set<item>("fuel_pointer",dynamic_cast<furnace_prototype*>(interacted_machine)->get_fuel());
                                 furnace_binder.set<item>("source_pointer",dynamic_cast<furnace_prototype*>(interacted_machine)->get_source());
                                 furnace_binder.set<item>("destination_pointer",dynamic_cast<furnace_prototype*>(interacted_machine)->get_destination());
+                                furnace_binder.set<float>("smelting_progress",dynamic_cast<furnace_prototype*>(interacted_machine)->get_progress());
+                                furnace_binder.set<float>("curr_fuel",dynamic_cast<furnace_prototype*>(interacted_machine)->get_curr_fuel());
+                                std::cout<<"furnace pointer progress"<<furnace_binder.get<float>("smelting_progress");
                                 ui_event open_event(1,&furnace_binder);
                                 graphic_engine.process_event(&open_event);
                                 generic_event<ui_idx_info> curr_event({data.get_by_id(tile).ui_idx});
@@ -135,9 +139,6 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
             }
         }
     }
-    if (shouldExit) {
-        window.close();
-    }
     while (auto event=graphic_engine.get_event()) {
         if (dynamic_cast<generic_event<build_mode_info>*>(event)) {
             int curr_building=dynamic_cast<generic_event<build_mode_info>*>(event)->get_event_data().current_building;
@@ -148,14 +149,24 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
                 key_event curr_event("e");
                 graphic_engine.process_event(&curr_event);
             }
-        }else if (dynamic_cast<generic_event<item_move_data>*>(event)){
-            std::string item=dynamic_cast<generic_event<item_move_data>*>(event)->get_event_data().name;
-            machines.process_event(event);
+        }else if (auto move_event=dynamic_cast<generic_event<item_move_data>*>(event)){
+            if (move_event->get_event_data().to == "furnace") {
+                std::string item=dynamic_cast<generic_event<item_move_data>*>(event)->get_event_data().name;
+                machines.process_event(event);
+            }else {
+                player.add_item(move_event->get_event_data().source->get_name(),move_event->get_event_data().source->get_quantity());
+                machines.process_event(event);
+            }
         }else if (dynamic_cast<generic_event<simple_event_data>*>(event)){
             int event_id=dynamic_cast<generic_event<simple_event_data>*>(event)->get_event_data().event_id;
-            if (event_id == 1) {
-                graphic_engine.start_game_rendering();
-                graphic_engine.get_ui_system().close_uis();
+            switch (event_id) {
+                case 1:
+                    graphic_engine.start_game_rendering();
+                    graphic_engine.get_ui_system().close_uis();
+                    break;
+                case 93:
+                    shouldExit=true;
+                    break;
             }
         }else if (dynamic_cast<generic_event<crafting_event_data>*>(event)){
             std::cout<<"crafting";
@@ -172,11 +183,15 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
         delete event;
         this->event_queue.pop();
     }
+
+    //hover
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     mouse_event curr_event(mousePos.x, mousePos.y,false,nullptr);
     graphic_engine.process_event(&curr_event);
 
-
+    if (shouldExit) {
+        window.close();
+    }
 }
 
 void event_handler::add_event(event *event) {
@@ -189,29 +204,39 @@ void event_handler::process_tick_events(sf::RenderWindow &window, graphic_engine
         mining_info info;
         info.tile_x = (graphic_engine.get_mouse_coords().x / graphic_engine.get_tile_size())+player.get_x()-23;
         info.tile_y= (graphic_engine.get_mouse_coords().y / graphic_engine.get_tile_size())+player.get_y()-14;
+        if ((info.tile_x-player.get_x())*(info.tile_x-player.get_x())+(info.tile_y-player.get_y())*(info.tile_y-player.get_y()) <= 9.f){
+            int mined_decorative=loader.peak_tile(static_cast<int>(info.tile_x), static_cast<int>(info.tile_y),"decoratives");
+            if (*player.get_mining_progress() == 0.f){
+                ui_binder mining_binder;
+                mining_binder.set<float>("mining_progress",player.get_mining_progress());
+                event* mining_ui_open=new ui_event(3,&mining_binder);
+                graphic_engine.process_event(mining_ui_open);
+                event* mining_ui_event=new generic_event<ui_idx_info>({3});
+                graphic_engine.process_event(mining_ui_event);
+            }
+            player.mine(0.02);
+            if (player.has_mined()) {
+                entity_data data;
+                if (mined_decorative == 6){
+                    player.add_item("coal_ore",1);
+                }else if (mined_decorative == 7) {
+                    player.add_item("copper_ore",1);
+                }else if (mined_decorative == 8) {
+                    player.add_item("iron_ore",1);
+                }else if (mined_decorative == 12) {
+                    player.add_item("rock",1);
+                }else{
+                    /*std::string building=data.get_by_id(loader.peak_tile(static_cast<int>(mine_event->get_event_data().tile_x), static_cast<int>(mine_event->get_event_data().tile_y),"buildings")).name;
+                    std::cout<<building<<std::endl;
+                    if (building != "" && building != "player"){
+                        machines.delete_machine(mine_event->get_event_data().tile_x,mine_event->get_event_data().tile_y);
+                        player.add_item(building,1);
+                    }*/
+                }
+            }
+        }
 
         //info.tile_x=graphic_engine.get_mouse_tiles().x;
         //info.tile_y=graphic_engine.get_mouse_tiles().y;
-        player.mine(0.1);
-        if (player.has_mined()) {
-            entity_data data;
-            int mined_decorative=loader.peak_tile(static_cast<int>(info.tile_x), static_cast<int>(info.tile_y),"decoratives");
-            if (mined_decorative == 6){
-                player.add_item("coal_ore",1);
-            }else if (mined_decorative == 7) {
-                player.add_item("copper_ore",1);
-            }else if (mined_decorative == 8) {
-                player.add_item("iron_ore",1);
-            }else if (mined_decorative == 12) {
-                player.add_item("rock",1);
-            }else{
-                /*std::string building=data.get_by_id(loader.peak_tile(static_cast<int>(mine_event->get_event_data().tile_x), static_cast<int>(mine_event->get_event_data().tile_y),"buildings")).name;
-                std::cout<<building<<std::endl;
-                if (building != "" && building != "player"){
-                    machines.delete_machine(mine_event->get_event_data().tile_x,mine_event->get_event_data().tile_y);
-                    player.add_item(building,1);
-                }*/
-            }
-        }
     }
 }

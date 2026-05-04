@@ -11,6 +11,8 @@ player::player(float x, float y){
     this->y = y;
     this->inventory.resize(70);
     this->add_item("iron_ore",110);
+    this->add_item("coal_ore",110);
+    this->add_item("copper_ore",110);
     this->add_item("iron_plate",1);
     internal_crafter.bind_items(&inventory);
     internal_crafter.init_recipes("assets/configuration files/recipes_config.txt");
@@ -43,6 +45,11 @@ item* player::get_inventory() {
 item* player::get_crafting_grid() {
     return this->crafting_grid.data();
 }
+
+float *player::get_mining_progress() {
+    return &this->mining_progress;
+}
+
 void player::add_item(std::string type, int count) {
     const int stack_size = 100;
     for (auto &it : inventory) {
@@ -103,7 +110,7 @@ void player::mine(float dp) {
 }
 
 bool player::has_mined() {
-    if (this->mining_progress >= 5) {
+    if (this->mining_progress >= 1) {
         this->mining_progress = 0;
         return true;
     }

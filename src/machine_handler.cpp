@@ -50,11 +50,16 @@ void machine_handler::process_event(event *event) {
                 std::cout << pair.first << "\n";
             }
             std::cout<<this->opened_machines[0]<<"\n";
-            dynamic_cast<furnace_prototype*>(this->machines[this->opened_machines[0]])->get_source()->set_name(item->get_name());
-            dynamic_cast<furnace_prototype*>(this->machines[this->opened_machines[0]])->get_source()->add_quantity(item->get_quantity());
+            if (item->get_name() == "copper_ore" || item->get_name() == "iron_ore") {
+                dynamic_cast<furnace_prototype*>(this->machines[this->opened_machines[0]])->get_source()->set_name(item->get_name());
+                dynamic_cast<furnace_prototype*>(this->machines[this->opened_machines[0]])->get_source()->add_quantity(item->get_quantity());
+            }else if (item->get_name() == "coal_ore") {
+                dynamic_cast<furnace_prototype*>(this->machines[this->opened_machines[0]])->get_fuel()->set_name(item->get_name());
+                dynamic_cast<furnace_prototype*>(this->machines[this->opened_machines[0]])->get_fuel()->add_quantity(item->get_quantity());
+            }
             item->take_quantity(item->get_quantity()+1);
         }else if(ge->get_event_data().to == "inventory"){
-
+            ge->get_event_data().source->take_quantity(ge->get_event_data().source->get_quantity());
         }
     }
 }

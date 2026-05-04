@@ -37,6 +37,11 @@ class graphic_engine {
 
     bool home_menu=true;
     std::queue <event*> event_queue;
+
+    sf::Clock clock;
+    float dt=0;
+    float fps=0.f;
+
 public:
     graphic_engine(chunk_loader &loader,build_system& builder,sf::RenderWindow &window);
     /* mutat tot*/
@@ -69,7 +74,10 @@ public:
     chunk_renderer& get_chunk_renderer();
     event* get_event();
     sf::Vector2f get_mouse_coords();
+    sf::Vector2f get_mouse_tile_coords();
     float get_tile_size();
+    void compute_fps();
+    entity_position_info get_hovered_entity(const std::string& layer);
 };
 
 

@@ -39,7 +39,8 @@ void graphic_engine::init_camera() {
 
     this->ui_camera=sf::View(sf::FloatRect({0.f, 0.f}, {ui_width, ui_height}));
     this->ui_camera.setViewport(sf::FloatRect({0.f, 0.f}, {1.f, 1.f}));
-    this->ui_camera.setCenter({screenWidth / 2.f, screenHeight / 2.f});
+    this->ui_camera.setCenter({ui_width / 2.f, ui_height / 2.f});
+    //this->ui_camera.setCenter({screenWidth / 2.f, screenHeight / 2.f});
 
     this->window.setView(camera);
     this->set_camera(x_camera,y_camera);
@@ -233,13 +234,30 @@ void graphic_engine::render_game() {
 void graphic_engine::render_home_menu() {
     this->window.setView(ui_camera);
     sf::Vector2u windowSize = this->window.getSize();
-    const unsigned int screenWidth = windowSize.x;
-    const unsigned int screenHeight = windowSize.y;
+    const unsigned int screenWidth = this->ui_camera.getSize().x;
+    const unsigned int screenHeight = this->ui_camera.getSize().y;
     render_image(this->window,0,0,screenWidth,screenHeight,"assets/wallpapers/wallpaper1.png",false);
     render_image(this->window,(3.f/6.f)*screenWidth,screenHeight/2-500,1200,1000,"assets/wallpapers/logo.png",false);
     //text(this->window,0,0,"Made by Stefan Denciu",false);
 }
+
+void graphic_engine::compute_fps() {
+    this->dt = this->clock.restart().asSeconds();
+
+    static float accumulator = 0.f;
+    static int frames = 0;
+
+    accumulator += this->dt;
+    frames++;
+
+    if (accumulator >= 0.5f) {
+        this->fps = frames / accumulator;
+        accumulator = 0.f;
+        frames = 0;
+    }
+}
 void graphic_engine::render() {
+    this->compute_fps();
     this->window.clear(sf::Color::White);
     this->window.setView(camera);
     //this->render_mouse_position();
@@ -247,6 +265,7 @@ void graphic_engine::render() {
     this->window.setView(ui_camera);
     this->render_build_mode();
     this->render_uis();
+    this->display_fps(this->fps);
     this->window.setView(camera);
     this->window.display();
     this->loader.add_building(0,x_camera,y_camera);
@@ -317,6 +336,10 @@ sf::Vector2f graphic_engine::get_mouse_coords() {
     return mouse_coords;
 }
 
+sf::Vector2f graphic_engine::get_mouse_tile_coords() {
+    return {(this->get_mouse_coords().x/ tile_size)+x_camera-23,(this->get_mouse_coords().y/ tile_size)+y_camera-15};
+}
+
 void graphic_engine::start_game_rendering() {
     this->home_menu=false;
 }
@@ -343,4 +366,31 @@ camera_system &graphic_engine::get_camera_system() {
 
 chunk_renderer &graphic_engine::get_chunk_renderer() {
     return this->internal_chunk_renderer;
+}
+
+entity_position_info graphic_engine::get_hovered_entity(const std::string& layer) {
+    if (layer == "ground") {
+        return {-1,0,0};
+    }
+    int tileX=0;
+    int tileY=0;
+    entity_data data;
+    int tile;
+    for (int i=0;i<3;i++) {
+        for (int j=0;j<3;j++) {
+            tileX = this->get_mouse_tile_coords().x+i;
+            tileY = this->get_mouse_tile_coords().y+j;
+            tile=loader.peak_tile(tileX,tileY,layer);
+            if (data.get_by_id(tile).buildable && data.get_by_id(tile).width > i && data.get_by_id(tile).height > j) {
+                break;
+            }
+        }
+        if (data.get_by_id(tile).buildable && data.get_by_id(tile).width > i) {
+            break;
+        }
+    }
+    if (data.get_by_id(tile).buildable) {
+        draw_selector(this->window,get_mouse_coords().x,get_mouse_coords().y,data.get_by_id(tile).width*tile_size,5.f,sf::Color::Blue);
+    }
+    return {tile,tileX,tileY};
 }

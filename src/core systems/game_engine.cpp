@@ -33,12 +33,6 @@ void game_engine::render() {
     this->g_engine.render();
 }
 
-void game_engine::print_fps() {
-    float fps = 1.f / this->dt;
-    //std::cout << "FPS: " << fps << "\n";
-    this->g_engine.display_fps(fps);
-}
-
 void game_engine::compute_dt() {
     this->dt=this->clock.restart().asSeconds();
 }
@@ -85,6 +79,5 @@ void game_engine::run(){
         this->process_events();
         this->update(dt); //asta se amortizeaza la o executie per tick
         this->render();
-        this->print_fps();
     }
 }

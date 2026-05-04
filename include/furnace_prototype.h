@@ -12,15 +12,18 @@ class furnace_prototype : public machine{
     item source_slot;
     item destination_slot;
     float progress=0.f;
+    float curr_fuel=0.f;
     public:
     furnace_prototype();
     void update() override;
     item* get_source();
     item* get_destination();
     item* get_fuel();
+    float* get_progress();
+    float* get_curr_fuel();
     void add_source(item &item);
-    void add_destination(item &item);
     void add_fuel(item &item);
+    void convert_fuel();
 };
 
 
