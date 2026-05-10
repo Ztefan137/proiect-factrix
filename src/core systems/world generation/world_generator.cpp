@@ -7,8 +7,6 @@
 #include <cmath>
 #include <cstdint>
 
-#include "../../../cmake-build-release/_deps/sfml-src/extlibs/headers/glad/include/glad/gl.h"
-
 inline float seededRand(int x, int y, int seed) {
     uint32_t n = static_cast<uint32_t>(x) * 374761393u +
                  static_cast<uint32_t>(y) * 668265263u +
