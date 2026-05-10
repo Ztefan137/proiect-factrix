@@ -1,3 +1,9 @@
+# FACTRIX
+
+![wallpaper](assets/wallpapers/wallpaper1.png)
+
+
+
 # Nu primesc notă pentru că nu am pus titlu și descriere
 
 ### Folosiți template-ul corespunzător grupei voastre!

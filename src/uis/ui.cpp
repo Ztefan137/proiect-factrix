@@ -113,8 +113,7 @@ void ui::bind(ui_binder* binder){
 }
 
 void ui::bind_data(ui_binder *binder) {
-    ui_binder* github_actions_binder=binder;
-    std::cout<<"bind";
+    (void)binder;
 }
 
 bool ui::is_mouse_inside(float x_mouse, float y_mouse) {
