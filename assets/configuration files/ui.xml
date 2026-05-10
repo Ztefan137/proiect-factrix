@@ -1,5 +1,5 @@
 <!-- wip -->
-<ui_list length="3">
+<ui_list length="5">
     <window x="1440" y="900" width="1800" height="1200" visible_ribbon="true" name="Character" exit_button="true" flex="true" padding="16" flex-gap="16" flex-template="50-50">
         <section visible_ribbon="true" name="Inventory" flex="false">
             <item_grid col_count="7" row_count="7" tile_size="100" bind="inventory_pointer" action="build_mode">
@@ -82,22 +82,22 @@
     </window>
     <window x="1440" y="900" width="1800" height="1200" visible_ribbon="true" name="Drill" exit_button="true" flex="true" padding="16" flex-gap="16" flex-template="50-50">
         <section visible_ribbon="true" name="Inventory" flex="false">
-            <item_grid col_count="7" row_count="7" tile_size="100" bind="inventory_pointer" action="furnace_item_transfer">
+            <item_grid col_count="7" row_count="7" tile_size="100" bind="inventory_pointer" action="drill_item_transfer">
 
             </item_grid>
         </section>
-        <section visible_ribbon="true" name="Furnace" flex="true" flex-gap="8" padding="0" flex-direction="vertical" flex-template="50-50">
-            <section visible_ribbon="false" name="Furnace-section1" flex="false">
+        <section visible_ribbon="true" name="Drill" flex="true" flex-gap="8" padding="0" flex-direction="vertical" flex-template="50-50">
+            <section visible_ribbon="false" name="Drill-section1" flex="false">
 
             </section>
-            <section visible_ribbon="false" name="Furnace-section1" flex="false">
+            <section visible_ribbon="false" name="Drill-section1" flex="false">
                 <item_tile bind="fuel_pointer" action="player_item_transfer" x="150" y="300">
 
                 </item_tile>
                 <item_tile bind="destination_pointer" action="player_item_transfer" x="750" y="150">
 
                 </item_tile>
-                <progress_bar x="400" y="150" bind="smelting_progress"  width="500" height="80" color="blue">
+                <progress_bar x="380" y="150" bind="mining_progress"  width="550" height="80" color="blue">
 
                 </progress_bar>
                 <progress_bar x="520" y="300" bind="curr_fuel" width="550" height="20" color="red">

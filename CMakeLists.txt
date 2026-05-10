@@ -150,6 +150,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         "include/chunk_renderer.h"
         "src/core systems/rendering/camera_system.cpp"
         "include/camera_system.h"
+        src/machines/drill_prototype.cpp
+        include/drill_prototype.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

@@ -72,6 +72,7 @@ void ui_system::configure_uis(std::string config_xml) {
     default_handler.add_button_action("continue_game",continue_game);
     default_handler.add_button_action("quit_game",quit_game);
     default_handler.add_item_action("craft",craft_action);
+    default_handler.add_item_action("drill_item_transfer",drill_item_transfer);
     if (config_xml == "default") {
         sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
         const auto screenWidth = static_cast<float>(desktop.size.x);

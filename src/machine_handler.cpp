@@ -6,6 +6,7 @@
 
 #include <iostream>
 
+#include "drill_prototype.h"
 #include "furnace_prototype.h"
 #include "generic_event.h"
 #include "structures.h"
@@ -57,7 +58,20 @@ void machine_handler::process_event(event *event) {
                 dynamic_cast<furnace_prototype*>(this->machines[this->opened_machines[0]])->get_fuel()->set_name(item->get_name());
                 dynamic_cast<furnace_prototype*>(this->machines[this->opened_machines[0]])->get_fuel()->add_quantity(item->get_quantity());
             }
-            item->take_quantity(item->get_quantity()+1);
+            item->take_quantity(item->get_quantity());
+        }else if(ge->get_event_data().to == "drill"){
+            item* item=dynamic_cast<generic_event<item_move_data>*>(event)->get_event_data().source;
+            std::cout<<"item added:"<<item->get_quantity()<<"\n";
+            std::cout<<"\nMachine position keys\n";
+            for (const auto& pair : machines) {
+                std::cout << pair.first << "\n";
+            }
+            std::cout<<this->opened_machines[0]<<"\n";
+            if (item->get_name() == "coal_ore") {;
+                dynamic_cast<drill_prototype*>(this->machines[this->opened_machines[0]])->get_fuel()->set_name(item->get_name());
+                dynamic_cast<drill_prototype*>(this->machines[this->opened_machines[0]])->get_fuel()->add_quantity(item->get_quantity());
+            }
+            item->take_quantity(item->get_quantity());
         }else if(ge->get_event_data().to == "inventory"){
             ge->get_event_data().source->take_quantity(ge->get_event_data().source->get_quantity());
         }

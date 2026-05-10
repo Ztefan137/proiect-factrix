@@ -27,6 +27,18 @@ void furnace_item_transfer(std::queue<event*>* event_queue,item* item) {
     }
 }
 
+void drill_item_transfer(std::queue<event*>* event_queue,item* item) {
+    if (item->get_name() == "coal_ore") {
+        item_move_data info;
+        info.name=item->get_name();
+        info.source=item;
+        info.to="drill";
+        std::cout<<"item added:"<<item->get_quantity()<<"\n";
+        event* event=new generic_event<item_move_data>(info); //NOLINT
+        event_queue->push(event);
+    }
+}
+
 void player_item_transfer(std::queue<event *> *event_queue,item* item) {
     item_move_data info;
     info.name=item->get_name();
@@ -43,7 +55,9 @@ void new_game(std::queue<event *> *event_queue) {
 }
 
 void continue_game(std::queue<event *> *event_queue) {
-
+    //load last
+    //determine last game-save
+    load_game(event_queue);
 }
 
 void load_game(std::queue<event *> *event_queue) {
@@ -58,4 +72,8 @@ void quit_game(std::queue<event *> *event_queue) {
 void craft_action(std::queue<event *> *event_queue,item* item) {
     event* event=new generic_event<crafting_event_data>({item}); //NOLINT
     event_queue->push(event);
+}
+
+void null_event(std::queue<event *> *event_queue) {
+
 }

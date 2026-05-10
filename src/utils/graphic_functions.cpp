@@ -9,7 +9,7 @@
 #include "entity_data.h"
 
 void rect(sf::RenderWindow& window_obj,float xi,float yi, float xf, float yf,sf::Color color) {
-    sf::RectangleShape rect;
+    static sf::RectangleShape rect;
     rect.setPosition({xi,yi});
     rect.setSize({xf-xi,yf-yi});
     rect.setFillColor(color);
@@ -57,6 +57,7 @@ void render_item(sf::RenderWindow &window_obj, float x, float y, item* item) {
         if (icons["coal_ore"].loadFromFile("assets/decoratives/coal.png")){}
         if (icons["copper_ore"].loadFromFile("assets/decoratives/copper.png")){}
         if (icons["furnace"].loadFromFile("assets/buildings/furnace.png")){}
+        if (icons["drill"].loadFromFile("assets/buildings/null.png")){}
         if (icons["iron_plate"].loadFromFile("assets/icons/iron_plate.png")){}
         if (icons["rock"].loadFromFile("assets/icons/stone.png")){}
         initialized = true;

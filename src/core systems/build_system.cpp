@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "collision_handler.h"
+#include "drill_prototype.h"
 #include "entity_data.h"
 #include "furnace_prototype.h"
 
@@ -44,6 +45,23 @@ bool build_system::can_build() {
     if (!player_instance.has_item(this->item)) {
         return false;
     }
+    if (this->item == "drill") {
+        bool is_ore=false;
+        for (int i=0;i<data.get_by_name(this->item).width;i++) {
+            for (int j=0;j<data.get_by_name(this->item).height;j++) {
+                int possible_ore=loader.peak_tile(this->mouse_tile_x-i,this->mouse_tile_y-j,"decoratives");
+                bool is_coal=entity_data::get_by_id(possible_ore).name == "coal";
+                bool is_iron=entity_data::get_by_id(possible_ore).name == "iron";
+                bool is_copper=entity_data::get_by_id(possible_ore).name == "copper";
+                if ((is_coal || is_iron || is_copper)) {
+                    is_ore=true;
+                }
+            }
+        }
+        if (!is_ore) {
+            return false;
+        }
+    }
     return !collision_found;
 }
 
@@ -56,7 +74,11 @@ void build_system::build(){
     if (this->can_build()){
         entity_data data;
         this->loader.add_building(data.get_by_name(this->item).id,this->mouse_tile_x,this->mouse_tile_y);
-        this->machines.add_machine(new furnace_prototype(),this->mouse_tile_x,this->mouse_tile_y);
+        if (this->item == "drill") {
+            this->machines.add_machine(new drill_prototype(entity_data::get_by_id(loader.peak_tile(this->mouse_tile_x,this->mouse_tile_y,"decoratives")).name),this->mouse_tile_x,this->mouse_tile_y);
+        }else if (this->item == "furnace") {
+            this->machines.add_machine(new furnace_prototype(),this->mouse_tile_x,this->mouse_tile_y);
+        }
         player_instance.remove_item(this->item,1);
     }
 }

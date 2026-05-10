@@ -78,3 +78,4 @@ void furnace_prototype::convert_fuel(){
         this->curr_fuel=1.f;
     }
 }
+

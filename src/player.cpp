@@ -14,6 +14,7 @@ player::player(float x, float y){
     this->add_item("coal_ore",110);
     this->add_item("copper_ore",110);
     this->add_item("iron_plate",1);
+    this->add_item("drill",10);
     internal_crafter.bind_items(&inventory);
     internal_crafter.init_recipes("assets/configuration files/recipes_config.txt");
 

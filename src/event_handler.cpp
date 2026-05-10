@@ -5,6 +5,7 @@
 #include "event_handler.h"
 #include <iostream>
 
+#include "drill_prototype.h"
 #include "entity_data.h"
 #include "furnace_prototype.h"
 #include "player.h"
@@ -16,6 +17,7 @@
 
 #include "item.h"
 #include "structures.h"
+
 
 void event_handler::process_events(sf::RenderWindow &window,graphic_engine &graphic_engine,build_system& build_system,chunk_loader& loader,player& player,machine_handler &machines) {
     bool shouldExit = false;
@@ -115,14 +117,26 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
                                 furnace_binder.set<item>("inventory_pointer",player.get_inventory());
                                 machines.open_machine(tileX,tileY);
                                 machine* interacted_machine=(machines.get_machine(tileX,tileY));
-                                std::cout<<dynamic_cast<furnace_prototype*>(interacted_machine)->get_fuel()<<" "<<dynamic_cast<furnace_prototype*>(interacted_machine)->get_source()<<" "<<dynamic_cast<furnace_prototype*>(interacted_machine)->get_destination()<<std::endl;
                                 furnace_binder.set<item>("fuel_pointer",dynamic_cast<furnace_prototype*>(interacted_machine)->get_fuel());
                                 furnace_binder.set<item>("source_pointer",dynamic_cast<furnace_prototype*>(interacted_machine)->get_source());
                                 furnace_binder.set<item>("destination_pointer",dynamic_cast<furnace_prototype*>(interacted_machine)->get_destination());
                                 furnace_binder.set<float>("smelting_progress",dynamic_cast<furnace_prototype*>(interacted_machine)->get_progress());
                                 furnace_binder.set<float>("curr_fuel",dynamic_cast<furnace_prototype*>(interacted_machine)->get_curr_fuel());
-                                std::cout<<"furnace pointer progress"<<furnace_binder.get<float>("smelting_progress");
                                 ui_event open_event(1,&furnace_binder);
+                                graphic_engine.process_event(&open_event);
+                                generic_event<ui_idx_info> curr_event({data.get_by_id(tile).ui_idx});
+                                graphic_engine.process_event(&curr_event);
+                            }
+                            else if (data.get_by_id(tile).name == "drill"){
+                                ui_binder drill_binder;
+                                drill_binder.set<item>("inventory_pointer",player.get_inventory());
+                                machines.open_machine(tileX,tileY);
+                                machine* interacted_machine=(machines.get_machine(tileX,tileY));
+                                drill_binder.set<item>("fuel_pointer",dynamic_cast<drill_prototype*>(interacted_machine)->get_fuel());
+                                drill_binder.set<item>("destination_pointer",dynamic_cast<drill_prototype*>(interacted_machine)->get_destination());
+                                drill_binder.set<float>("mining_progress",dynamic_cast<drill_prototype*>(interacted_machine)->get_progress());
+                                drill_binder.set<float>("curr_fuel",dynamic_cast<drill_prototype*>(interacted_machine)->get_curr_fuel());
+                                ui_event open_event(4,&drill_binder);
                                 graphic_engine.process_event(&open_event);
                                 generic_event<ui_idx_info> curr_event({data.get_by_id(tile).ui_idx});
                                 graphic_engine.process_event(&curr_event);
@@ -150,10 +164,11 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
                 graphic_engine.process_event(&curr_event);
             }
         }else if (auto move_event=dynamic_cast<generic_event<item_move_data>*>(event)){
-            if (move_event->get_event_data().to == "furnace") {
+            entity_data data;
+            if (data.get_by_name(move_event->get_event_data().to).buildable){
                 std::string item=dynamic_cast<generic_event<item_move_data>*>(event)->get_event_data().name;
                 machines.process_event(event);
-            }else {
+            }else{
                 player.add_item(move_event->get_event_data().source->get_name(),move_event->get_event_data().source->get_quantity());
                 machines.process_event(event);
             }
