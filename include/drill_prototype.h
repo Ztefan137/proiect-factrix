@@ -8,6 +8,8 @@
 #include "machine.h"
 #include <string>
 
+#include "belt_prototype.h"
+
 
 class drill_prototype : public machine{
     item fuel_slot;
@@ -23,6 +25,8 @@ public:
     item* get_destination();
     float* get_progress();
     float* get_curr_fuel();
+    void check_input(machine*) override;
+    void check_output(machine*) override;
 };
 
 

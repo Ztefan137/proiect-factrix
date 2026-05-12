@@ -7,6 +7,8 @@
 #include <iostream>
 #include <ostream>
 
+#include "belt_prototype.h"
+
 furnace_prototype::furnace_prototype() : machine(),fuel_slot("",0),source_slot("",0),destination_slot("",0){
 
 }
@@ -79,3 +81,30 @@ void furnace_prototype::convert_fuel(){
     }
 }
 
+void furnace_prototype::check_input(machine* input) {
+    if (input == nullptr) {
+        return;
+    }
+    if (!dynamic_cast<belt_prototype*>(input)){
+        return;
+    }
+    belt_prototype* belt_instance = dynamic_cast<belt_prototype *>(input);
+    if (this->source_slot.get_name() != "") {
+        this->source_slot=belt_instance->get_cached();
+        return;
+    }
+    this->source_slot.add_quantity(belt_instance->get_cached().get_quantity());
+}
+
+void furnace_prototype::check_output(machine* output) {
+    if (output == nullptr) {
+        return;
+    }
+    if (!dynamic_cast<belt_prototype*>(output)){
+        return;
+    }
+    std::cout<<"output2";
+    //if (this->source_slot.get_name() != "") {
+    //}
+    //this->source_slot.add_quantity();
+}

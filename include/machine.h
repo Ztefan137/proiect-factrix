@@ -11,6 +11,8 @@ class machine {
 public:
     virtual ~machine()=default;
     virtual void update()=0;
+    virtual void check_input(machine*);
+    virtual void check_output(machine*);
 };
 
 

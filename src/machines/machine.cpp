@@ -3,3 +3,11 @@
 //
 
 #include "../../include/machine.h"
+
+void machine::check_input(machine*) {
+
+}
+
+void machine::check_output(machine*) {
+
+}

@@ -4,6 +4,10 @@
 
 #include "../../include/drill_prototype.h"
 
+#include <iostream>
+
+#include "belt_prototype.h"
+
 drill_prototype::drill_prototype(const std::string& mined_tile) : fuel_slot("",0), destination_slot("",0), mined(mined_tile) {
 }
 
@@ -49,4 +53,21 @@ void drill_prototype::convert_fuel() {
         this->fuel_slot.take_quantity(1);
         this->curr_fuel=1.f;
     }
+}
+
+void drill_prototype::check_input(machine* input){
+
+}
+
+void drill_prototype::check_output(machine* output) {
+    if (output == nullptr) {
+        return;
+    }
+    if (!dynamic_cast<belt_prototype*>(output)){
+        return;
+    }
+    belt_prototype* belt=dynamic_cast<belt_prototype*>(output);
+    std::cout<<this->destination_slot.get_name()<<"\n";
+    belt->place_item({this->destination_slot.get_name(),1});
+    this->destination_slot.take_quantity(1);
 }

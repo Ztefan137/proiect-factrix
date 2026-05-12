@@ -42,6 +42,9 @@
     texture:drill
         position:13
         path:../assets/buildings/null.png
+    texture:belt
+        position:14
+        path:../assets/buildings/null.png
 
    texture:dirt0
        position:20

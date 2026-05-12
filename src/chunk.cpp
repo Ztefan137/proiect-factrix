@@ -150,16 +150,13 @@ void chunk::recompute_top_layer() {
             v0 = tv * tile_size;
             u1 = (tu + 1) * tile_size;
             v1 = (tv + 1) * tile_size;
+            va_vec.push_back(sf::Vertex{.position = {x0, y0}, .texCoords = {u0, v0}});
+            va_vec.push_back(sf::Vertex{.position = {x1, y0}, .texCoords = {u1, v0}});
+            va_vec.push_back(sf::Vertex{.position = {x1, y1}, .texCoords = {u1, v1}});
 
-            if (width_multiplier != 1 || height_multiplier != 1) {
-                va_vec.push_back(sf::Vertex{.position = {x0, y0}, .texCoords = {u0, v0}});
-                va_vec.push_back(sf::Vertex{.position = {x1, y0}, .texCoords = {u1, v0}});
-                va_vec.push_back(sf::Vertex{.position = {x1, y1}, .texCoords = {u1, v1}});
-
-                va_vec.push_back(sf::Vertex{.position = {x0, y0}, .texCoords = {u0, v0}});
-                va_vec.push_back(sf::Vertex{.position = {x1, y1}, .texCoords = {u1, v1}});
-                va_vec.push_back(sf::Vertex{.position = {x0, y1}, .texCoords = {u0, v1}});
-            }
+            va_vec.push_back(sf::Vertex{.position = {x0, y0}, .texCoords = {u0, v0}});
+            va_vec.push_back(sf::Vertex{.position = {x1, y1}, .texCoords = {u1, v1}});
+            va_vec.push_back(sf::Vertex{.position = {x0, y1}, .texCoords = {u0, v1}});
         }
     }
 }

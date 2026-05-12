@@ -152,6 +152,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         "include/camera_system.h"
         src/machines/drill_prototype.cpp
         include/drill_prototype.h
+        src/machines/belt_prototype.cpp
+        include/belt_prototype.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

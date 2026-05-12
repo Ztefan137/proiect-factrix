@@ -24,6 +24,8 @@ class furnace_prototype : public machine{
     void add_source(item &item);
     void add_fuel(item &item);
     void convert_fuel();
+    void check_input(machine*) override;
+    void check_output(machine*) override;
 };
 
 

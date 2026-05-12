@@ -6,16 +6,22 @@
 
 #include <iostream>
 
+#include "belt_prototype.h"
 #include "drill_prototype.h"
 #include "furnace_prototype.h"
 #include "generic_event.h"
+#include "string_functions.h"
 #include "structures.h"
 
 machine_handler::machine_handler(player &player) : player_instance(&player){
 }
 
 void machine_handler::add_machine(machine* machine, int x, int y) {
-    machines[std::to_string(x)+","+std::to_string(y)]=machine;
+    if (dynamic_cast<belt_prototype*>(machine)) {
+        belts[std::to_string(x)+","+std::to_string(y)]=dynamic_cast<belt_prototype*>(machine);
+    }else {
+        machines[std::to_string(x)+","+std::to_string(y)]=machine;
+    }
 }
 
 void machine_handler::delete_machine(int x, int y) {
@@ -29,8 +35,20 @@ void machine_handler::delete_machines() {
     machines.clear();
 }
 
-machine *machine_handler::get_machine(int x, int y) {
-    return this->machines[std::to_string(x)+","+std::to_string(y)];
+machine* machine_handler::get_machine(int x, int y) {
+    if (machines.contains(std::to_string(x)+","+std::to_string(y))) {
+        return machines[std::to_string(x)+","+std::to_string(y)];
+    }else {
+        return nullptr;
+    }
+}
+
+belt_prototype* machine_handler::get_belt(int x, int y) {
+    if (belts.contains(std::to_string(x)+","+std::to_string(y))) {
+        return belts[std::to_string(x)+","+std::to_string(y)];
+    }else{
+        return nullptr;
+    }
 }
 
 void machine_handler::open_machine(int x, int y) {
@@ -79,7 +97,20 @@ void machine_handler::process_event(event *event) {
 }
 
 void machine_handler::update_machines() {
+    for (auto& [pos,ptr]:belts) {
+        ptr->cache_items();
+    }
+    for (auto& [pos,ptr]:belts) {
+        machine* previous=this->get_belt(std::stoi(st::split(pos,',')[0])-1,std::stoi(st::split(pos,',')[1]));
+        machine* left=nullptr;
+        machine* right=nullptr;
+        ptr->move_items(dynamic_cast<belt_prototype *>(previous),dynamic_cast<belt_prototype *>(left),dynamic_cast<belt_prototype *>(right));
+    }
     for (auto& [pos, ptr] : machines) {
+        machine* previous=this->get_belt(std::stoi(st::split(pos,',')[0]),std::stoi(st::split(pos,',')[1])-2);
+        ptr->check_input(previous);
         ptr->update();
+        machine* output=this->get_belt(std::stoi(st::split(pos,',')[0]),std::stoi(st::split(pos,',')[1])+1);
+        ptr->check_output(output);
     }
 }

@@ -6,6 +6,7 @@
 
 #include <iostream>
 
+#include "belt_prototype.h"
 #include "collision_handler.h"
 #include "drill_prototype.h"
 #include "entity_data.h"
@@ -78,6 +79,8 @@ void build_system::build(){
             this->machines.add_machine(new drill_prototype(entity_data::get_by_id(loader.peak_tile(this->mouse_tile_x,this->mouse_tile_y,"decoratives")).name),this->mouse_tile_x,this->mouse_tile_y);
         }else if (this->item == "furnace") {
             this->machines.add_machine(new furnace_prototype(),this->mouse_tile_x,this->mouse_tile_y);
+        }else if (this->item == "belt") {
+            this->machines.add_machine(new belt_prototype(),this->mouse_tile_x,this->mouse_tile_y);
         }
         player_instance.remove_item(this->item,1);
     }
