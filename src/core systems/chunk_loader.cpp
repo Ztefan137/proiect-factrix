@@ -63,3 +63,8 @@ void chunk_loader::add_building(int id,int x, int y) {
         it->second.add_building(id,local_x,local_y);
     }
 }
+
+void chunk_loader::init(int seed) {
+    this->generator.set_seed(seed);
+    this->chunk_cache.clear();
+}

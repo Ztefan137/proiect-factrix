@@ -90,7 +90,7 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/ui_button.h
         "src/delegated functions/ui_actions.cpp"
         include/ui_actions.h
-        src/event_handler.cpp
+        src/event_handlers/event_handler.cpp
         include/event_handler.h
         src/events/event.cpp
         include/event.h
@@ -154,6 +154,16 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/drill_prototype.h
         src/machines/belt_prototype.cpp
         include/belt_prototype.h
+        src/game_session.cpp
+        include/game_session.h
+        src/interface_layer.cpp
+        include/interface_layer.h
+        src/event_handlers/god_event_handler.cpp
+        include/god_event_handler.h
+        src/event_handlers/game_session_event_handler.cpp
+        include/game_session_event_handler.h
+        src/event_handlers/graphic_engine_event_handler.cpp
+        include/graphic_engine_event_handler.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

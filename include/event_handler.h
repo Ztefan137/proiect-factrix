@@ -15,11 +15,13 @@
 
 #include "machine.h"
 #include "furnace_prototype.h"
+#include "game_session.h"
 
 class event_handler {
+protected:
     std::queue<event*> event_queue;
 public:
-    void process_events(sf::RenderWindow& window,graphic_engine &graphic_engine,build_system &build_system,chunk_loader &loader,player& player, machine_handler& machines);
+    virtual void process_events(sf::RenderWindow& window,graphic_engine &graphic_engine,game_session& session);
     void add_event(event *event);
     void process_tick_events(sf::RenderWindow& window,graphic_engine &graphic_engine,build_system &build_system,chunk_loader &loader,player& player, machine_handler& machines);
 };

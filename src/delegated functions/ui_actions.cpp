@@ -61,7 +61,9 @@ void continue_game(std::queue<event *> *event_queue) {
 }
 
 void load_game(std::queue<event *> *event_queue) {
-
+    simple_event_data info{2};
+    event* event=new generic_event<simple_event_data>(info); //NOLINT
+    event_queue->push(event);
 }
 
 void quit_game(std::queue<event *> *event_queue) {
@@ -75,5 +77,5 @@ void craft_action(std::queue<event *> *event_queue,item* item) {
 }
 
 void null_event(std::queue<event *> *event_queue) {
-
+    (void) event_queue;
 }

@@ -19,6 +19,7 @@ class player {
     crafter internal_crafter;
 public:
     player(float x,float y);
+    void set_position(float x,float y);
     void move(float dx,float dy,chunk_loader& loader);
     float get_x();
     float get_y();
@@ -32,6 +33,7 @@ public:
     bool has_mined();
     void update();
     void craft(item item);
+    friend std::ostream& operator<<(std::ostream& os,const player& player);
 
 };
 

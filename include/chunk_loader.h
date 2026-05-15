@@ -18,6 +18,7 @@ class chunk_loader {
         chunk* get_chunk(int chunk_i,int chunk_j);
         int peak_tile(int i,int j,std::string layer);
         void add_building(int id,int x,int y);
+        void init(int seed);
 };
 
 

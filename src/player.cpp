@@ -126,3 +126,16 @@ void player::update() {
 void player::craft(item item) {
     this->internal_crafter.init_craft(item);
 }
+
+void player::set_position(float x, float y) {
+    this->x = x;
+    this->y = y;
+}
+
+std::ostream& operator<<(std::ostream& os,const player& player){
+    os<<player.x<<" "<<player.y<<" ";
+    for (auto& item:player.inventory) {
+        os<<item.get_name()<<","<<item.get_quantity()<<"/";
+    }
+    return os;
+}

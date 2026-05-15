@@ -2,47 +2,25 @@
 // Created by stefa on 3/18/2026.
 //
 #include <SFML/Graphics.hpp>
-#include <unordered_map>
-#include <string>
-#include <graphic_engine.h>
-#include <chrono>
-#include "player.h"
-#include "event_handler.h"
-#include "machine.h"
-#include "machine_handler.h"
+#include "game_session.h"
+#include "interface_layer.h"
 
 #ifndef OOP_GAME_ENGINE_H
 #define OOP_GAME_ENGINE_H
 
 class game_engine {
-    sf::RenderWindow window;
-    chunk_loader loader;
-    build_system build_system;
-    graphic_engine g_engine;
-    event_handler handler;
-
-    player player;
-    machine_handler machine_handler;
+    game_session session;
+    interface_layer interface;
 
     sf::Clock clock;
     float dt=0.f;
 
-    std::unordered_map<std::string,bool> key_input;
-
-    void init_entity_data();
-    void init_window();
-
-    void process_events();
-
-    void update(float dt);
-    void tick();
-
-    void render();
-
     void compute_dt();
+    void check_tick();
+    void tick();
 public:
     game_engine();
-    ~game_engine();
+    ~game_engine()=default;
     void init();
     void run();
 };
