@@ -12,7 +12,7 @@
 #include "structures.h"
 #include "ui_item_sticker.h"
 #include "ui_item_tile.h"
-#include "../exceptions/ui_negative_dimension_exception.h"
+#include "../../include/ui_negative_dimension_exception.h"
 
 ui::ui() {
     this->x=0;

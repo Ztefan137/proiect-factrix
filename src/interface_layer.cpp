@@ -8,9 +8,12 @@ interface_layer::interface_layer(game_session& session) : session(session), g_en
 
 }
 
-void interface_layer::process_input() {
-    this->handler.process_events(window,g_engine,session);
-    this->handler.process_tick_events(window,g_engine,session.expose<build_system&>("build_system"),session.expose<chunk_loader&>("loader"),session.expose<player&>("player"),session.expose<machine_handler&>("machine_handler"));
+void interface_layer::process_input(std::string time_step) {
+    if (time_step == "frame"){
+        this->handler.process_events(window,g_engine,session);
+    }else if (time_step == "tick") {
+        this->handler.process_tick_events(window,g_engine,session);
+    }
 }
 
 void interface_layer::process_output(){

@@ -165,9 +165,11 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         src/event_handlers/graphic_engine_event_handler.cpp
         include/graphic_engine_event_handler.h
         src/exceptions/ui_exception.cpp
-        src/exceptions/ui_exception.h
+        include/ui_exception.h
         src/exceptions/ui_negative_dimension_exception.cpp
-        src/exceptions/ui_negative_dimension_exception.h
+        include/ui_negative_dimension_exception.h
+        src/binder_factory.cpp
+        src/binder_factory.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

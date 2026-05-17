@@ -5,7 +5,9 @@
 #include "../include/game_session.h"
 #include <fstream>
 
+#include "generic_event.h"
 #include "string_functions.h"
+#include "structures.h"
 
 game_session::game_session() : player(0,0),machine_handler(player), build_system(loader,machine_handler,player) {
 
@@ -80,4 +82,25 @@ std::ostream& operator<<(std::ostream& os,const game_session& game_session){
     operator<<(os,"\n");
     operator<<(os,game_session.loader);
     return os;
+}
+
+void game_session::process_event(event *event) {
+    if (auto* pme=dynamic_cast<generic_event<player_move_data>*>(event)) {
+        this->player.move(pme->get_event_data().dx,pme->get_event_data().dy,this->loader);
+        return;
+    }
+    if (auto* text_event=dynamic_cast<generic_event<simple_event_text>*>(event)) {
+        std::string text=text_event->get_event_data().text;
+        if (text == "build_system_off") {
+            this->build_system.set_on(false);
+            return;
+        }
+        if (text == "build_system_on") {
+            this->build_system.set_on(true);
+            return;
+        }
+        if (text == "close_machines") {
+            this->machine_handler.close_machines();
+        }
+    }
 }

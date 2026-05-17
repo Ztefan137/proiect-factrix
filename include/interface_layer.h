@@ -8,17 +8,16 @@
 
 #include "event_handler.h"
 #include "game_session.h"
-#include "god_event_handler.h"
 #include "graphic_engine.h"
 class interface_layer {
     game_session& session;
     sf::RenderWindow window;
     graphic_engine g_engine;
-    god_event_handler handler;
+    event_handler handler;
 
 public:
     interface_layer(game_session&);
-    void process_input();
+    void process_input(std::string time_step);
     void process_output();
     bool is_open();
     void init();

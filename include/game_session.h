@@ -4,7 +4,6 @@
 
 #ifndef OOP_GAME_SESSION_H
 #define OOP_GAME_SESSION_H
-#include <iostream>
 
 #include "build_system.h"
 #include "chunk_loader.h"
@@ -28,25 +27,26 @@ public:
     void update();
     template<typename T>
     T expose(const std::string& variable) {
+        if (variable == "player") {
+            return reinterpret_cast<T>(this->player);
+        }
         if (variable == "loader") {
             return reinterpret_cast<T>(this->loader);
         }
         if (variable == "build_system") {
             return reinterpret_cast<T>(this->build_system);
         }
-        if (variable == "player") {
-            return reinterpret_cast<T>(this->player);
-        }
         if (variable == "machine_handler") {
             return reinterpret_cast<T>(this->machine_handler);
         }
-        throw "interface_binding_error";
+        //throw "interface_binding_error";
     }
     void activate();
     void init(int seed);
     void load(std::string file_path);
     void save(std::string file_path);
     bool is_active() const;
+    void process_event(event* event);
 };
 
 

@@ -8,7 +8,7 @@
 
 #include "belt_prototype.h"
 
-drill_prototype::drill_prototype(const std::string& mined_tile) : fuel_slot("",0), destination_slot("",0), mined(mined_tile) {
+drill_prototype::drill_prototype(const std::string& mined_tile) : machine(), fuel_slot("",0), destination_slot("",0), mined(mined_tile) {
 }
 
 void drill_prototype::update() {

@@ -19,8 +19,8 @@
 #include "ui_item_tile_grid.h"
 #include "ui_progress_bar.h"
 #include "ui_section.h"
-#include "../../exceptions/ui_exception.h"
-#include "../../exceptions/ui_negative_dimension_exception.h"
+#include "../../../include/ui_exception.h"
+#include "../../../include/ui_negative_dimension_exception.h"
 
 inline void position_center_padding(float x_center,float y_center,float padding_left,float padding_right,float padding_top,float padding_bottom,float &new_x_center,float &new_y_center) {
     new_x_center=x_center+0.5*(padding_left-padding_right);

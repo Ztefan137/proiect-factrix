@@ -47,6 +47,15 @@ struct simple_event_data {
     int event_id;
 };
 
+struct simple_event_text {
+    std::string text;
+};
+
+struct player_move_data {
+    int dx;
+    int dy;
+};
+
 struct mining_info {
     int tile_x=0,tile_y=0;
 };

@@ -13,17 +13,6 @@ furnace_prototype::furnace_prototype() : machine(),fuel_slot("",0),source_slot("
 
 }
 
-/*void furnace_prototype::update() {
-    //logica de update
-    if (fuel_slot.get_name() == "coal_ore" && fuel_slot.get_quantity() > 0) {
-        if (source_slot.get_name() == "iron_ore" && source_slot.get_quantity() > 0) {
-            source_slot.take_quantity(1);
-            destination_slot.set_name("iron_plate");
-            destination_slot.add_quantity(1);
-        }
-    }
-}*/
-
 void furnace_prototype::update() {
     bool smelting_conditions=false;
     smelting_conditions=source_slot.get_quantity()>0 && this->curr_fuel>0.f;

@@ -17,20 +17,6 @@ god_event_handler::god_event_handler() {
 }
 
 void god_event_handler::process_events(sf::RenderWindow &window,graphic_engine &graphic_engine,game_session& session) {
-    //event language model//
-
-    //2 categorii de evenimente
-        //-interface dependent
-            //depind specific de interfata(indeosebi de sistemele auxiliare)
-                //exemplu play-sound sau render-image
-                    //daca aveam interfata de consola nu mai mergeau astea
-            //in general procesate
-        //-non interface depenedent
-            //pot fi procesate in siguranta prin API ul de evenimente de catre game_session
-            //si eventual de alte sisteme diferite de interfata daca vor aparea in viitor
-
-    //clasificare evenimente
-
 
     bool shouldExit = false;
     build_system &build_system_reference=session.expose<build_system&>("build_system");
