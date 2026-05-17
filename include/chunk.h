@@ -24,7 +24,7 @@ class chunk {
     std::vector<std::string> layers;
     std::vector<sf::Vertex> non_grid_entities;
 public:
-    chunk()=default;
+    chunk();
     chunk(int i,int j,world_generator& generator,float tile_size,bool visibility);
     void compute_va();
     void render(sf::RenderWindow& window_obj,float x,float y,sf::Texture& texture);
@@ -32,6 +32,8 @@ public:
     void recompute_top_layer();
     void add_building(int id,int x,int y);
     int peak_tile(int local_i,int local_j,std::string layer);
+    friend std::ostream& operator<<(std::ostream& os,const chunk& chunk);
+    friend std::istream& operator>>(std::istream& is,chunk& chunk);
 };
 
 

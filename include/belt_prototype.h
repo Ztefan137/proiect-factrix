@@ -18,6 +18,8 @@ public:
     void move_items(belt_prototype*,belt_prototype*,belt_prototype*);
     item get_cached();
     void place_item(item);
+    friend std::ostream& operator<<(std::ostream&,const belt_prototype&);
+    friend std::istream& operator>>(std::istream&,belt_prototype&);
 };
 
 

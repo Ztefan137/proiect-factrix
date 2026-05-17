@@ -26,6 +26,8 @@ class furnace_prototype : public machine{
     void convert_fuel();
     void check_input(machine*) override;
     void check_output(machine*) override;
+    friend std::ostream& operator<<(std::ostream&,const furnace_prototype&);
+    friend std::istream& operator>>(std::istream&,furnace_prototype&);
 };
 
 

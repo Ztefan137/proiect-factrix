@@ -42,7 +42,6 @@ void game_engine::check_tick() {
 }
 
 void game_engine::tick() {
-    std::cout<<"tick";
     this->interface.process_input();
     this->session.update();
 }

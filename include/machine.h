@@ -4,6 +4,7 @@
 
 #ifndef OOP_MACHINE_H
 #define OOP_MACHINE_H
+#include <iostream>
 
 
 class machine {
@@ -13,6 +14,9 @@ public:
     virtual void update()=0;
     virtual void check_input(machine*);
     virtual void check_output(machine*);
+    friend std::ostream& operator<<(std::ostream&,const machine&);
+    friend std::istream& operator>>(std::istream&,machine&);
+
 };
 
 

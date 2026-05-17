@@ -37,3 +37,20 @@ void belt_prototype::place_item(item item) {
     std::cout<<"placing item"<<item.get_name()<<"\n";
     this->curr_item=item;
 }
+
+std::ostream& operator<<(std::ostream &os, const belt_prototype &belt) {
+    os << belt.curr_item.get_name() << " " << belt.curr_item.get_quantity() << "\n";
+    os << belt.cached_item.get_name() << " " << belt.cached_item.get_quantity() << "\n";
+    return os;
+}
+
+std::istream& operator>>(std::istream &is, belt_prototype &belt) {
+    std::string curr_name;
+    int curr_quantity;
+    std::string cached_name;
+    int cached_quantity;
+    is >> curr_name >> curr_quantity >> cached_name >> cached_quantity;
+    belt.curr_item={curr_name,curr_quantity};
+    belt.cached_item={cached_name,cached_quantity};
+    return is;
+}

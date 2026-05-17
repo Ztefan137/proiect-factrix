@@ -108,3 +108,44 @@ void furnace_prototype::check_output(machine* output) {
     //}
     //this->source_slot.add_quantity();
 }
+
+std::ostream& operator<<(std::ostream &os, const furnace_prototype &furnace) {
+    os << ((furnace.fuel_slot.get_name() == "")? "-" : furnace.fuel_slot.get_name())<< " " << furnace.fuel_slot.get_quantity() << "\n";
+    os << ((furnace.source_slot.get_name() == "")? "-" : furnace.source_slot.get_name()) << " " << furnace.source_slot.get_quantity() << "\n";
+    os << ((furnace.destination_slot.get_name() == "")? "-" : furnace.destination_slot.get_name()) << " " << furnace.destination_slot.get_quantity() << "\n";
+    os << furnace.progress << "\n";
+    os << furnace.curr_fuel << "\n";
+    return os;
+}
+
+std::istream& operator>>(std::istream &is, furnace_prototype &furnace) {
+    std::string fuel_name;
+    int fuel_quantity;
+    std::string source_name;
+    int source_quantity;
+    std::string destination_name;
+    int destination_quantity;
+    float progress;
+    float curr_fuel;
+
+    is >> fuel_name >> fuel_quantity;
+    is >> source_name >> source_quantity;
+    is >> destination_name >> destination_quantity;
+    is >> progress;
+    is >> curr_fuel;
+
+    fuel_name=(fuel_name == "-")?"":fuel_name;
+    source_name=(source_name == "-")?"":source_name;
+    destination_name=(destination_name == "-")?"":destination_name;
+
+    furnace.fuel_slot.set_name(fuel_name);
+    furnace.fuel_slot.add_quantity(fuel_quantity);
+    furnace.source_slot.set_name(source_name);
+    furnace.source_slot.add_quantity(source_quantity);
+    furnace.destination_slot.set_name(destination_name);
+    furnace.destination_slot.add_quantity(destination_quantity);
+    furnace.progress = progress;
+    furnace.curr_fuel = curr_fuel;
+
+    return is;
+}

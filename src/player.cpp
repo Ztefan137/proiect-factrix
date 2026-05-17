@@ -4,6 +4,7 @@
 
 #include "../include/player.h"
 
+#include "string_functions.h"
 #include "../include/collision_handler.h"
 
 player::player(float x, float y){
@@ -30,6 +31,11 @@ void player::move(float dx, float dy,chunk_loader &loader) {
         this->x += dx;
         this->y += dy;
     }
+}
+
+void player::clear_inventory() {
+    this->inventory.clear();
+    this->inventory.resize(70);
 }
 
 float player::get_x() {
@@ -133,9 +139,44 @@ void player::set_position(float x, float y) {
 }
 
 std::ostream& operator<<(std::ostream& os,const player& player){
-    os<<player.x<<" "<<player.y<<" ";
+    os<<"[PLAYER]"<<"\n";
+
+    os<<player.x<<" "<<player.y<<"\n";
     for (auto& item:player.inventory) {
-        os<<item.get_name()<<","<<item.get_quantity()<<"/";
+        if (item.get_name() != "") {
+            os<<item.get_name()<<","<<item.get_quantity()<<"\n";
+        }else {
+            os<<"-,"<<item.get_quantity()<<"\n";
+        }
     }
     return os;
 }
+
+std::istream& operator>>(std::istream& is,player& player){
+
+    is>>player.x>>player.y;
+
+    player.inventory.clear();
+    player.inventory.resize(70);
+
+    std::string line;
+    std::getline(is,line);
+
+    for(int i=0;i<70;i++){
+        if(!std::getline(is,line)){
+            break;
+        }
+
+        auto data=st::split(line,',');
+        std::string name=data[0];
+        int quantity=std::stoi(data[1]);
+
+        if(name=="-"){
+            player.inventory[i]=item("",quantity);
+        }else{
+            player.inventory[i]=item(name,quantity);
+        }
+    }
+    return is;
+}
+

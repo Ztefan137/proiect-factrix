@@ -200,8 +200,7 @@ void god_event_handler::process_events(sf::RenderWindow &window,graphic_engine &
                     graphic_engine.start_game_rendering();
                     graphic_engine.get_ui_system().close_uis();
                     srand(time(nullptr));
-//                    session.init(rand()%1000);
-                    session.init(123);
+                    session.init(rand()%1000);
                     graphic_engine.set_camera(player_reference.get_x(), player_reference.get_y());
                     break;
                 case 2:

@@ -19,6 +19,8 @@ class chunk_loader {
         int peak_tile(int i,int j,std::string layer);
         void add_building(int id,int x,int y);
         void init(int seed);
+        friend std::ostream& operator<<(std::ostream& os,const chunk_loader& player);
+        friend std::istream& operator>>(std::istream& is,chunk_loader& player);
 };
 
 

@@ -8,6 +8,20 @@
 
 #include "entity_data.h"
 
+chunk::chunk() {
+    layers.push_back("ground");
+    layers.push_back("decoratives");
+    this->tile_size=tile_size;
+    sf::VertexArray ground_va;
+    ground_va.setPrimitiveType(sf::PrimitiveType::Triangles);
+    ground_va.resize(32 * 32 * 6);
+    this->grid_layers[this->layers[0]] = ground_va;
+    sf::VertexArray decoratives_va;
+    decoratives_va.setPrimitiveType(sf::PrimitiveType::Triangles);
+    decoratives_va.resize(32 * 32 * 6);
+    this->grid_layers[this->layers[1]] = decoratives_va;
+}
+
 chunk::chunk(int i,int j,world_generator& generator,float tile_size,bool visibility){
     layers.push_back("ground");
     layers.push_back("decoratives");
@@ -193,4 +207,40 @@ int chunk::peak_tile(int local_i, int local_j,std::string layer) {
         return this->buildings[local_j*32+local_i];
     }
     return -1;
+}
+
+std::ostream& operator<<(std::ostream& os, const chunk& chunk) {
+    os<<chunk.i << " " << chunk.j << " " << chunk.tile_size << " " << (chunk.visible? 1:0) << "\n";
+    for(int k=0;k<32*32;++k) {
+        os<<chunk.ground[k]<<(k==32*32-1 ? "" : " ");
+    }
+    os<<"\n";
+    for(int k=0;k<32*32;++k){
+        os<<chunk.decoratives[k]<<(k==32 * 32 - 1 ? "" : " ");
+    }
+    os<<"\n";
+    for(int k=0;k<32*32;++k){
+        os<<chunk.buildings[k]<<(k == 32 * 32 - 1 ? "" : " ");
+    }
+    os<<"\n";
+    return os;
+}
+
+std::istream& operator>>(std::istream& is, chunk& chunk) {
+    if (!(is >> chunk.i >> chunk.j >> chunk.tile_size >> chunk.visible)) {
+        return is;
+    }
+    for(int k = 0; k < 32 * 32; ++k) {
+        is >> chunk.ground[k];
+    }
+    for(int k = 0; k < 32 * 32; ++k) {
+        is >> chunk.decoratives[k];
+    }
+    for(int k = 0; k < 32 * 32; ++k) {
+        is >> chunk.buildings[k];
+    }
+    chunk.visible=true;
+    chunk.compute_va();
+    chunk.recompute_top_layer();
+    return is;
 }

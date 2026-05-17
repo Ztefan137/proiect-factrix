@@ -34,6 +34,8 @@ public:
     void update();
     void craft(item item);
     friend std::ostream& operator<<(std::ostream& os,const player& player);
+    friend std::istream& operator>>(std::istream& is,player& player);
+    void clear_inventory();
 
 };
 

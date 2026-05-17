@@ -20,7 +20,6 @@ void game_session::update() {
         this->tick_count++;
         this->machine_handler.update_machines();
         this->player.update();
-        std::cout<<"game_session::update";
     }
 }
 
@@ -33,23 +32,32 @@ void game_session::init(int seed){
     this->loader.init(seed);
     this->machine_handler.delete_machines();
     this->player.set_position(0,0);
+    this->player.clear_inventory();
+    this->seed=seed;
 }
 
 void game_session::load(std::string file_path) {
+    std::ifstream is(file_path);
+    std::string tag;
 
-    std::cout<<"start_load";
-
-    this->init(123);
-    std::ifstream file(file_path);
-    std::string line;
-    std::getline(file,line);
-    float x=std::stof(st::split(line,' ')[0]);
-    float y=std::stof(st::split(line,' ')[1]);
-    this->player.set_position(x,y);
-
-    std::cout<<"end_load";
-
-    //file.close();
+    while (is >> tag) {
+        if (tag == "\n") {
+            continue;
+        }
+        if (tag == "[SEED]") {
+            is>>this->seed;
+            this->init(this->seed);
+        } else if (tag == "[PLAYER]") {
+            std::cout<<"reading player";
+            is >> this->player;
+        } else if (tag == "[MACHINES]") {
+            std::cout<<"reading machines";
+            is >> this->machine_handler;
+        } else if (tag == "[CHUNKS]") {
+            std::cout<<"reading chunks";
+            is >> this->loader;
+        }
+    }
 }
 
 void game_session::save(std::string file_path) {
@@ -63,6 +71,13 @@ bool game_session::is_active() const{
 }
 
 std::ostream& operator<<(std::ostream& os,const game_session& game_session){
+    operator<<(os,"[SEED]\n");
+    os<<game_session.seed;
+    operator<<(os,"\n");
     operator<<(os,game_session.player);
+    operator<<(os,"\n");
+    operator<<(os,game_session.machine_handler);
+    operator<<(os,"\n");
+    operator<<(os,game_session.loader);
     return os;
 }

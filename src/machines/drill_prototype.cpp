@@ -71,3 +71,40 @@ void drill_prototype::check_output(machine* output) {
     belt->place_item({this->destination_slot.get_name(),1});
     this->destination_slot.take_quantity(1);
 }
+
+std::ostream& operator<<(std::ostream &os, const drill_prototype &drill) {
+    os << ((drill.fuel_slot.get_name() == "")? "-" : drill.fuel_slot.get_name())<< " " << drill.fuel_slot.get_quantity() << "\n";
+    os << ((drill.destination_slot.get_name() == "")? "-" : drill.destination_slot.get_name())<< " " << drill.destination_slot.get_quantity() << "\n";
+    os << drill.progress << "\n";
+    os << drill.curr_fuel << "\n";
+    os << drill.mined << "\n";
+    return os;
+}
+
+std::istream& operator>>(std::istream &is, drill_prototype &drill) {
+    std::string fuel_name;
+    int fuel_quantity;
+    std::string destination_name;
+    int destination_quantity;
+    float progress;
+    float curr_fuel;
+    std::string mined;
+
+    is >> fuel_name >> fuel_quantity;
+    is >> destination_name >> destination_quantity;
+    is >> progress;
+    is >> curr_fuel;
+    is >> mined;
+
+    fuel_name=(fuel_name == "-")?"":fuel_name;
+    destination_name=(destination_name == "-")?"":destination_name;
+
+    drill.fuel_slot.set_name(fuel_name);
+    drill.fuel_slot.add_quantity(fuel_quantity);
+    drill.destination_slot.set_name(destination_name);
+    drill.destination_slot.add_quantity(destination_quantity);
+    drill.progress = progress;
+    drill.curr_fuel = curr_fuel;
+
+    return is;
+}

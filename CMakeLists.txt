@@ -164,6 +164,10 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/game_session_event_handler.h
         src/event_handlers/graphic_engine_event_handler.cpp
         include/graphic_engine_event_handler.h
+        src/exceptions/ui_exception.cpp
+        src/exceptions/ui_exception.h
+        src/exceptions/ui_negative_dimension_exception.cpp
+        src/exceptions/ui_negative_dimension_exception.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

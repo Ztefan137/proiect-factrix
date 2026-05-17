@@ -15,6 +15,7 @@ class game_session {
     chunk_loader loader;
     machine_handler machine_handler;
     build_system build_system;
+    int seed;
 
     //flags
     bool active=false;

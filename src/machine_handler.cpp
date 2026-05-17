@@ -114,3 +114,62 @@ void machine_handler::update_machines() {
         ptr->check_output(output);
     }
 }
+
+std::ostream &operator<<(std::ostream &os, const machine_handler &handler) {
+    os<<"[MACHINES]"<<"\n";
+    os<<handler.machines.size()<<"\n";
+    for(auto & [pos, ptr] : handler.machines) {
+        os << pos << "\n";
+        if (dynamic_cast<drill_prototype*>(ptr)) {
+            os << "drill\n";
+            os << *dynamic_cast<drill_prototype*>(ptr);
+        }else if (dynamic_cast<furnace_prototype*>(ptr)) {
+            os << "furnace\n";
+            os << *dynamic_cast<furnace_prototype*>(ptr);
+        }
+    }
+    /*os<<"\n\n";
+    for(auto & [pos, ptr] : handler.belts) {
+        os << pos << "\n";
+        os << "cache_size:" << ptr->get_cached().get_quantity() << "\n";
+    }*/
+    return os;
+}
+
+std::istream& operator>>(std::istream& is, machine_handler& handler) {
+    int total_machines;
+    if (!(is >> total_machines)) {
+        std::cout<<"Exception";
+        return is;
+    }
+    handler.machines.clear();
+    for (int machine_index = 0; machine_index < total_machines; ++machine_index) {
+        std::cout<<machine_index<<"/"<<total_machines<<std::endl;
+        std::string machine_coordinate_key;
+        if (!(is >> machine_coordinate_key)) {
+            std::cout<<"Exception11";
+            break;
+        }
+        std::string machine_type;
+        if (!(is >> machine_type)) {
+            std::cout<<"Exception12";
+            break;
+        }
+        if (machine_type == "drill") {
+            drill_prototype* loaded_machine = new drill_prototype();
+            if (!(is >> *loaded_machine)) {
+                std::cout<<"Exception13";
+                break;
+            }
+            handler.machines[machine_coordinate_key] = loaded_machine;
+        } else if (machine_type == "furnace") {
+            furnace_prototype* loaded_machine = new furnace_prototype();
+            if (!(is >> *loaded_machine)) {
+                std::cout<<"Exception14";
+                break;
+            }
+            handler.machines[machine_coordinate_key] = loaded_machine;
+        }
+    }
+    return is;
+}

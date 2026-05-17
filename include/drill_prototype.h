@@ -19,6 +19,7 @@ class drill_prototype : public machine{
     const std::string mined;
     void convert_fuel();
 public:
+    drill_prototype()=default;
     explicit drill_prototype(const std::string& mined_tile);
     void update() override;
     item* get_fuel();
@@ -27,6 +28,8 @@ public:
     float* get_curr_fuel();
     void check_input(machine*) override;
     void check_output(machine*) override;
+    friend std::ostream& operator<<(std::ostream&,const drill_prototype&);
+    friend std::istream& operator>>(std::istream&,drill_prototype&);
 };
 
 

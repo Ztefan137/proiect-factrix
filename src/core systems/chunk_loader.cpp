@@ -68,3 +68,39 @@ void chunk_loader::init(int seed) {
     this->generator.set_seed(seed);
     this->chunk_cache.clear();
 }
+
+std::ostream& operator<<(std::ostream& os,const chunk_loader& chunk_loader) {
+    os<<"[CHUNKS]"<<"\n";
+    os<<chunk_loader.chunk_cache.size()<<"\n";
+    for (const auto& chunk:chunk_loader.chunk_cache) {
+        os<<chunk.first;
+        os<<"\n";
+        os<<chunk.second;
+    }
+    return os;
+}
+
+std::istream& operator>>(std::istream& is, chunk_loader& chunk_loader) {
+    int total_cached_chunks;
+    if (!(is >> total_cached_chunks)) {
+        std::cout<<"Exception1";
+        return is;
+    }
+    chunk_loader.chunk_cache.clear();
+    chunk_loader.pending_chunks.clear();
+    for (int chunk_index = 0; chunk_index < total_cached_chunks; ++chunk_index) {
+        std::cout<<chunk_index<<"/"<<total_cached_chunks<<std::endl;
+        std::string chunk_coordinate_key;
+        if (!(is >> chunk_coordinate_key)) {
+            std::cout<<"Exception2";
+            break;
+        }
+        chunk loaded_chunk;
+        if (!(is >> loaded_chunk)) {
+            std::cout<<"Exception3";
+            break;
+        }
+        chunk_loader.chunk_cache[chunk_coordinate_key] = loaded_chunk;
+    }
+    return is;
+}

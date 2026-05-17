@@ -12,6 +12,7 @@
 #include "structures.h"
 #include "ui_item_sticker.h"
 #include "ui_item_tile.h"
+#include "../exceptions/ui_negative_dimension_exception.h"
 
 ui::ui() {
     this->x=0;
@@ -22,6 +23,9 @@ ui::ui() {
 }
 
 ui::ui(float x, float y, float width, float height){
+    if (width<0 || height<0) {
+        throw ui_negative_dimension_exception();
+    }
     this->x=x;
     this->y=y;
     this->width=width;

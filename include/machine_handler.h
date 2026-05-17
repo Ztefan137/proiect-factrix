@@ -29,6 +29,8 @@ public:
     void close_machines();
     void process_event(event* event);
     void update_machines();
+    friend std::ostream& operator<<(std::ostream& os,const machine_handler& handler);
+    friend std::istream& operator>>(std::istream& is,machine_handler& handler);
 
 };
 
