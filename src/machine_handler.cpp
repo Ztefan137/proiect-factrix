@@ -13,7 +13,8 @@
 #include "string_functions.h"
 #include "structures.h"
 
-machine_handler::machine_handler(player &player) : player_instance(&player){
+machine_handler::machine_handler(player &player){
+    (void) player;
 }
 
 void machine_handler::add_machine(machine* machine, int x, int y) {
