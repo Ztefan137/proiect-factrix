@@ -17,7 +17,6 @@ class machine_handler {
     std::unordered_map<std::string,machine*> machines;
     std::unordered_map<std::string,belt_prototype*> belts;
     std::vector<std::string> opened_machines;
-    player* player_instance;
 public:
     machine_handler(player &player);
     void add_machine(machine* machine,int x,int y);
@@ -31,7 +30,6 @@ public:
     void update_machines();
     friend std::ostream& operator<<(std::ostream& os,const machine_handler& handler);
     friend std::istream& operator>>(std::istream& is,machine_handler& handler);
-
 };
 
 
