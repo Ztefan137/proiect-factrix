@@ -160,7 +160,7 @@ void god_event_handler::process_events(sf::RenderWindow &window,graphic_engine &
             }
         }
     }
-        while (auto event=graphic_engine.get_event()) {
+while (auto event=graphic_engine.get_event()) {
         if (dynamic_cast<generic_event<build_mode_info>*>(event)) {
             int curr_building=dynamic_cast<generic_event<build_mode_info>*>(event)->get_event_data().current_building;
             entity_data data;

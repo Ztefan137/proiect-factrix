@@ -9,16 +9,16 @@
         <section visible_ribbon="true" name="Crafting" flex="false" padding="24">
             <section visible_ribbon="false" name="crafting" flex="true" flex-direction="vertical" flex-template="17-83">
                 <section visible_ribbon="false" flex="true" name="buttons" flex-template="25-25-25-25">
-                    <button text="Products">
+                    <button text="General">
 
                     </button>
-                    <button text="Weapons">
+                    <button text="-">
 
                     </button>
-                    <button text="Production">
+                    <button text="-">
 
                     </button>
-                    <button text="Logistics">
+                    <button text="-">
 
                     </button>
                 </section>

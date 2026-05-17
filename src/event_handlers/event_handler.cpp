@@ -22,6 +22,12 @@
 #include "../binder_factory.h"
 
 void event_handler::process_events(sf::RenderWindow &window,graphic_engine &graphic_engine,game_session& session) {
+
+    build_system &build_system_reference=session.expose<build_system&>("build_system");
+    chunk_loader &loader_reference=session.expose<chunk_loader&>("loader");
+    player &player_reference=session.expose<player&>("player");
+    machine_handler &machines_reference=session.expose<machine_handler&>("machine_handler");
+
     while(const std::optional curr_event = window.pollEvent()) {
         if (curr_event->is<sf::Event::Closed>()) {
             window.close();
@@ -47,7 +53,6 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
                     window.close();
                 }
             }else if (keyPressed->scancode == sf::Keyboard::Scancode::E && session.is_active()) {
-                //open inventory
                 ui_binder inventory_binder;
                 if (binder_factory::create_binder(inventory_binder,"inventory",session)) {
                     ui_event open_event(0,&inventory_binder);
@@ -68,7 +73,6 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
             const auto* scroll = curr_event->getIf<sf::Event::MouseWheelScrolled>();
             float delta = scroll->delta;
             graphic_engine.zoom(delta);
-            //graphic_engine.get_camera_system.zoom();
         }else if (curr_event->is<sf::Event::MouseButtonReleased>() ) {
             const auto* mouseClick = curr_event->getIf<sf::Event::MouseButtonReleased>();
             if (mouseClick->button == sf::Mouse::Button::Left) {
@@ -77,23 +81,22 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
                     build_system_reference.build();
                 }else {
                     sf::Vector2i mousePos = mouseClick->position;
-
-                    //putem sa luam aici pozitia si sa verificam la ce tile ne uitam
-                    if (!graphic_engine.get_ui_system().ui_at_coords(mousePos.x, mousePos.y) && session.is_active()) {
-                        entity_data data;
-                        int tileX=0;
-                        int tileY=0;
-                        int tile=0;
-                        tile=graphic_engine.get_hovered_entity("buildings").id;
-                        tileX=graphic_engine.get_hovered_entity("buildings").x;
-                        tileY=graphic_engine.get_hovered_entity("buildings").y;
-                        if (entity_data::get_by_id(tile).buildable) {
-                            ui_binder binder;
-                            if (binder_factory::create_binder(binder,data.get_by_id(tile).name,session,tileX,tileY)){
-                                ui_event open_event(entity_data::get_by_id(tile).ui_idx,&binder);
-                                graphic_engine.process_event(&open_event);
-                                generic_event<ui_idx_info> event({data.get_by_id(tile).ui_idx});
-                                graphic_engine.process_event(&event);
+                    if (!graphic_engine.get_ui_system().ui_at_coords(mousePos.x, mousePos.y)) {
+                        if (session.is_active()) {
+                            int tileX=0;
+                            int tileY=0;
+                            int tile=0;
+                            tile=graphic_engine.get_hovered_entity("buildings").id;
+                            tileX=graphic_engine.get_hovered_entity("buildings").x;
+                            tileY=graphic_engine.get_hovered_entity("buildings").y;
+                            if (entity_data::get_by_id(tile).buildable) {
+                                ui_binder binder;
+                                if (binder_factory::create_binder(binder,entity_data::get_by_id(tile).name,session,tileX,tileY)){
+                                    ui_event open_event(entity_data::get_by_id(tile).ui_idx,&binder);
+                                    graphic_engine.process_event(&open_event);
+                                    generic_event<ui_idx_info> event({entity_data::get_by_id(tile).ui_idx});
+                                    graphic_engine.process_event(&event);
+                                }
                             }
                         }
                     }else{
@@ -107,12 +110,12 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
             }
         }
     }
+
     while (auto event=graphic_engine.get_event()) {
         if (dynamic_cast<generic_event<build_mode_info>*>(event)) {
             int curr_building=dynamic_cast<generic_event<build_mode_info>*>(event)->get_event_data().current_building;
             entity_data data;
             if (data.get_by_id(curr_building).buildable){
-                build_system& build_system_reference=session.expose<build_system&>("build_system");
                 build_system_reference.set_on(true);
                 build_system_reference.set_item(data.get_by_id(curr_building).name);
                 key_event curr_event("e");
@@ -120,8 +123,6 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
             }
         }else if (auto move_event=dynamic_cast<generic_event<item_move_data>*>(event)){
             entity_data data;
-            player& player_reference=session.expose<player&>("player");
-            machine_handler& machines_reference=session.expose<machine_handler&>("machines");
             if (data.get_by_name(move_event->get_event_data().to).buildable){
                 std::string item=dynamic_cast<generic_event<item_move_data>*>(event)->get_event_data().name;
                 machines_reference.process_event(event);
@@ -131,7 +132,6 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
             }
         }else if (dynamic_cast<generic_event<simple_event_data>*>(event)){
             int event_id=dynamic_cast<generic_event<simple_event_data>*>(event)->get_event_data().event_id;
-            player& player_reference=session.expose<player&>("player");
             switch (event_id) {
                 case 1:
                     graphic_engine.start_game_rendering();
@@ -152,7 +152,6 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
             }
         }else if (dynamic_cast<generic_event<crafting_event_data>*>(event)){
             std::cout<<"crafting";
-            player& player_reference=session.expose<player&>("player");
             player_reference.craft(*dynamic_cast<generic_event<crafting_event_data>*>(event)->get_event_data().crafted);
         }else{
             graphic_engine.process_event(event);
@@ -170,51 +169,37 @@ void event_handler::add_event(event *event) {
 }
 
 void event_handler::process_tick_events(sf::RenderWindow &window, graphic_engine &graphic_engine,game_session& session) {
-    build_system &build_system_reference=session.expose<build_system&>("build_system");
+    //build_system &build_system_reference=session.expose<build_system&>("build_system");
     chunk_loader &loader_reference=session.expose<chunk_loader&>("loader");
     player &player_reference=session.expose<player&>("player");
-    machine_handler &machines_reference=session.expose<machine_handler&>("machine_handler");
-
-    while(const std::optional curr_event = window.pollEvent()) {
-        bool player_moved=false;
-        const auto* keyPressed = curr_event->getIf<sf::Event::KeyPressed>();
-        if (curr_event->is<sf::Event::KeyPressed>()) {
-            if (keyPressed->scancode == sf::Keyboard::Scancode::W) {
-                generic_event<player_move_data> event({0,-1});
-                session.process_event(&event);
-                player_moved=true;
-            }else if (keyPressed->scancode == sf::Keyboard::Scancode::S) {
-                generic_event<player_move_data> event({0,1});
-                session.process_event(&event);
-                player_moved=true;
-            }else if (keyPressed->scancode == sf::Keyboard::Scancode::A) {
-                generic_event<player_move_data> event({-1,0});
-                session.process_event(&event);
-                player_moved=true;
-            }else if (keyPressed->scancode == sf::Keyboard::Scancode::D) {
-                generic_event<player_move_data> event({1,0});
-                session.process_event(&event);
-                player_moved=true;
-            }
-            if (player_moved) {
-                player& player_reference=session.expose<player&>("player");
-                graphic_engine.set_camera(player_reference.get_x(),player_reference.get_y());
-            }
+    //machine_handler &machines_reference=session.expose<machine_handler&>("machine_handler");
+    if (session.is_active()) {
+        int dx = 0;
+        int dy = 0;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::W)){
+            dy -= 1;
         }
-        break;
-    }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::S)) {
+            dy += 1;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A)) {
+            dx -= 1;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D)) {
+            dx += 1;
+        }
+        if (dx != 0 || dy != 0) {
+            generic_event<player_move_data> move_event({dx, dy});
+            session.process_event(&move_event);
 
-
-    if (session.is_active() || 1 == 1) {
-
+            graphic_engine.set_camera(player_reference.get_x(),player_reference.get_y());
+        }
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right)){
             mining_info info;
             info.tile_x=graphic_engine.get_mouse_tile_coords().x;
             info.tile_y=graphic_engine.get_mouse_tile_coords().y;
-//            info.tile_x = (graphic_engine.get_mouse_coords().x / graphic_engine.get_tile_size())+player_reference.get_x()-23;
-//            info.tile_y= (graphic_engine.get_mouse_coords().y / graphic_engine.get_tile_size())+player_reference.get_y()-14;
             if ((info.tile_x-player_reference.get_x())*(info.tile_x-player_reference.get_x())+(info.tile_y-player_reference.get_y())*(info.tile_y-player_reference.get_y()) <= 9.f){
-                int mined_decorative=loader_reference.peak_tile(static_cast<int>(info.tile_x), static_cast<int>(info.tile_y),"decoratives");
+                int mined_decorative=loader_reference.peak_tile(info.tile_x, info.tile_y,"decoratives");
                 if (*player_reference.get_mining_progress() == 0.f){
                     ui_binder mining_binder;
                     mining_binder.set<float>("mining_progress",player_reference.get_mining_progress());
@@ -234,19 +219,9 @@ void event_handler::process_tick_events(sf::RenderWindow &window, graphic_engine
                         player_reference.add_item("iron_ore",1);
                     }else if (mined_decorative == 12) {
                         player_reference.add_item("rock",1);
-                    }else{
-                        /*std::string building=data.get_by_id(loader.peak_tile(static_cast<int>(mine_event->get_event_data().tile_x), static_cast<int>(mine_event->get_event_data().tile_y),"buildings")).name;
-                        std::cout<<building<<std::endl;
-                        if (building != "" && building != "player"){
-                            machines.delete_machine(mine_event->get_event_data().tile_x,mine_event->get_event_data().tile_y);
-                            player.add_item(building,1);
-                        }*/
                     }
                 }
             }
-
-            //info.tile_x=graphic_engine.get_mouse_tiles().x;
-            //info.tile_y=graphic_engine.get_mouse_tiles().y;
         }
     }
 }

@@ -32,7 +32,6 @@ bool binder_factory::create_binder(ui_binder &binder, std::string type,game_sess
         binder.set<float>("curr_fuel",dynamic_cast<furnace_prototype*>(interacted_machine)->get_curr_fuel());
         return true;
     }if (type == "drill") {
-        ui_binder drill_binder;
         machines_reference.open_machine(tile_x,tile_y);
         machine* interacted_machine=(machines_reference.get_machine(tile_x,tile_y));
         binder.set<item>("inventory_pointer",player_reference.get_inventory());

@@ -17,6 +17,10 @@ player::player(float x, float y){
     this->crafting_grid.resize(70);
     this->crafting_grid[0]={"iron_plate",1};
     this->crafting_grid[1]={"furnace",1};
+    this->crafting_grid[7]={"copper_plate",1};
+    this->crafting_grid[8]={"drill",1};
+    this->crafting_grid[14]={"circuit",1};
+    this->crafting_grid[21]={"gear",1};
 }
 
 void player::move(float dx, float dy,chunk_loader &loader) {
@@ -30,6 +34,8 @@ void player::move(float dx, float dy,chunk_loader &loader) {
 void player::clear_inventory() {
     this->inventory.clear();
     this->inventory.resize(70);
+
+    this->add_item("iron_ore",10);
 }
 
 float player::get_x() {

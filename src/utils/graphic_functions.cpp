@@ -57,9 +57,12 @@ void render_item(sf::RenderWindow &window_obj, float x, float y, item* item) {
         if (icons["coal_ore"].loadFromFile("assets/decoratives/coal.png")){}
         if (icons["copper_ore"].loadFromFile("assets/decoratives/copper.png")){}
         if (icons["furnace"].loadFromFile("assets/buildings/furnace.png")){}
-        if (icons["drill"].loadFromFile("assets/buildings/null.png")){}
+        if (icons["drill"].loadFromFile("assets/buildings/drill.png")){}
         if (icons["belt"].loadFromFile("assets/buildings/null.png")){}
         if (icons["iron_plate"].loadFromFile("assets/icons/iron_plate.png")){}
+        if (icons["copper_plate"].loadFromFile("assets/icons/copper_plate.png")){}
+        if (icons["circuit"].loadFromFile("assets/icons/circuit.png")){}
+        if (icons["gear"].loadFromFile("assets/icons/iron_gear.png")){}
         if (icons["rock"].loadFromFile("assets/icons/stone.png")){}
         initialized = true;
     }

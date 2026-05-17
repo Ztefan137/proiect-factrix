@@ -41,7 +41,7 @@
         path:../assets/decoratives/rock1.png
     texture:drill
         position:13
-        path:../assets/buildings/null.png
+        path:../assets/buildings/drill.png
     texture:belt
         position:14
         path:../assets/buildings/null.png

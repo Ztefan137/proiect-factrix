@@ -8,12 +8,13 @@
 
 #include "event_handler.h"
 #include "game_session.h"
+#include "god_event_handler.h"
 #include "graphic_engine.h"
 class interface_layer {
     game_session& session;
     sf::RenderWindow window;
     graphic_engine g_engine;
-    event_handler handler;
+    god_event_handler handler;
 
 public:
     interface_layer(game_session&);
