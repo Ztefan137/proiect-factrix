@@ -56,7 +56,8 @@ void drill_prototype::convert_fuel() {
 }
 
 void drill_prototype::check_input(machine* input){
-
+    //functii care trebuiau sa fie folosite inmpreuna cu alte chestii
+    (void) input;
 }
 
 void drill_prototype::check_output(machine* output) {

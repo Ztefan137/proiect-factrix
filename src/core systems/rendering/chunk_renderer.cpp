@@ -47,7 +47,7 @@ void chunk_renderer::get_visible_chunks(std::vector<chunk_position>& visible_chu
 
 void chunk_renderer::get_chunk_coords(int chunk_i,int chunk_j,float tile_size,int chunk_size,float &x,float &y) const{
 
-    const float zoom_level=camera.get_zoom();
+    //const float zoom_level=camera.get_zoom();
     const float x_camera=camera.get_camera_x();
     const float y_camera=camera.get_camera_y();
 
