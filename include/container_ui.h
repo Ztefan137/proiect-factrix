@@ -6,13 +6,14 @@
 #define OOP_CONTAINER_UI_H
 #include "ui.h"
 
-//to do
-/*class container_ui : virtual public ui{
+class container_ui : virtual public ui{
+
+    //trebuia sa faca parte dintr-un refactor al clasei ui
+
     std::string category="container";
     std::vector<ui*> sub_uis;
 public:
     void add_sub_ui(ui* new_sub_ui);
 };
-*/
 
 #endif //OOP_CONTAINER_UI_H

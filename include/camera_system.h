@@ -7,6 +7,7 @@
 #include <SFML/Graphics.hpp>
 
 class camera_system {
+    //trebuia sa faca parte dintr un refactor al graphic_engine
 
     sf::View camera;
     sf::View ui_camera;

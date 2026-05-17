@@ -8,15 +8,17 @@
 #include "ui_binder.h"
 #include "ui.h"
 
-//to do
-/*class interface_ui :virtual public ui{
+class interface_ui :virtual public ui{
+
+    //trebuia sa faca parte dintr-un refactor al clasei ui
+
     std::string category="interface";
     std::string bind_string="";
 public:
     void set_bind_string(std::string new_bind_string);
     virtual void bind_data(ui_binder* binder)=0;
     void bind(ui_binder* binder);
-};*/
+};
 
 
 #endif //OOP_INTERFACE_UI_H

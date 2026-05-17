@@ -19,21 +19,17 @@
 #include "queue"
 
 class graphic_engine {
+    float tile_size;
     chunk_loader& loader;
     build_system& builder;
-    //mutate in camera_system
     sf::View camera;
     sf::View ui_camera;
     float x_camera;
     float y_camera;
     float zoom_level;
-    //\mutate in camera_system\//
     sf::RenderWindow& window;
     std::vector<sf::Texture> texture_maps;
     ui_system internal_ui_system;
-    camera_system internal_camera_system;
-    chunk_renderer internal_chunk_renderer;
-    float tile_size;
 
     bool home_menu=true;
     std::queue <event*> event_queue;
@@ -50,11 +46,8 @@ public:
     void set_zoom(float zoom_level);
     void zoom(float delta);
     void set_tile_size(float new_tile_size);
-    /* mutat */
     void draw_chunks();
-    /* mutat */
     void get_visible_chunks(std::vector<chunk_position>& visible_chunks) const;
-    /* mutat */
     void get_chunk_coords(int chunk_i,int chunk_j,float tile_size,int chunk_size,float &x,float &y) const;
     void load_texture(int index,std::string const &config_file);
     inline void render_uis();

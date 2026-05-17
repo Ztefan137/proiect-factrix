@@ -11,6 +11,8 @@
 #include "chunk_loader.h"
 
 class chunk_renderer {
+    //trebuia sa faca parte dintr un refactor al graphic_engine
+
     sf::RenderWindow& window;
     std::vector<sf::Texture> texture_maps;
     chunk_loader& loader;

@@ -20,11 +20,10 @@
 #include "ui_event.h"
 #include "generic_event.h"
 
-/* mutat */
 void graphic_engine::init_camera() {
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-    const unsigned int screenWidth = desktop.size.x;
-    const unsigned int screenHeight = desktop.size.y;
+    //const unsigned int screenWidth = desktop.size.x;
+    //const unsigned int screenHeight = desktop.size.y;
 
     sf::Vector2u windowSize = window.getSize();
     float aspectRatio = static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y);
@@ -50,28 +49,24 @@ void graphic_engine::init_camera() {
     this->internal_ui_system.process_event(&curr_event,&this->event_queue);
 }
 
-/* mutat */
 void graphic_engine::set_camera(float new_x_camera,float new_y_camera) {
     this->x_camera = new_x_camera;
     this->y_camera = new_y_camera;
 }
 
-/* mutat */
 void graphic_engine::set_zoom(float new_zoom_level) {
     this->zoom_level = new_zoom_level;
 }
 
-/* mutat */
 void graphic_engine::set_tile_size(float new_tile_size) {
     this->tile_size=new_tile_size;
 }
 
-graphic_engine::graphic_engine(chunk_loader &loader,build_system&build_system,sf::RenderWindow &window) : loader(loader), builder(build_system), x_camera(0), y_camera(0), zoom_level(1.0f), window(window), texture_maps(1), tile_size(64.f), internal_camera_system(window), internal_chunk_renderer(loader,window,internal_camera_system){
+graphic_engine::graphic_engine(chunk_loader &loader,build_system&build_system,sf::RenderWindow &window) : loader(loader), builder(build_system), x_camera(0), y_camera(0), zoom_level(1.0f), window(window), texture_maps(1), tile_size(64.f){
     //this->internal_ui_system.configure_uis("default");
     this->internal_ui_system.configure_uis("../assets/configuration files/ui.xml");
 }
 
-/* mutat */
 void graphic_engine::get_visible_chunks(std::vector<chunk_position>& visible_chunks) const{
     constexpr float scale_factor = 100.f;
     constexpr float CHUNK_SIZE   = 32.f;
@@ -104,7 +99,6 @@ void graphic_engine::get_visible_chunks(std::vector<chunk_position>& visible_chu
     }
 }
 
-/* mutat */
 void graphic_engine::get_chunk_coords(int chunk_i,int chunk_j,float tile_size,int chunk_size,float &x,float &y) const{
 
     const int tile_col_count = static_cast<int>(window.getSize().x / tile_size);
@@ -131,7 +125,6 @@ void graphic_engine::get_chunk_coords(int chunk_i,int chunk_j,float tile_size,in
     y = (center_y - local_y) * tile_size + delta_y * chunk_pixel_size;
 }
 
-/* mutat */
 void graphic_engine::draw_chunks() {
     std::vector<chunk_position> visible_chunks;
     float chunk_x=0;
@@ -228,12 +221,11 @@ void graphic_engine::render_build_mode() {
 void graphic_engine::render_game() {
     this->render_player();
     this->draw_chunks();
-    //this->internal_chunk_renderer.draw_chunks();
 }
 
 void graphic_engine::render_home_menu() {
     this->window.setView(ui_camera);
-    sf::Vector2u windowSize = this->window.getSize();
+    //sf::Vector2u windowSize = this->window.getSize();
     const unsigned int screenWidth = this->ui_camera.getSize().x;
     const unsigned int screenHeight = this->ui_camera.getSize().y;
     render_image(this->window,0,0,screenWidth,screenHeight,"assets/wallpapers/wallpaper1.png",false);
@@ -271,7 +263,6 @@ void graphic_engine::render() {
     this->loader.add_building(0,x_camera,y_camera);
 }
 
-/* mutat */
 void graphic_engine::zoom(float delta) {
     float zoomFactor = delta > 0 ? 0.9f : 1.1f;
     float newZoom = this->zoom_level * zoomFactor;
@@ -298,7 +289,7 @@ void graphic_engine::process_event(event* event) {
     }else if (auto* uoe = dynamic_cast<ui_event*>(event)) {
         this->internal_ui_system.process_event(uoe,&this->event_queue);
     }else if (auto* ge = dynamic_cast<generic_event<build_mode_info>*>(event)) {
-
+        (void)ge;
     }else if (auto* ge = dynamic_cast<generic_event<ui_idx_info>*>(event)) {
         this->internal_ui_system.process_event(ge,&this->event_queue);
     }
@@ -358,14 +349,6 @@ int graphic_engine::game_rendering_state() {
 
 float graphic_engine::get_tile_size() {
     return this->tile_size;
-}
-
-camera_system &graphic_engine::get_camera_system() {
-    return this->internal_camera_system;
-}
-
-chunk_renderer &graphic_engine::get_chunk_renderer() {
-    return this->internal_chunk_renderer;
 }
 
 entity_position_info graphic_engine::get_hovered_entity(const std::string& layer) {
