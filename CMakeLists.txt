@@ -158,8 +158,6 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/game_session.h
         src/interface_layer.cpp
         include/interface_layer.h
-        src/event_handlers/god_event_handler.cpp
-        include/god_event_handler.h
         src/exceptions/ui_exception.cpp
         include/ui_exception.h
         src/exceptions/ui_negative_dimension_exception.cpp
