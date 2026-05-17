@@ -19,7 +19,6 @@
 #include "queue"
 
 class graphic_engine {
-    float tile_size;
     chunk_loader& loader;
     build_system& builder;
     sf::View camera;
@@ -28,8 +27,10 @@ class graphic_engine {
     float y_camera;
     float zoom_level;
     sf::RenderWindow& window;
-    std::vector<sf::Texture> texture_maps;
     ui_system internal_ui_system;
+
+    std::vector<sf::Texture> texture_maps;
+    float tile_size;
 
     bool home_menu=true;
     std::queue <event*> event_queue;

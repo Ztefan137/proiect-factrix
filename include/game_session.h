@@ -10,10 +10,10 @@
 #include "player.h"
 
 class game_session {
-    player player;
+    player player_instance;
     chunk_loader loader;
-    machine_handler machine_handler;
-    build_system build_system;
+    machine_handler machine_handler_instance;
+    build_system build_system_instance;
     int seed;
 
     //flags
@@ -28,7 +28,7 @@ public:
     template<typename T>
     T expose(const std::string& variable) {
         if (variable == "player") {
-            return reinterpret_cast<T>(this->player);
+            return reinterpret_cast<T>(this->player_instance);
         }
         if (variable == "loader") {
             return reinterpret_cast<T>(this->loader);

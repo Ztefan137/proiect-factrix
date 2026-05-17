@@ -9,19 +9,19 @@
 #include "string_functions.h"
 #include "structures.h"
 
-game_session::game_session() : player(0,0),machine_handler(player), build_system(loader,machine_handler,player) {
+game_session::game_session() : player_instance(0,0),machine_handler_instance(player_instance), build_system_instance(loader,machine_handler_instance,player_instance) {
 
 }
 
 game_session::~game_session() {
-    this->machine_handler.delete_machines();
+    this->machine_handler_instance.delete_machines();
 }
 
 void game_session::update() {
     if (this->active) {
         this->tick_count++;
-        this->machine_handler.update_machines();
-        this->player.update();
+        this->machine_handler_instance.update_machines();
+        this->player_instance.update();
     }
 }
 
@@ -32,9 +32,9 @@ void game_session::activate() {
 void game_session::init(int seed){
     this->activate();
     this->loader.init(seed);
-    this->machine_handler.delete_machines();
-    this->player.set_position(0,0);
-    this->player.clear_inventory();
+    this->machine_handler_instance.delete_machines();
+    this->player_instance.set_position(0,0);
+    this->player_instance.clear_inventory();
     this->seed=seed;
 }
 
@@ -51,10 +51,10 @@ void game_session::load(std::string file_path) {
             this->init(this->seed);
         } else if (tag == "[PLAYER]") {
             std::cout<<"reading player";
-            is >> this->player;
+            is >> this->player_instance;
         } else if (tag == "[MACHINES]") {
             std::cout<<"reading machines";
-            is >> this->machine_handler;
+            is >> this->machine_handler_instance;
         } else if (tag == "[CHUNKS]") {
             std::cout<<"reading chunks";
             is >> this->loader;
@@ -76,9 +76,9 @@ std::ostream& operator<<(std::ostream& os,const game_session& game_session){
     operator<<(os,"[SEED]\n");
     os<<game_session.seed;
     operator<<(os,"\n");
-    operator<<(os,game_session.player);
+    operator<<(os,game_session.player_instance);
     operator<<(os,"\n");
-    operator<<(os,game_session.machine_handler);
+    operator<<(os,game_session.machine_handler_instance);
     operator<<(os,"\n");
     operator<<(os,game_session.loader);
     return os;
@@ -86,21 +86,21 @@ std::ostream& operator<<(std::ostream& os,const game_session& game_session){
 
 void game_session::process_event(event *event) {
     if (auto* pme=dynamic_cast<generic_event<player_move_data>*>(event)) {
-        this->player.move(pme->get_event_data().dx,pme->get_event_data().dy,this->loader);
+        this->player_instance.move(pme->get_event_data().dx,pme->get_event_data().dy,this->loader);
         return;
     }
     if (auto* text_event=dynamic_cast<generic_event<simple_event_text>*>(event)) {
         std::string text=text_event->get_event_data().text;
         if (text == "build_system_off") {
-            this->build_system.set_on(false);
+            this->build_system_instance.set_on(false);
             return;
         }
         if (text == "build_system_on") {
-            this->build_system.set_on(true);
+            this->build_system_instance.set_on(true);
             return;
         }
         if (text == "close_machines") {
-            this->machine_handler.close_machines();
+            this->machine_handler_instance.close_machines();
         }
     }
 }
