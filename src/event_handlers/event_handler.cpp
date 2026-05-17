@@ -34,7 +34,6 @@ void event_handler::process_events(sf::RenderWindow &window,graphic_engine &grap
             std::cout << "Fereastra a fost închisă\n";
         }
         else if (curr_event->is<sf::Event::KeyPressed>()) {
-            bool player_moved=false;
             const auto* keyPressed = curr_event->getIf<sf::Event::KeyPressed>();
             if(keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
                 if (graphic_engine.game_rendering_state() == 1) {
@@ -169,6 +168,7 @@ void event_handler::add_event(event *event) {
 }
 
 void event_handler::process_tick_events(sf::RenderWindow &window, graphic_engine &graphic_engine,game_session& session) {
+    (void) window;
     //build_system &build_system_reference=session.expose<build_system&>("build_system");
     chunk_loader &loader_reference=session.expose<chunk_loader&>("loader");
     player &player_reference=session.expose<player&>("player");
@@ -210,7 +210,6 @@ void event_handler::process_tick_events(sf::RenderWindow &window, graphic_engine
                 }
                 player_reference.mine(0.02);
                 if (player_reference.has_mined()) {
-                    entity_data data;
                     if (mined_decorative == 6){
                         player_reference.add_item("coal_ore",1);
                     }else if (mined_decorative == 7) {
