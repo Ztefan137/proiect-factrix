@@ -24,7 +24,7 @@
 void event_handler::process_events(sf::RenderWindow &window,graphic_engine &graphic_engine,game_session& session) {
 
     build_system &build_system_reference=session.expose<build_system&>("build_system");
-    chunk_loader &loader_reference=session.expose<chunk_loader&>("loader");
+    //chunk_loader &loader_reference=session.expose<chunk_loader&>("loader");
     player &player_reference=session.expose<player&>("player");
     machine_handler &machines_reference=session.expose<machine_handler&>("machine_handler");
 

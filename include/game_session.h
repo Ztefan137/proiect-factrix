@@ -39,8 +39,7 @@ public:
         if (variable == "machine_handler") {
             return reinterpret_cast<T>(this->machine_handler_instance);
         }
-        return reinterpret_cast<T>(1);
-        //throw "interface_binding_error";
+        throw std::runtime_error("Unknown variable: " + variable);
     }
     void activate();
     void init(int seed);
