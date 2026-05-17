@@ -7,6 +7,8 @@
 #include <cmath>
 #include <cstdint>
 
+#include <ranges>
+
 inline float seededRand(int x, int y, int seed) {
     uint32_t n = static_cast<uint32_t>(x) * 374761393u +
                  static_cast<uint32_t>(y) * 668265263u +
@@ -28,59 +30,61 @@ void world_generator::generate_chunk(int i_chunk, int j_chunk, int ground[], int
     perlin_noise ore_noise2(this->seed ^ 0xFF7529);
     //perlin_noise warp_noise(this->seed ^ 0x5F3173E9);
     perlin_noise forest_noise(this->seed ^ 0xF1271549);
-    for (int i=0;i<32;i++) {
-        for (int j=0;j<32;j++) {
-            auto tile_x = static_cast<float>(i_chunk * 32 + i);
-            auto tile_y = static_cast<float>(j_chunk * 32 + j);
-            float elevation=elevation_noise.value2(tile_x/100,tile_y/100,2,0.2,7,0.5,2);
-//            float warp_x=warp_noise.value2(tile_x*0.05,tile_y*0.05,2,0.02,2,0.5,2);
-//            float warp_y=warp_noise.value2(tile_x*0.05+1000,tile_y*0.05+1000,2,0.02,2,0.5,2);
-            float warp_x=0;
-            float warp_y=0;
-            float temperature=temperature_noise.value2(tile_x/1000+warp_x,tile_y/1000+warp_y,1,0.5,7,0.5,2);
-            float aridity=aridity_noise.value2(tile_x/1000-warp_x,tile_y/1000+warp_y,1,0.5,7,0.5,2);
-            //bool biome_1=temperature>0 && aridity<0;
-            //bool biome_2=temperature<0 && aridity<0;
-            //bool biome_3=(temperature>-1 && temperature<-0.3) && (aridity>0);
-            //bool biome_4=(temperature>-0.3 && temperature<0.3) && (aridity>0);
-            //bool biome_5=(temperature>0.3 && temperature<1) && (aridity>0) ;
 
-            bool biome_3=(temperature>-1 && temperature<0) && (aridity<1 && aridity>0.3);
-            bool biome_4=(temperature>0 && temperature<1) && (aridity<1 && aridity>0.3);
-            bool biome_1=(temperature>-1 && temperature<1) && (aridity>-0.3 && aridity<0.3);
-            bool biome_2=(temperature>-0.5 && temperature<1) && (aridity<-0.3 && aridity>-1);
-            bool biome_5=(temperature>-1 && temperature<-0.5) && (aridity<-0.3 && aridity>-1);
-            ground[i*32+j]=(elevation>-0.5)*(1*biome_1+2*biome_2+3*biome_3+(floor(seededRand(i,j,this->seed)*16)+20)*biome_4+5*biome_5);
-            float ore=ore_noise.value2(tile_x/64,tile_y/64,1,0.7,6,0.5,2);
-            float ore2=ore_noise2.value2(tile_x/64,tile_y/64,1,0.75,6,0.5,2);
-            int decided_ore = 0;
+    auto tiles = std::views::iota(0, 32*32)
+    | std::views::transform([](int idx){
+        return std::pair{idx / 32, idx % 32};
+    });
 
-            if (ore > 0.38f) {
-                if (ore2 < -0.38f) {
-                    decided_ore = 6;
-                }
-                else if (ore2 > 0.38f){
-                    decided_ore = 7;
-                }
-            }
-            else if (ore < -0.38f) {
-                if (ore2 < -0.38f) {
-                    decided_ore = 8;
-                }
-            }
 
-            float forest=forest_noise.value2(tile_x/100,tile_y/100,1,0.4,3,0.5,2);
-            decoratives[i*32+j]=40;
-            if (decided_ore && ground[i*32+j] != 0) {
-                decoratives[i*32+j]=decided_ore;
+    for (auto [i, j] : tiles) {
+        auto tile_x = static_cast<float>(i_chunk * 32 + i);
+        auto tile_y = static_cast<float>(j_chunk * 32 + j);
+        float elevation=elevation_noise.value2(tile_x/100,tile_y/100,2,0.2,7,0.5,2);
+        float warp_x=0;
+        float warp_y=0;
+        float temperature=temperature_noise.value2(tile_x/1000+warp_x,tile_y/1000+warp_y,1,0.5,7,0.5,2);
+        float aridity=aridity_noise.value2(tile_x/1000-warp_x,tile_y/1000+warp_y,1,0.5,7,0.5,2);
+        //bool biome_1=temperature>0 && aridity<0;
+        //bool biome_2=temperature<0 && aridity<0;
+        //bool biome_3=(temperature>-1 && temperature<-0.3) && (aridity>0);
+        //bool biome_4=(temperature>-0.3 && temperature<0.3) && (aridity>0);
+        //bool biome_5=(temperature>0.3 && temperature<1) && (aridity>0) ;
+
+        bool biome_3=(temperature>-1 && temperature<0) && (aridity<1 && aridity>0.3);
+        bool biome_4=(temperature>0 && temperature<1) && (aridity<1 && aridity>0.3);
+        bool biome_1=(temperature>-1 && temperature<1) && (aridity>-0.3 && aridity<0.3);
+        bool biome_2=(temperature>-0.5 && temperature<1) && (aridity<-0.3 && aridity>-1);
+        bool biome_5=(temperature>-1 && temperature<-0.5) && (aridity<-0.3 && aridity>-1);
+        ground[i*32+j]=(elevation>-0.5)*(1*biome_1+2*biome_2+3*biome_3+(floor(seededRand(i,j,this->seed)*16)+20)*biome_4+5*biome_5);
+        float ore=ore_noise.value2(tile_x/64,tile_y/64,1,0.7,6,0.5,2);
+        float ore2=ore_noise2.value2(tile_x/64,tile_y/64,1,0.75,6,0.5,2);
+        int decided_ore = 0;
+
+        if (ore > 0.38f) {
+            if (ore2 < -0.38f) {
+                decided_ore = 6;
             }
-            if (forest>0.3 && floor(seededRand(i*i_chunk,j*j_chunk,this->seed)*20) == 0 && ground[i*32+j] != 0) {
-                decoratives[i*32+j]=9;
+            else if (ore2 > 0.38f){
+                decided_ore = 7;
             }
-            if (elevation>0 && floor(seededRand(i*i_chunk,j*j_chunk,this->seed)*8000) == 0 && aridity<0.4 && decoratives[i*32+j] == 40) {
-                decoratives[i*32+j]=12;
+        }
+        else if (ore < -0.38f) {
+            if (ore2 < -0.38f) {
+                decided_ore = 8;
             }
-            //decoratives[i*32+j]=(decided_ore && ground[i*32+j] != 0)?decided_ore:40;
+        }
+
+        float forest=forest_noise.value2(tile_x/100,tile_y/100,1,0.4,3,0.5,2);
+        decoratives[i*32+j]=40;
+        if (decided_ore && ground[i*32+j] != 0) {
+            decoratives[i*32+j]=decided_ore;
+        }
+        if (forest>0.3 && floor(seededRand(i*i_chunk,j*j_chunk,this->seed)*20) == 0 && ground[i*32+j] != 0) {
+            decoratives[i*32+j]=9;
+        }
+        if (elevation>0 && floor(seededRand(i*i_chunk,j*j_chunk,this->seed)*8000) == 0 && aridity<0.4 && decoratives[i*32+j] == 40) {
+            decoratives[i*32+j]=12;
         }
     }
 }

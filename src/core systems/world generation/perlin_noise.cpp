@@ -10,6 +10,9 @@
 struct vector {
     float x;
     float y;
+    float operator*(const vector& v) const {
+        return x * v.x + y * v.y;
+    }
 };
 uint32_t hash2D(int x, int y, int seed=123) {
     uint32_t h = x * 374761393u + y * 668265263u + seed * 1442695041u;
@@ -62,10 +65,10 @@ float perlin_noise::value(float x, float y) {
     vector d10={dx,dy-1};
     vector d11={dx-1,dy-1};
 
-    float dp00=dot_product(g00,d00);
-    float dp01=dot_product(g01,d01);
-    float dp10=dot_product(g10,d10);
-    float dp11=dot_product(g11,d11);
+    float dp00=g00*d00;
+    float dp01=g01*d01;
+    float dp10=g10*d10;
+    float dp11=g11*d11;
 
     float u=fade(dx);
     float v=fade(dy);

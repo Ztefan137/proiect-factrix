@@ -2,7 +2,7 @@
 // Created by stefa on 5/17/2026.
 //
 
-#include "binder_factory.h"
+#include "../include/binder_factory.h"
 
 #include "drill_prototype.h"
 #include "furnace_prototype.h"

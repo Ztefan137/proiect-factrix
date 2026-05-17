@@ -19,7 +19,7 @@
 
 #include "item.h"
 #include "structures.h"
-#include "../binder_factory.h"
+#include "../../include/binder_factory.h"
 
 void event_handler::process_events(sf::RenderWindow &window,graphic_engine &graphic_engine,game_session& session) {
 

@@ -169,7 +169,7 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         src/exceptions/ui_negative_dimension_exception.cpp
         include/ui_negative_dimension_exception.h
         src/binder_factory.cpp
-        src/binder_factory.h
+        include/binder_factory.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE
