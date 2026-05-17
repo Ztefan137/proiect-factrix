@@ -21,7 +21,7 @@
 #include "generic_event.h"
 
 void graphic_engine::init_camera() {
-    sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+    //sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
     //const unsigned int screenWidth = desktop.size.x;
     //const unsigned int screenHeight = desktop.size.y;
 

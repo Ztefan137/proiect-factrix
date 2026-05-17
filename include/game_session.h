@@ -34,10 +34,10 @@ public:
             return reinterpret_cast<T>(this->loader);
         }
         if (variable == "build_system") {
-            return reinterpret_cast<T>(this->build_system);
+            return reinterpret_cast<T>(this->build_system_instance);
         }
         if (variable == "machine_handler") {
-            return reinterpret_cast<T>(this->machine_handler);
+            return reinterpret_cast<T>(this->machine_handler_instance);
         }
         //throw "interface_binding_error";
     }

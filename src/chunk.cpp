@@ -11,7 +11,7 @@
 chunk::chunk() {
     layers.push_back("ground");
     layers.push_back("decoratives");
-    this->tile_size=tile_size;
+    //this->tile_size=tile_size;
     sf::VertexArray ground_va;
     ground_va.setPrimitiveType(sf::PrimitiveType::Triangles);
     ground_va.resize(32 * 32 * 6);
