@@ -19,3 +19,8 @@ sf::Color ui_progress_bar::get_color() const{
 void ui_progress_bar::bind_data(ui_binder *binder) {
     this->progress=binder->get<float>(this->bind_string);
 }
+
+ui_progress_bar::ui_progress_bar(const ui_progress_bar &other) : ui(other) {
+    this->color = other.color;
+    this->progress = other.progress;
+}

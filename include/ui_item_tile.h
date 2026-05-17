@@ -12,6 +12,7 @@ class ui_item_tile : public ui_item_element{
     //item* internal_item=nullptr;
 public:
     ui_item_tile(float x,float y,float width,float height,item* new_item=nullptr);
+    ui_item_tile(const ui_item_tile& other);
 };
 
 

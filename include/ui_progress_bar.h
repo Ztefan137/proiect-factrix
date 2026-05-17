@@ -12,6 +12,7 @@ class ui_progress_bar : public ui{
     sf::Color color=sf::Color::White;
 public:
     ui_progress_bar(float x,float y,float width,float height,sf::Color color);
+    ui_progress_bar(const ui_progress_bar& other);
     float get_progress() const;
     sf::Color get_color() const;
     void bind_data(ui_binder *binder) override;

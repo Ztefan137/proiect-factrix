@@ -12,6 +12,7 @@ class ui_window : public ui{
     std::string window_name;
 public:
     ui_window(float x,float y,float width,float height,std::string window_name);
+    ui_window(const ui_window& other);
     std::string get_window_name() const;
 };
 

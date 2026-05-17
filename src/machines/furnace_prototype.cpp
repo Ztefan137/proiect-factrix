@@ -13,6 +13,10 @@ furnace_prototype::furnace_prototype() : machine(),fuel_slot("",0),source_slot("
 
 }
 
+furnace_prototype::furnace_prototype(const furnace_prototype &other) : machine(other), fuel_slot(other.fuel_slot), source_slot(other.source_slot), destination_slot(other.destination_slot), progress(other.progress), curr_fuel(other.curr_fuel) {
+
+}
+
 void furnace_prototype::update() {
     bool smelting_conditions=false;
     smelting_conditions=source_slot.get_quantity()>0 && this->curr_fuel>0.f;

@@ -13,3 +13,7 @@ ui_window::ui_window(float x,float y,float width,float height,std::string window
 std::string ui_window::get_window_name() const{
     return window_name;
 }
+
+ui_window::ui_window(const ui_window &other) : ui(other) {
+    this->window_name = other.window_name;
+}

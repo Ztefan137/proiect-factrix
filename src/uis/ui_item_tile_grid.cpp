@@ -59,3 +59,16 @@ void ui_item_tile_grid::set_action_string(std::string new_action_string) {
         ui->set_action_string(new_action_string);
     }
 }
+
+ui_item_tile_grid::ui_item_tile_grid(const ui_item_tile_grid &other) : ui(other) {
+    this->cols = other.cols;
+    this->rows = other.rows;
+    this->tile_size = other.tile_size;
+    for (ui* base_ui : other.sub_uis) {
+        ui_item_tile* tile = dynamic_cast<ui_item_tile*>(base_ui);
+        if (tile) {
+            ui* new_tile = new ui_item_tile(*tile);
+            this->add_sub_ui(new_tile);
+        }
+    }
+}

@@ -11,6 +11,10 @@
 drill_prototype::drill_prototype(const std::string& mined_tile) : machine(), fuel_slot("",0), destination_slot("",0), mined(mined_tile) {
 }
 
+drill_prototype::drill_prototype(const drill_prototype &other) : machine(other), fuel_slot(other.fuel_slot), destination_slot(other.destination_slot), progress(other.progress), curr_fuel(other.curr_fuel), mined(other.mined) {
+
+}
+
 void drill_prototype::update() {
     bool drilling_conditions=false;
     drilling_conditions=this->curr_fuel>0.f;

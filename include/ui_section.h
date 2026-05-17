@@ -12,6 +12,7 @@ class ui_section : public ui{
     bool section_header=false;
 public:
     ui_section(float x,float y,float width,float height,const std::string& window_name,bool visible_header);
+    ui_section(const ui_section& other);
     bool get_header_visibility() const;
     void set_header_visibility(bool visible);
     std::string get_section_name() const;

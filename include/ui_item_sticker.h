@@ -12,6 +12,7 @@ class ui_item_sticker : public ui_item_element{
     //item* internal_item=nullptr;
 public:
     ui_item_sticker(float x,float y,float width,float height,item* new_item=nullptr);
+    ui_item_sticker(const ui_item_sticker& other);
 };
 
 

@@ -25,3 +25,11 @@ void ui_item_element::set_item(item * new_item) {
 item* ui_item_element::get_item() const{
     return this->internal_item;
 }
+
+ui_item_element::ui_item_element(const ui_item_element &other) : ui(other) {
+    if (other.internal_item != nullptr) {
+        this->internal_item = new item(*other.internal_item);
+    } else {
+        this->internal_item = nullptr;
+    }
+}

@@ -12,3 +12,8 @@ ui_button::ui_button(float x, float y, float width, float height, std::string te
 std::string ui_button::get_string() const {
     return this->text;
 }
+
+//write the copy constructor
+ui_button::ui_button(const ui_button &other) : ui(other) {
+    this->text = other.text;
+}

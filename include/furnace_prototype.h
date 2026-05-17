@@ -15,6 +15,7 @@ class furnace_prototype : public machine{
     float curr_fuel=0.f;
     public:
     furnace_prototype();
+    furnace_prototype(const furnace_prototype& other);
     void update() override;
     item* get_source();
     item* get_destination();

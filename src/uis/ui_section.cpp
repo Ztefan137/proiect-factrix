@@ -19,3 +19,8 @@ void ui_section::set_header_visibility(bool visible) {
 std::string ui_section::get_section_name() const{
     return this->section_name;
 }
+
+ui_section::ui_section(const ui_section &other) : ui(other) {
+    this->section_name = other.section_name;
+    this->section_header = other.section_header;
+}

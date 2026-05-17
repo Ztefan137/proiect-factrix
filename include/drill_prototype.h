@@ -20,6 +20,7 @@ class drill_prototype : public machine{
     void convert_fuel();
 public:
     drill_prototype()=default;
+    drill_prototype(const drill_prototype& other);
     explicit drill_prototype(const std::string& mined_tile);
     void update() override;
     item* get_fuel();

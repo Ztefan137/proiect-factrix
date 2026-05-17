@@ -11,6 +11,7 @@ class ui_item_tile_grid : public ui{
     float tile_size;
 public:
     ui_item_tile_grid(float x,float y,float width,float height,int cols,int rows,float tile_size,item* reference);
+    ui_item_tile_grid(const ui_item_tile_grid& other);
     int get_cols();
     int get_rows();
     float get_tile_size();

@@ -40,6 +40,51 @@ ui::~ui() {
     }
 }
 
+ui::ui(const ui &other) {
+    this->x = other.x;
+    this->y = other.y;
+    this->width = other.width;
+    this->height = other.height;
+    this->visibility = other.visibility;
+    this->ui_type = other.ui_type;
+    this->action_string = other.action_string;
+    this->bind_string = other.bind_string;
+    this->internal_ui_style = other.internal_ui_style;
+    this->internal_action_handler = other.internal_action_handler;
+
+    for (const auto* sub_ui : other.sub_uis) {
+        this->sub_uis.push_back(new ui(*sub_ui));
+    }
+}
+
+ui& ui::operator=(const ui &other) {
+    if (this == &other) {
+        return *this;
+    }
+
+    this->x = other.x;
+    this->y = other.y;
+    this->width = other.width;
+    this->height = other.height;
+    this->visibility = other.visibility;
+    this->ui_type = other.ui_type;
+    this->action_string = other.action_string;
+    this->bind_string = other.bind_string;
+    this->internal_ui_style = other.internal_ui_style;
+    this->internal_action_handler = other.internal_action_handler;
+
+    for (const auto* sub_ui : this->sub_uis) {
+        delete sub_ui;
+    }
+    this->sub_uis.clear();
+
+    for (const auto* sub_ui : other.sub_uis) {
+        this->sub_uis.push_back(new ui(*sub_ui));
+    }
+
+    return *this;
+}
+
 void ui::set_type(std::string type) {
     this->ui_type=type;
 }

@@ -12,6 +12,7 @@ class ui_button : public ui {
 
 public:
     ui_button(float x,float y,float width,float height,std::string text);
+    ui_button(const ui_button& other);
     std::string get_string() const;
 };
 

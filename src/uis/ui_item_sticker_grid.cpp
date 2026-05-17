@@ -57,3 +57,16 @@ void ui_item_sticker_grid::set_action_string(std::string new_action_string) {
         ui->set_action_string(new_action_string);
     }
 }
+
+ui_item_sticker_grid::ui_item_sticker_grid(const ui_item_sticker_grid &other) : ui(other) {
+    this->cols = other.cols;
+    this->rows = other.rows;
+    this->tile_size = other.tile_size;
+    for (ui* base_ui : other.sub_uis) {
+        ui_item_sticker* sticker = dynamic_cast<ui_item_sticker *>(base_ui);
+        if (sticker) {
+            ui_item_sticker* new_sticker = new ui_item_sticker(*sticker);
+            this->add_sub_ui(new_sticker);
+        }
+    }
+}
